@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\LoginController;
 
 Route::get('/menu', function () {
     return view('menu');
@@ -9,6 +10,10 @@ Route::get('/menu', function () {
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+
+Route::post('/login', [LoginController::class, 'login'])->name('login.auth');
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/recuperation', function () {
     return view('recuperation');

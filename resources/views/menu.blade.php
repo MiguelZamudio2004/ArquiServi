@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
 </head>
+
 <body>
-    <h2> Bienvenido a ArquiServi</h2>
+    <h2> Bienvenido a ArquiServi {{ Auth::user()->nombre }}</h2>
     <label> ¿Qué servicio necesitas hoy? </label>
     <select>
         <option disabled selected> Selecciona tu servicio requerido </option>
     </select>
     <button>Ver catálogo completo de servicios</button>
     <label>Inicia sesión para ver detalles de tu cuenta</label>
-    <button>Iniciar sesión</button>
+    <button><a href="{{ route('login') }}">Iniciar sesión</a></button>
 
 
     <table>
