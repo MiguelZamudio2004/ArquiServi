@@ -1,0 +1,110 @@
+.encabezado {
+    background-color: #0C2D5A;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    height: auto;
+}
+
+.form-login {
+    background-color: #F9FAFB;
+    border: #F47A20 1px solid;
+    margin: 0 20% 20% 20%;
+    padding: 0 5% 2% 5%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: auto;
+}
+
+.form-control {
+    padding: 5px;
+    background-color: #F9FAFB;
+    border-color: #6B7280;
+    border: 1px solid #6B7280;
+    width: 100%;
+    border-radius: 10px;
+
+}
+
+.form-control:focus {
+    border-color: #1E40AF;
+
+}
+
+#titulo {
+    color: #0C2D5A;
+    text-align: center;
+    font-size: 60px;
+    font-family:'Times New Roman', Times, serif;
+}
+
+#titulo span {
+    display: inline-block;
+    animation: wave 1.3s infinite;
+    animation-delay: calc(var(--i) * 0.1s);
+}
+
+@keyframes wave {
+    0%, 40%, 100% {
+        transform: translateY(0);
+    }
+    20% {
+        transform: translateY(-12px);
+    }
+}
+
+#subtitulo {
+    text-align: center;
+    color: #333333;
+    font-size: 30px;
+}
+
+.etiqueta {
+    font-size: 20px;
+    color: #6B7280;
+
+}
+
+.textalter {
+    font-size: 15px;
+    color: #6B7280;
+}
+
+.textalter a {
+    color:#F47A20
+}
+
+.textalter a:visited {
+    color:#1E40AF
+}
+
+.btn {
+    color: #F47A20;
+    border-color: #F47A20;
+    border-radius: 15px;
+    box-sizing: border-box;
+    cursor: pointer;
+    width: 100%;
+    height: 45px;
+    
+}
+
+.btn:hover {
+    color: #FFFFFF;
+    background-color: #F47A20;
+    border-color: #F47A20;
+}
+
+.pie {
+    background-color: #0C2D5A;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 10px 0;
+    bottom: 0;
+    width: 100%;
+}
