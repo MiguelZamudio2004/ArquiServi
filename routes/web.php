@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegistroController;
 
 Route::get('/menu', function () {
     return view('menu');
 });
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 
 Route::get('/recuperation', function () {
     return view('recuperation');
@@ -25,9 +26,11 @@ Route::get('/validar', function () {
     return view('validar');
 });
 
-Route::get('/register', function () {
-    return view('register');
-});
+Route::get('/register',
+[RegistroController::class, 'create'])->name('register');
+
+Route::post('/register',
+[RegistroController::class, 'store'])->name('register.store');
 
 Route::get('/newpassword', function () {
     return view('newpassword');
