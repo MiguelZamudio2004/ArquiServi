@@ -1,3 +1,15 @@
+body {
+    height: 100%;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
 .encabezado {
     background-color: #0C2D5A;
 }
@@ -12,7 +24,7 @@
 .form-login {
     background-color: #F9FAFB;
     border: #F47A20 1px solid;
-    margin: 0 20% 20% 20%;
+    margin: 0 10% 10% 10%;
     padding: 0 5% 2% 5%;
     position: relative;
     display: flex;
@@ -22,6 +34,9 @@
 }
 
 .form-control {
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
+    margin-bottom: 10px;
     padding: 5px;
     background-color: #F9FAFB;
     border-color: #6B7280;
@@ -40,8 +55,9 @@
 #titulo {
     color: #0C2D5A;
     text-align: center;
-    font-size: 60px;
-    font-family:'Times New Roman', Times, serif;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 4vw + 1rem, 3.5rem);
+    font-weight: 700;
 }
 
 #titulo span {
@@ -62,17 +78,21 @@
 #subtitulo {
     text-align: center;
     color: #333333;
-    font-size: 30px;
+    font-size: clamp(1.5rem, 3vw + 1rem, 2.5rem);
+    font-family: 'Libre Baskerville', serif;
 }
 
 .etiqueta {
-    font-size: 20px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-family: Poppins, sans-serif;
     color: #6B7280;
 
 }
 
 .textalter {
-    font-size: 15px;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
     color: #6B7280;
 }
 
@@ -85,6 +105,8 @@
 }
 
 .btn {
+    font-family: Caudex, sans-serif;
+    font-size: 16px;
     color: #F47A20;
     border-color: #F47A20;
     border-radius: 15px;
@@ -102,15 +124,19 @@
 }
 
 .pie {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
     background-color: #0C2D5A;
     color: #FFFFFF;
     text-align: center;
     padding: 10px 0;
     bottom: 0;
+    margin-top: auto;
     width: 100%;
 }
 
 .error {
+    font-family: Caudex, sans-serif;
     color: red;
     font-size: 16px;
     margin-top: 10px;
