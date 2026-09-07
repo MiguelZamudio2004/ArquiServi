@@ -40,4 +40,9 @@ class Usuario extends Authenticatable
     {
         return $this->belongsTo(Rol::class, 'rol_id');
     }
+
+    public function codigoRecuperacion()
+    {
+        return $this->hasMany(CodigoRecuperacion::class, 'usuario_id');
+    }
 }
