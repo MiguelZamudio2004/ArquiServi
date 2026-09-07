@@ -33,6 +33,7 @@
 
 .form-control:focus {
     border-color: #1E40AF;
+    outline: none;
 
 }
 
