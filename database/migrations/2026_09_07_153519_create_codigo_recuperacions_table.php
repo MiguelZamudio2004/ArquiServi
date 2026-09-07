@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('codigo_recuperacion', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('usuario_id')->constrained('usuarios')->cascadeOnDelete();
             $table->string('codigo');
             $table->timestamp('expira_en');
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('codigo_recuperacions');
+        Schema::dropIfExists('codigo_recuperacion');
     }
 };

@@ -19,6 +19,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/recuperation', [RecuperacionController::class, 'mostrarCorreo'])->name('recuperacion');
 Route::post('/recuperation', [RecuperacionController::class, 'enviarCodigo'])->name('recuperacion.enviar');
 
+Route::post('/reenviar-codigo', [RecuperacionController::class, 'reenviarCodigo'] )->name('recuperacion.reenviar') -> middleware('throttle:1,1'); 
+
 
 Route::get('/registerprof', function () {
     return view('registerprof');

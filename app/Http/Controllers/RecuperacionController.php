@@ -31,35 +31,24 @@ class RecuperacionController extends Controller
         $usuario = Usuario::where('correo', $datos['correo'])->first();
 
         if (!$usuario) {
-            return back()->with(
-                'success',
-                'Si el correo está registrado, recibirás un código de recuperación.'
-            );
+            return back()->with('success', 'Si el correo está registrado, recibirás un código de recuperación.');
         }
 
         CodigoRecuperacion::where('usuario_id', $usuario->id)->delete();
 
         $codigo = (string) random_int(100000, 999999);
 
-        $codigoRecuperacion = CodigoRecuperacion::create([
-            'usuario_id' => $usuario->id,
-            'codigo' => Hash::make($codigo),
-            'expira_en' => now()->addMinutes(10),
+        $codigoRecuperacion = CodigoRecuperacion::create(['usuario_id' => $usuario->id, 'codigo' => Hash::make($codigo), 'expira_en' => now()->addMinutes(10),
         ]);
 
-        Mail::raw(
-            "Tu código de recuperación de ArquiServi es: {$codigo}. "
-            . "Este código expirará en 10 minutos.",
-            function ($mensaje) use ($usuario) {
-                $mensaje
+        Mail::raw("Tu código de recuperación de ArquiServi es: {$codigo}. " . "Este código expirará en 10 minutos.", function ($mensaje) use ($usuario) { 
+                    $mensaje
                     ->to($usuario->correo)
                     ->subject('Recuperación de contraseña - ArquiServi');
             }
         );
 
-        session([
-            'recuperacion_usuario_id' => $usuario->id,
-            'recuperacion_codigo_id' => $codigoRecuperacion->id,
+        session(['recuperacion_usuario_id' => $usuario->id, 'recuperacion_codigo_id' => $codigoRecuperacion->id,
         ]);
 
         return redirect()
@@ -91,8 +80,6 @@ class RecuperacionController extends Controller
         ]
     );
 
-    // Une las 6 cajas:
-    // ['1','2','3','4','5','6'] → "123456"
     $codigoIngresado = implode('', $request->codigo);
 
     $usuarioId = session('recuperacion_usuario_id');
@@ -211,6 +198,58 @@ class RecuperacionController extends Controller
                 'success',
                 'Tu contraseña se actualizó correctamente.'
             );
+            
     }
+
+    public function reenviarCodigo()
+{
+    $usuarioId = session('recuperacion_usuario_id');
+
+    if (!$usuarioId) {
+        return redirect()
+            ->route('recuperacion')
+            ->withErrors([
+                'correo' => 'La sesión de recuperación ha expirado.',
+            ]);
+    }
+
+    $usuario = Usuario::find($usuarioId);
+
+    if (!$usuario) {
+        return redirect()
+            ->route('recuperacion')
+            ->withErrors([
+                'correo' => 'No se pudo encontrar el usuario.',
+            ]);
+    }
+
+    CodigoRecuperacion::where('usuario_id', $usuario->id)->delete();
+
+    $codigo = (string) random_int(100000, 999999);
+
+    $codigoRecuperacion = CodigoRecuperacion::create([
+        'usuario_id' => $usuario->id,
+        'codigo' => Hash::make($codigo),
+        'expira_en' => now()->addMinutes(10),
+    ]);
+
+    Mail::raw(
+        "Tu nuevo código de recuperación de ArquiServi es: {$codigo}. "
+        . "Este código expirará en 10 minutos.",
+        function ($mensaje) use ($usuario) {
+            $mensaje
+                ->to($usuario->correo)
+                ->subject('Nuevo código de recuperación - ArquiServi');
+        }
+    );
+
+    session([
+        'recuperacion_codigo_id' => $codigoRecuperacion->id,
+    ]);
+
+    return redirect()
+        ->route('recuperacion.codigo')
+        ->with('success', 'Se ha enviado un nuevo código a tu correo.');
+}
     
 }

@@ -11,12 +11,12 @@
             @csrf
     <h2>Validar</h2>
     <label>Hemos enviado un código a tu correo electrónico. Por favor, ingresa el código para continuar:</label>
-    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric" required>
-    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric" required>
-    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric" required>
-    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric" required>
-    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric" required>
-    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric" required>
+    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric">
+    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric">
+    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric">
+    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric">
+    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric">
+    <input type="text" name="codigo[]" maxlength="1" inputmode="numeric">
 
     @error('codigo')
         <span class="error">{{ $message }}</span>
@@ -25,6 +25,13 @@
     <p>No recibiste ningun codigo? <a href="#">Reenviar código</a></p>
     <button>Validar código</button>
 </form>
+
+<form action="{{ route('recuperacion.reenviar') }}" method="POST">
+        @csrf
+        <button type="submit" class="reenviar-codigo">Reenviar Codigo</button>
+        
+    </form>
+
     </section>
 </body>
 </html>
