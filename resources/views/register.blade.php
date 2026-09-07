@@ -12,11 +12,8 @@
     <section>
 
         <form action="{{ route('register.store') }}" method="POST">
-
             @csrf
-
-            <h2>Nueva Cuenta</h2>
-
+        <h2>Nueva Cuenta</h2>
             @if ($errors->any())
                 <div>
                     <ul>
@@ -28,55 +25,25 @@
             @endif
 
             <label>Nombre:</label>
-            <input
-                type="text"
-                name="nombre"
-                placeholder="Ingrese su nombre"
-                value="{{ old('nombre') }}"
-                required
-            >
+            <input type="text" name="nombre" placeholder="Ingrese su nombre" value="{{ old('nombre') }}" required>
 
             <label>Apellido paterno:</label>
-            <input
-                type="text"
-                name="apellido_paterno"
-                placeholder="Ingrese su apellido paterno"
-                value="{{ old('apellido_paterno') }}"
-                required
-            >
+            <input type="text" name="apellido_paterno" placeholder="Ingrese su apellido paterno" value="{{ old('apellido_paterno') }}" required>
 
             <label>Apellido materno:</label>
-            <input
-                type="text"
-                name="apellido_materno"
-                placeholder="Ingrese su apellido materno"
-                value="{{ old('apellido_materno') }}"
-            >
+            <input type="text" name="apellido_materno" placeholder="Ingrese su apellido materno" value="{{ old('apellido_materno') }}" required>
 
             <label>Correo electrónico:</label>
-            <input
-                type="email"
-                name="correo"
-                placeholder="Ingrese su correo electrónico"
-                value="{{ old('correo') }}"
-                required
-            >
+            <input type="email" name="correo" placeholder="Ingrese su correo electrónico" value="{{ old('correo') }}" required>
 
             <label>Número de teléfono:</label>
-            <input
-                type="tel"
-                name="telefono"
-                placeholder="Ingrese su número de teléfono"
-                value="{{ old('telefono') }}"
-            >
+            <input type="tel" name="telefono" placeholder="Ingrese su número de teléfono" value="{{ old('telefono') }}" required>
 
             <label>Rol:</label>
-
             <select name="rol" required>
-
-                <option value="" disabled {{ old('rol') ? '' : 'selected' }}>
-                    Seleccione un rol
-                </option>
+            <option value="" disabled {{ old('rol') ? '' : 'selected' }}>
+                Seleccione un rol
+            </option>
 
                 <option
                     value="usuario"
@@ -98,28 +65,17 @@
                 >
                     Proveedor
                 </option>
-
             </select>
 
             <label>Contraseña:</label>
-            <input
-                type="password"
-                name="password"
-                placeholder="Ingrese su contraseña"
-                required
-            >
+            <input type="password" name="password" placeholder="Ingrese su contraseña" required>
 
             <label>Confirmar contraseña:</label>
-            <input
-                type="password"
-                name="password_confirmation"
-                placeholder="Confirme su contraseña"
-                required
-            >
+            <input type="password" name="password_confirmation" placeholder="Confirme su contraseña" required>
 
-            <button type="submit">
-                Siguiente
-            </button>
+            <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+
+            <button type="submit">Siguiente</button>
 
         </form>
 

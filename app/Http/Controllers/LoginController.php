@@ -32,7 +32,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'correo' => 'Las credenciales proporcionadas no son correctas o el usuario no está activo.',
+            'correo' and 'password' => ' ⚠ Las credenciales proporcionadas no son correctas o el usuario no está activo. ⚠  ',
         ])->onlyInput('correo');
     }
 

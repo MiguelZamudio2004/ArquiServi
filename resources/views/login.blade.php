@@ -10,14 +10,6 @@
 
 <body>
 
-@if ($errors->any())
-    <div>
-        @foreach ($errors->all() as $error)
-            <p>{{ $error }}</p>
-        @endforeach
-    </div>
-@endif
-
 <header class="encabezado">
     <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
 </header>
@@ -39,9 +31,18 @@
         <h2 id="subtitulo">Inicio de sesión</h2>
         <form>
                 <label class="etiqueta" for="username">Nombre de usuario:</label>
-                <input class="form-control" type="text" id="username" placeholder="Ingrese su nombre de usuario" required>
+                <input class="form-control" type="text" id="username" name="correo" placeholder="Ingrese su nombre de usuario" required>
                 <label class="etiqueta">Contraseña:</label>
-                <input class="form-control" type="password"  placeholder="Ingrese su contraseña" required>
+                <input class="form-control" type="password" name="password" placeholder="Ingrese su contraseña" required>
+        
+        @if ($errors->any())
+    <div class="error">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+    @endif
+        
             <p class="textalter">¿No tienes una cuenta? <a href="/register">Crea una</a></p>
             <p class="textalter">¿Olvidaste tu contraseña? <a href="/recuperation">Recuperala</a></p>
             <button class="btn" type="submit">Iniciar Sesion</button>
