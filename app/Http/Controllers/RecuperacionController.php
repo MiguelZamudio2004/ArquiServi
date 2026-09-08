@@ -27,11 +27,14 @@ class RecuperacionController extends Controller
                 'correo.max' => 'El correo electrónico es demasiado largo.',
             ]
         );
+        $correo = strtolower(trim($datos['correo']));
 
         $usuario = Usuario::where('correo', $datos['correo'])->first();
 
         if (!$usuario) {
-            return back()->with('success', 'Si el correo está registrado, recibirás un código de recuperación.');
+            return back()->withErrors(['correo' => ' ⚠ El correo ingresado no esta registrado. ⚠  ',
+        ])
+        ->onlyInput('correo');
         }
 
         CodigoRecuperacion::where('usuario_id', $usuario->id)->delete();
@@ -54,6 +57,7 @@ class RecuperacionController extends Controller
         return redirect()
             ->route('recuperacion.codigo')
             ->with('success', 'Se envió un código de recuperación a tu correo.');
+
     }
 
     public function mostrarCodigo()
