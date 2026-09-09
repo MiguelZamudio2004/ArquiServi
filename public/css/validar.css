@@ -31,7 +31,7 @@ main {
 .form-validar {
     background-color: #F9FAFB;
     border: #F47A20 1px solid;
-    margin: 5% 10% 10% 10%;
+    margin: 5% 20% 10% 20%;
     padding: 0 5% 2% 5%;
     position: relative;
     display: flex;
@@ -52,17 +52,18 @@ main {
 }
 
 .codigo-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
     justify-content: center;
-    gap: 12px;
-    margin: 20px 0;
+    gap: 10px;
+    margin: 10% 0 10% 0;
 }
 
 .codigo {
-    width: clamp(38px, 10vw, 50px);
-    height: clamp(45px, 12vw, 55px);
-    margin: 0px 5px;
-    align-items: center;
+    width: 100%;
+    min-width: 100%;
+    height: 150%;
+    aspect-ratio: 1/1;
     text-align: center;
     font-family: Poppins, sans-serif;
     font-size: 16px;
@@ -96,7 +97,7 @@ main {
     width: 100%;
     height: 45px;
     transition: 0.3s;
-    margin-top: 10px;
+    margin-top: 5%;
 }
 
 .btn:hover {
@@ -109,7 +110,7 @@ main {
     font-family: Caudex, sans-serif;
     color: red;
     font-size: 16px;
-    margin-top: 10px;
+    margin-top: 15%;
     border: 1px solid red;
     text-align: center;
     padding: 5px;
