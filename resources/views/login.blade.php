@@ -53,6 +53,6 @@
 </body>
 
 <footer class="pie">
-    <p>© 2024 ArquiServi. Todos los derechos reservados.</p>
+    <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
 </footer>
 </html>

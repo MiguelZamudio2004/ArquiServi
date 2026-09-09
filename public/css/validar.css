@@ -28,7 +28,7 @@ main {
     font-size: clamp(1.5rem, 3vw + 1rem, 2.5rem);
 }
 
-.form-register {
+.form-validar {
     background-color: #F9FAFB;
     border: #F47A20 1px solid;
     margin: 5% 10% 10% 10%;
@@ -38,6 +38,7 @@ main {
     flex-direction: column;
     gap: 10px;
     height: auto;
+    text-align: center;
 }
 
 .etiqueta {
@@ -45,24 +46,43 @@ main {
     font-size: 16px;
     margin-bottom: 5px;
     color: #6B7280;
+    text-align: center;
+    align-items: center;
+    align-self: center;
 }
 
-.form-control {
+.codigo-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.codigo {
+    width: clamp(38px, 10vw, 50px);
+    height: clamp(45px, 12vw, 55px);
+    margin: 0px 5px;
+    align-items: center;
+    text-align: center;
     font-family: Poppins, sans-serif;
     font-size: 16px;
-    margin-bottom: 10px;
-    padding: 5px;
-    background-color: #F9FAFB;
-    border-color: #6B7280;
+    outline: none;
     border: 1px solid #6B7280;
-    width: 100%;
-    border-radius: 10px;
+    transition: 0.2s;
 }
 
-.form-control:focus {
+.codigo:focus {
     border-color: #1E40AF;
     outline: none;
     box-shadow: 0 0 5px rgba(30, 64, 175, 0.3);
+    transform: scale(1.05);
+}
+
+.text-alter {
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
+    color: #6B7280;
+    text-align: center;
 }
 
 .btn {
@@ -75,6 +95,8 @@ main {
     cursor: pointer;
     width: 100%;
     height: 45px;
+    transition: 0.3s;
+    margin-top: 10px;
 }
 
 .btn:hover {
@@ -83,19 +105,42 @@ main {
     border-color: #F47A20;
 }
 
-.text-alter {
-    font-family: Poppins, sans-serif;
-    font-size: 14px;
-    color: #6B7280;
+.error {
+    font-family: Caudex, sans-serif;
+    color: red;
+    font-size: 16px;
+    margin-top: 10px;
+    border: 1px solid red;
     text-align: center;
+    padding: 5px;
 }
 
-.text-alter a {
-    color:#F47A20
+.error p {
+    margin: 0;
+    padding: 5px;
 }
 
-.text-alter a:visited {
-    color:#1E40AF
+.reenviar-codigo {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: #F47A20;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.reenviar-codigo:hover {
+        color:#1E40AF
+}
+
+.reenviar-form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
 }
 
 .pie {
@@ -108,22 +153,4 @@ main {
     bottom: 0;
     margin-top: auto;
     width: 100%;
-}
-
-.error {
-    font-family: Caudex, sans-serif;
-    color: red;
-    font-size: 16px;
-    margin-top: 10px;
-    border: 1px solid red;
-    text-align: center;
-    padding: 5px;
-    justify-content: center;
-    align-items: center;
-
-}
-
-.error ul {
-    margin: 0;
-    padding: 5px;
 }

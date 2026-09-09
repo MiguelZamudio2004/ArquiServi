@@ -28,7 +28,7 @@ main {
     font-size: clamp(1.5rem, 3vw + 1rem, 2.5rem);
 }
 
-.form-register {
+.form-recuperation {
     background-color: #F9FAFB;
     border: #F47A20 1px solid;
     margin: 5% 10% 10% 10%;
@@ -38,6 +38,7 @@ main {
     flex-direction: column;
     gap: 10px;
     height: auto;
+
 }
 
 .etiqueta {
@@ -45,6 +46,7 @@ main {
     font-size: 16px;
     margin-bottom: 5px;
     color: #6B7280;
+    
 }
 
 .form-control {
@@ -62,52 +64,25 @@ main {
 .form-control:focus {
     border-color: #1E40AF;
     outline: none;
-    box-shadow: 0 0 5px rgba(30, 64, 175, 0.3);
 }
 
 .btn {
-    color:#F47A20;
-    font-family: Poppins, sans-serif;
+    font-family: Caudex, sans-serif;
     font-size: 16px;
+    color: #F47A20;
     border-color: #F47A20;
     border-radius: 15px;
     box-sizing: border-box;
     cursor: pointer;
     width: 100%;
     height: 45px;
+    transition: 0.3s;
 }
 
 .btn:hover {
     color: #FFFFFF;
     background-color: #F47A20;
     border-color: #F47A20;
-}
-
-.text-alter {
-    font-family: Poppins, sans-serif;
-    font-size: 14px;
-    color: #6B7280;
-    text-align: center;
-}
-
-.text-alter a {
-    color:#F47A20
-}
-
-.text-alter a:visited {
-    color:#1E40AF
-}
-
-.pie {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
-    background-color: #0C2D5A;
-    color: #FFFFFF;
-    text-align: center;
-    padding: 10px 0;
-    bottom: 0;
-    margin-top: auto;
-    width: 100%;
 }
 
 .error {
@@ -123,7 +98,19 @@ main {
 
 }
 
-.error ul {
+.error p {
     margin: 0;
     padding: 5px;
+}
+
+.pie {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    background-color: #0C2D5A;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 10px 0;
+    bottom: 0;
+    margin-top: auto;
+    width: 100%;
 }

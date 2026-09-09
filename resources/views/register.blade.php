@@ -20,10 +20,10 @@
             @csrf
         <h2 id="subtitulo">Nueva Cuenta</h2>
             @if ($errors->any())
-                <div>
+                <div class="error">
                     <ul>
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <ul>{{ $error }}</ul>
                         @endforeach
                     </ul>
                 </div>
@@ -89,7 +89,7 @@
 </body>
 
 <footer class="pie">
-    <p>© 2024 ArquiServi. Todos los derechos reservados.</p>
+    <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
 </footer>
 
 </html>
