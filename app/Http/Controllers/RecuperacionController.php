@@ -7,6 +7,7 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\PasswordActualizada;
 
 class RecuperacionController extends Controller
 {
@@ -175,6 +176,8 @@ class RecuperacionController extends Controller
         $usuario = Usuario::findOrFail(session('recuperacion_usuario_id'));
         $usuario->password = $datos['password'];
         $usuario->save();
+
+        $usuario->notify(new PasswordActualizada());
 
         $recuperacion->update([
             'usado_en' => now(),

@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RecuperacionController;
+use App\Http\Controllers\NotificacionController;
+
+Route::post('/notificaciones/{id}/leer',[NotificacionController::class,'marcarLeida'])
+    ->middleware('auth')
+    ->name('notificaciones.leer');
 
 Route::get('/menu', function () {
     return view('menu');

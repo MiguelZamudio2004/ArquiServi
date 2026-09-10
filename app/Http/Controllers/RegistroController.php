@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use App\Notifications\BienvenidoArquiServi;
 
 class RegistroController extends Controller
 {
@@ -35,7 +36,7 @@ class RegistroController extends Controller
 
         $rol = Rol::where('nombre', $datos['rol'])->firstOrFail();
 
-        Usuario::create([
+        $usuario=Usuario::create([
             'rol_id' => $rol->id,
             'nombre' => $datos['nombre'],
             'apellido_paterno' => $datos['apellido_paterno'],
@@ -45,6 +46,8 @@ class RegistroController extends Controller
             'password' => $datos['password'],
             'estado' => 'activo',
         ]);
+
+        $usuario->notify(new BienvenidoArquiServi());
 
     
 
