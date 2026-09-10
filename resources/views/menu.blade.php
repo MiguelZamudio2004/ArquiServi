@@ -1,14 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Inicio</title>
     <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <script src="{{ asset('js/notification.js') }}" defer></script>   
 </head>
 
 <body>
     <header class="encabezado">
     <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
+    <div class="notificaciones-container">
+    <input type="hidden" id="csrf-notificaciones" value="{{ csrf_token() }}">
+    <button type="button" class="campana" id="btnNotificaciones">
+        <span class="campana-icono">🔔</span>
+
+        @if(auth()->user()->unreadNotifications->count() > 0)
+            <span class="contador-notificaciones" id="contadorNotificaciones">{{ auth()->user()->unreadNotifications->count() }}</span>
+        @endif
+    </button>
+
+    <div class="notificaciones-dropdown" id="notificacionesDropdown">
+        <div class="notificaciones-header">
+            <h3>Notificaciones</h3>
+        </div>
+
+        <div class="notificaciones-lista">
+            @forelse(auth()->user()->notifications as $notificacion)
+                <button type="button" class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}" data-url="{{ route('notificaciones.leer', $notificacion->id) }}">
+                    <div class="notificacion-contenido">
+                        <strong class="notificacion-titulo">{{ $notificacion->data['titulo'] ?? 'Notificación' }}</strong>
+                        <p class="notificacion-mensaje">{{ $notificacion->data['mensaje'] ?? '' }}</p>
+                        <small class="notificacion-fecha">{{ $notificacion->created_at->diffForHumans() }}</small>
+                    </div>
+
+                    @if(!$notificacion->read_at)
+                        <span class="indicador-no-leida"></span>
+                    @endif
+                </button>
+            @empty
+                <div class="sin-notificaciones">No tienes notificaciones.</div>
+            @endforelse
+        </div>
+    </div>
+</div>
     </header>
 
     <h2 class="bienvenida"> Bienvenido(a)</h2>
@@ -41,7 +78,6 @@
             <img src="{{ asset('menu.png') }}" alt="Imagen de bienvenida" class="imagen-bienvenida">
         </section>
     </section>
-
 
 </body>
 
