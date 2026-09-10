@@ -18,12 +18,12 @@
             <h2 id="subtitulo">Validar</h2>
             <label class="etiqueta">Hemos enviado un código a tu correo electrónico. Por favor, ingresa el código para continuar:</label>
             <section class="codigo-container">
-                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric">
-                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric">
-                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric">
-                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric">
-                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric">
-                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric">
+                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric" autocomplete="off">
+                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric" autocomplete="off">
+                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric" autocomplete="off">
+                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric" autocomplete="off">
+                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric" autocomplete="off">
+                <input class="codigo" type="text" name="codigo[]" maxlength="1" inputmode="numeric" autocomplete="off">
             </section>
 
     @error('codigo')
