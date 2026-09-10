@@ -19,16 +19,7 @@
         <form action="{{ route('register.store') }}" method="POST">
             @csrf
         <h2 id="subtitulo">Nueva Cuenta</h2>
-            @if ($errors->any())
-                <div class="error">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <ul>{{ $error }}</ul>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
+            
             <label class="etiqueta">Nombre:</label>
             <input class="form-control" type="text" name="nombre" placeholder="Ingrese su nombre" value="{{ old('nombre') }}" required>
 
@@ -45,38 +36,32 @@
             <input class="form-control" type="tel" name="telefono" placeholder="Ingrese su número de teléfono" value="{{ old('telefono') }}" required>
 
             <label class="etiqueta">Rol:</label>
-            <select  class="form-control" name="rol" required>
-            <option class="text-alter" value="" disabled {{ old('rol') ? '' : 'selected' }}>
+            <select  class="select" name="rol" required>
+            <option value="" disabled {{ old('rol') ? '' : 'selected' }}>
                 Seleccione un rol
             </option>
 
-                <option class="form-control"
-                    value="usuario"
-                    {{ old('rol') == 'usuario' ? 'selected' : '' }}
-                >
-                    Cliente
-                </option>
+                <option value="usuario" {{ old('rol') == 'usuario' ? 'selected' : '' }}> Cliente </option>
 
-                <option class="form-control"
-                    value="profesional"
-                    {{ old('rol') == 'profesional' ? 'selected' : '' }}
-                >
-                    Profesional
-                </option>
+                <option value="profesional" {{ old('rol') == 'profesional' ? 'selected' : '' }}> Profesional</option>
 
-                <option class="form-control"
-                    value="proveedor"
-                    {{ old('rol') == 'proveedor' ? 'selected' : '' }}
-                >
-                    Proveedor
-                </option>
-            </select>
+                <option value="proveedor" {{ old('rol') == 'proveedor' ? 'selected' : '' }}> Proveedor </option></select>
 
             <label class="etiqueta">Contraseña:</label>
             <input class="form-control" type="password" name="password" placeholder="Ingrese su contraseña" required>
 
             <label class="etiqueta">Confirmar contraseña:</label>
             <input class="form-control" type="password" name="password_confirmation" placeholder="Confirme su contraseña" required>
+           
+            @if ($errors->any())
+                <div class="error">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <ul>{{ $error }}</ul>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <p class="text-alter">¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
 

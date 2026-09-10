@@ -40,6 +40,34 @@ main {
     height: auto;
 }
 
+.select {
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    color: #6B7280;
+    background-color: #F9FAFB;
+    border: 1px solid #6B7280;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.select:focus {
+    border-color: #1E40AF;
+    box-shadow: 0 0 5px rgba(30, 64, 175, 0.3);
+}
+
+.select option {
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
+    color: #333333;
+    background-color: #F9FAFB;
+}
+
 .etiqueta {
     font-family: Poppins, sans-serif;
     font-size: 16px;

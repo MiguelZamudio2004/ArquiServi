@@ -26,9 +26,10 @@ class RegistroController extends Controller
             'rol' => 'required|in:usuario,profesional,proveedor',
         ],
         [
-            'correo.unique' => 'El correo electrónico ya está registrado.',
-            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
-            'correo.email' => 'El correo electrónico no es válido.',
+            'correo.unique' => ' ⚠ El correo electrónico ya está registrado. ⚠ ',
+            'password.confirmed' => ' ⚠ La confirmación de la contraseña no coincide. ⚠ ',
+            'correo.email' => ' ⚠ El correo electrónico no es válido. ⚠ ',
+            'password.min' => ' ⚠ La contraseña debe tener al menos 8 caracteres ⚠ '
         ]
         );
 
