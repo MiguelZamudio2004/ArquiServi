@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Inicio</title>
@@ -47,7 +48,7 @@
     </div>
 </div>
     </header>
-
+    
     <h2 class="bienvenida"> Bienvenido(a)</h2>
     <h2 class="bienvenida">
         <span style="--i:1">A</span>
