@@ -10,9 +10,10 @@ Route::post('/notificaciones/{id}/leer',[NotificacionController::class,'marcarLe
     ->middleware('auth')
     ->name('notificaciones.leer');
 
-Route::get('/menu', function () {
+Route::get('/', function () {
     return view('menu');
-});
+})->name('menu');
+
 Route::get('/login', function () {
     return view('login');
 })->name('login');

@@ -28,7 +28,7 @@ class LoginController extends Controller
         if (Auth::attempt(['correo' => $datos['correo'], 'password' => $datos['password'], 'estado' => 'activo'])) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/menu');
+            return redirect()->route('menu');
         }
 
         return back()->withErrors([
