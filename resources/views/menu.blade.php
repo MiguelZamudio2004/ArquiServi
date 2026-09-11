@@ -17,30 +17,8 @@
 
     @auth
     <div class="acciones-usuario">
-
-        <div class="perfil-container">
-            <button type="button" class="perfil-boton" id="btnPerfil">
-                <div class="perfil-avatar">{{ strtoupper(substr(auth()->user()->nombre, 0, 1)) }}</div>
-                <span class="perfil-nombre">{{ auth()->user()->nombre }}</span>
-                <span class="perfil-flecha">▼</span>
-            </button>
-
-            <div class="perfil-dropdown" id="perfilDropdown">
-                <div class="perfil-info">
-                    <strong>{{ auth()->user()->nombre }} {{ auth()->user()->apellido_paterno }}</strong>
-                    <span>{{ auth()->user()->correo }}</span>
-                </div>
-
-                <a href="#" class="perfil-opcion">Editar Perfil</a>
-
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="perfil-opcion cerrar-sesion">Cerrar sesión</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="notificaciones-container">
+            
+            <div class="notificaciones-container">
             <input type="hidden" id="csrf-notificaciones" value="{{ csrf_token() }}">
 
             <button type="button" class="campana" id="btnNotificaciones">
@@ -73,6 +51,32 @@
                         <div class="sin-notificaciones">No tienes notificaciones.</div>
                     @endforelse
                 </div>
+            </div>
+        </div>
+        <div class="perfil-container">
+            <button type="button" class="perfil-boton" id="btnPerfil">
+                <div class="perfil-avatar">@if(auth()->user()->foto_perfil)
+        <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="Foto de perfil">
+        @else
+            {{ strtoupper(substr(auth()->user()->nombre, 0, 1)) }}
+    @endif
+</div>
+                <span class="perfil-nombre">{{ auth()->user()->nombre }}</span>
+                <span class="perfil-flecha">▼</span>
+            </button>
+
+            <div class="perfil-dropdown" id="perfilDropdown">
+                <div class="perfil-info">
+                    <strong>{{ auth()->user()->nombre }} {{ auth()->user()->apellido_paterno }}</strong>
+                    <span>{{ auth()->user()->correo }}</span>
+                </div>
+
+                <a href="#" class="perfil-opcion">Editar Perfil</a>
+
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="perfil-opcion cerrar-sesion">Cerrar sesión</button>
+                </form>
             </div>
         </div>
 
