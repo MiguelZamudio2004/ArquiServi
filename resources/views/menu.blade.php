@@ -71,7 +71,7 @@
                     <span>{{ auth()->user()->correo }}</span>
                 </div>
 
-                <a href="#" class="perfil-opcion">Editar Perfil</a>
+                <a href="{{ route('perfil') }}" class="perfil-opcion">Mi Perfil </a>
 
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf

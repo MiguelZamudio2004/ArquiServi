@@ -20,6 +20,7 @@ class Usuario extends Authenticatable
         'telefono',
         'password',
         'ubicacion',
+        'descripcion',
         'foto_perfil',
         'estado',
     ];

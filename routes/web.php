@@ -5,6 +5,11 @@ use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RecuperacionController;
 use App\Http\Controllers\NotificacionController;
+use App\Http\Controllers\PerfilController;
+
+Route::get('/perfil',[PerfilController::class,'mostrar'])->middleware('auth')->name('perfil');
+Route::get('/perfil/editar',[PerfilController::class,'editar'])->middleware('auth')->name('perfil.editar');
+Route::put('/perfil',[PerfilController::class,'actualizar'])->middleware('auth')->name('perfil.actualizar');
 
 Route::post('/notificaciones/{id}/leer',[NotificacionController::class,'marcarLeida'])
     ->middleware('auth')
