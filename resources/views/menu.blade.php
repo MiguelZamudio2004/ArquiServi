@@ -119,6 +119,86 @@
         </section>
     </section>
 
+    <section class="info-arquiservi">
+        <!-- Bloque 1 -->
+        <div class="bloque">
+        <div class="bloque-contenido">
+            <div class="bloque-texto">
+            <h3 class="subtitulo">¿Qué es ArquiServi?</h3>
+            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="bloque-imagen">
+            <img src="{{ asset('prueba.png') }}" alt="¿Qué es ArquiServi?">
+            </div>
+        </div>
+        </div>
+
+        <!-- Bloque 2 -->
+        <div class="bloque alterno">
+        <div class="bloque-contenido">
+            <div class="bloque-imagen">
+            <img src="{{ asset('prueba.png') }}" alt="Finalidad de ArquiServi">
+            </div>
+            <div class="bloque-texto">
+            <h3 class="subtitulo">Finalidad</h3>
+            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+        </div>
+
+        <!-- Bloque 3 -->
+        <div class="bloque">
+        <div class="bloque-contenido">
+            <div class="bloque-texto">
+            <h3 class="subtitulo">Misión</h3>
+            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="bloque-imagen">
+            <img src="{{ asset('prueba.png') }}" alt="Misión de ArquiServi">
+            </div>
+        </div>
+        </div>
+
+        <!-- Bloque 4 -->
+        <div class="bloque alterno">
+        <div class="bloque-contenido">
+            <div class="bloque-imagen">
+            <img src="{{ asset('prueba.png') }}" alt="Visión de ArquiServi">
+            </div>
+            <div class="bloque-texto">
+            <h3 class="subtitulo">Visión</h3>
+            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+        </div>
+
+        <!-- Bloque 5 -->
+        <div class="bloque">
+        <div class="bloque-contenido">
+            <div class="bloque-texto">
+            <h3 class="subtitulo">Valores</h3>
+            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="bloque-imagen">
+            <img src="{{ asset('prueba.png') }}" alt="Valores de ArquiServi">
+            </div>
+        </div>
+        </div>
+
+        <!-- Bloque 6 -->
+        <div class="bloque alterno">
+        <div class="bloque-contenido">
+            <div class="bloque-imagen">
+            <img src="{{ asset('prueba.png') }}" alt="¿Por qué elegirnos?">
+            </div>
+            <div class="bloque-texto">
+            <h3 class="subtitulo">¿Por qué elegirnos?</h3>
+            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+        </div>
+</section>
+
 
 </body>
 
