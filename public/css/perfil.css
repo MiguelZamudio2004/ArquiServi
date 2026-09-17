@@ -18,25 +18,26 @@ body {
 .perfil-descripcion {
     width: 100%;
     max-width: 650px;
-    margin-top: 15px;
+    margin: 15px auto 0;
     padding: 15px 20px;
     background-color: #F9FAFB;
-    border-radius: 10px;
 }
 
 .perfil-descripcion p {
     margin: 0;
-    color: #4B5563;
+    color: #333333;
     font-family: Poppins, sans-serif;
     font-size: 14px;
     line-height: 1.6;
-    text-align: center;
+    text-align: justify;
     overflow-wrap: break-word;
 }
 
 .perfil-descripcion .sin-descripcion {
     color: #9CA3AF;
     font-style: italic;
+    font-size: 12px;
+    text-align: center;
 }
 
 /* ENCABEZADO */
@@ -359,8 +360,8 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 30px 20px;
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
+    background-color: #0c2c5acb;
+    border: 4px solid #0C2D5A;
     border-radius: 15px;
     text-align: center;
 }
@@ -373,13 +374,56 @@ body {
     justify-content: center;
     background-color: #F47A20;
     color: #FFFFFF;
-    border: 4px solid #FFFFFF;
+    border: 4px solid #0C2D5A;
     border-radius: 50%;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
     font-family: Poppins, sans-serif;
     font-size: 42px;
     font-weight: 600;
     overflow: hidden;
+    transition: 
+        width 0.35s ease,
+        height 0.35s ease,
+        box-shadwon 0.35s ease,
+        transform 0.35s ease;
+    cursor: pointer;
+}
+
+.perfil-foto:focus {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 320px;
+    height: 320px;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+
+    outline: none;
+    border: 4px solid #FFFFFF;
+    box-shadow:
+        0 0 0 8px rgba(255, 255, 255, 0.15),
+        0 15px 50px rgba(0, 0, 0, 0.5);
+}
+
+body:has(.perfil-foto:focus)::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.70);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1500;
+    animation: aparecerFoco 0.35s ease forwards;
+}
+
+@keyframes aparecerFoco {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .perfil-foto img {
@@ -389,21 +433,22 @@ body {
 }
 
 .perfil-cabecera h1 {
-    margin: 15px 0 5px;
-    color: #333333;
+    margin: 15px 0 0px;
+    color: #F9FAFB;
     font-family: 'Libre Baskerville', serif;
-    font-size: 26px;
+    font-size: 32px;
+    text-transform: uppercase;
 }
 
 .perfil-cabecera p {
     margin: 0;
-    padding: 5px 15px;
-    background-color: #FFF7ED;
+    padding: 0px 15px;
     color: #F47A20;
     border-radius: 20px;
     font-family: Poppins, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
 }
 
 /* DATOS DEL USUARIO */
@@ -416,17 +461,24 @@ body {
 
 .perfil-datos div {
     padding: 18px;
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
+    background-color: #f478204d;
+    border: 2px solid #F47A20;
     border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.perfil-datos div:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .perfil-datos span {
     display: block;
     margin-bottom: 5px;
-    color: #6B7280;
+    color: #333333;
     font-family: Poppins, sans-serif;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .perfil-datos strong {

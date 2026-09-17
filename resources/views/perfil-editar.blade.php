@@ -9,6 +9,7 @@
     <script src="{{ asset('js/perfil-editar.js') }}" defer></script>  
     <script src="{{ asset('js/perfil.js')}}" defer></script>
 </head>
+
 <body>
     <header class="encabezado">
         <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
@@ -20,8 +21,8 @@
         <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="Foto de perfil">
         @else
             {{ strtoupper(substr(auth()->user()->nombre, 0, 1)) }}
-    @endif
-</div>
+        @endif
+        </div>
                 <span class="perfil-nombre">{{ auth()->user()->nombre }}</span>
                 <span class="perfil-flecha">▼</span>
             </button>
