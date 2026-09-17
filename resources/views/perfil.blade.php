@@ -85,7 +85,7 @@
 
     <main class="perfil">
         <section class="perfil-cabecera">
-            <div class="perfil-foto">
+            <div class="perfil-foto" tabindex="0">
                 @if($usuario->foto_perfil)
                     <img src="{{ asset('storage/' . $usuario->foto_perfil) }}" alt="Foto de Perfil">
                 @else
@@ -98,24 +98,25 @@
             <p>{{ucfirst($usuario->rol->nombre) }} </p>
         </section>
 
-        <div class="perfil-descripcion">@if($usuario->descripcion)</div>
-        <p>{{ $usuario->descripcion }}</p>
-        @else
-            <p class="sin-descripcion">Este usuario aun no ha agregado una descripcion</p>
-        @endif
+        <div class="perfil-descripcion">
+            @if($usuario->descripcion)
+            <p>{{ $usuario->descripcion }}</p>
+            @else
+            <p class="sin-descripcion">Este usuario aún no ha agregado una descripción</p>
+            @endif
         </div>
 
         <section class="perfil-datos">
             <div>
-                <span>Correo</span>
+                <span>Correo electrónico</span>
                 <strong>{{ $usuario->correo }}</strong>
             </div>
             <div>
-                <span>Telefono</span>
+                <span>Teléfono</span>
                 <strong>{{ $usuario->telefono ?? 'No registrado' }}</strong>
             </div>
             <div>
-                <span>Ubicacion</span>
+                <span>Ubicación</span>
                 <strong>{{ $usuario->ubicacion ?? 'No registrada' }}</strong>
             </div>
             
