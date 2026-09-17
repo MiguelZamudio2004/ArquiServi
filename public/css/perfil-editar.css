@@ -1,0 +1,484 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #F9FAFB;
+}
+
+.encabezado {
+    width: 100%;
+    min-height: 80px;
+    padding: 0 25px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    background-color: #0C2D5A;
+    position: relative;
+    z-index: 1000;
+}
+
+.logo {
+    grid-column: 2;
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    height: auto;
+}
+
+.acciones-usuario {
+    grid-column: 3;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.perfil-container {
+    position: relative;
+}
+
+.perfil-boton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-family: Poppins, sans-serif;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.perfil-boton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.perfil-avatar {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F47A20;
+    color: #FFFFFF;
+    border-radius: 50%;
+    font-family: Poppins, sans-serif;
+    font-weight: 600;
+}
+
+.perfil-nombre {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.perfil-flecha {
+    font-size: 9px;
+}
+
+.perfil-dropdown {
+    display: none;
+    position: absolute;
+    top: 48px;
+    right: 0;
+    width: 250px;
+    background-color: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 1200;
+}
+
+.perfil-dropdown.activo {
+    display: block;
+}
+
+.perfil-info {
+    padding: 15px 18px;
+    background-color: #0C2D5A;
+    font-family: Poppins, sans-serif;
+}
+
+.perfil-info strong {
+    display: block;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.perfil-info span {
+    display: block;
+    margin-top: 4px;
+    color: #D1D5DB;
+    font-size: 12px;
+    overflow-wrap: break-word;
+}
+
+.perfil-opcion {
+    width: 100%;
+    display: block;
+    padding: 13px 18px;
+    background-color: #FFFFFF;
+    border: none;
+    border-bottom: 1px solid #E5E7EB;
+    color: #333333;
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.perfil-opcion:hover {
+    background-color: #FFF7ED;
+    color: #F47A20;
+}
+
+.cerrar-sesion {
+    color: #DC2626;
+    border-bottom: none;
+}
+
+.cerrar-sesion:hover {
+    background-color: #FEF2F2;
+    color: #DC2626;
+}
+
+.perfil-dropdown form {
+    margin: 0;
+}
+
+.perfil-avatar {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F47A20;
+    color: #FFFFFF;
+    border-radius: 50%;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+.perfil-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.editar-perfil {
+    width: 90%;
+    max-width: 800px;
+    margin: 40px auto;
+    flex: 1;
+}
+
+.editar-perfil h1 {
+    margin: 0 0 25px;
+    color: #333333;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 28px;
+    text-align: center;
+}
+
+.editar-perfil form {
+    width: 100%;
+    padding: 30px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.06);
+}
+
+.foto-actual {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F47A20;
+    color: #FFFFFF;
+    border-radius: 50%;
+    font-family: Poppins, sans-serif;
+    font-size: 42px;
+    font-weight: 600;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.foto-actual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.selector-archivo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background-color: #F9FAFB;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+}
+
+.btn-archivo {
+    padding: 9px 14px;
+    background-color: #FFFFFF;
+    color: #F47A20;
+    border: 1px solid #F47A20;
+    border-radius: 10px;
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-archivo:hover {
+    background-color: #F47A20;
+    color: #FFFFFF;
+}
+
+#nombreArchivo {
+    min-width: 0;
+    color: #6B7280;
+    font-family: Poppins, sans-serif;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.etiqueta {
+    display: block;
+    margin: 15px 0 6px;
+    color: #6B7280;
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: #F9FAFB;
+    color: #333333;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    outline: none;
+    font-family: Poppins, sans-serif;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+
+.form-control:focus {
+    border-color: #1E40AF;
+    box-shadow: 0 0 5px rgba(30, 64, 175, 0.25);
+}
+
+.descripcion {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.contador-descripcion {
+    margin-top: 5px;
+    color: #9CA3AF;
+    font-family: Poppins, sans-serif;
+    font-size: 12px;
+    text-align: right;
+}
+
+.errores {
+    margin-top: 20px;
+    padding: 12px 15px;
+    background-color: #FEF2F2;
+    border: 1px solid #DC2626;
+    border-radius: 10px;
+}
+
+.errores p {
+    margin: 4px 0;
+    color: #DC2626;
+    font-family: Poppins, sans-serif;
+    font-size: 13px;
+}
+
+.acciones {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-cancelar,
+.btn-guardar {
+    min-width: 150px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-cancelar {
+    background-color: #FFFFFF;
+    color: #6B7280;
+    border: 1px solid #D1D5DB;
+}
+
+.btn-guardar {
+    background-color: #FFFFFF;
+    color: #F47A20;
+    border: 1px solid #F47A20;
+}
+
+.btn-cancelar:hover {
+    background-color: #F3F4F6;
+}
+
+.btn-guardar:hover {
+    background-color: #F47A20;
+    color: #FFFFFF;
+}
+
+.pie {
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    background-color: #0C2D5A;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+/* CELULAR */
+@media (max-width: 768px) {
+    .encabezado {
+        min-height: 70px;
+        padding: 0 12px;
+    }
+
+    .logo {
+        width: 150px;
+    }
+
+    .acciones-usuario {
+        gap: 6px;
+    }
+
+    .perfil-nombre,
+    .perfil-flecha {
+        display: none;
+    }
+
+    .perfil-boton {
+        padding: 4px;
+    }
+
+    .perfil-avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    .campana {
+        padding: 5px;
+    }
+
+    .campana-icono {
+        font-size: 23px;
+    }
+
+    .notificaciones-dropdown {
+        width: min(350px, calc(100vw - 20px));
+        right: -45px;
+    }
+
+    .perfil-dropdown {
+        width: min(250px, calc(100vw - 20px));
+    }
+
+    .editar-perfil {
+        width: 92%;
+        margin: 25px auto;
+    }
+
+    .editar-perfil form {
+        padding: 25px 20px;
+    }
+
+    .foto-actual {
+        width: 100px;
+        height: 100px;
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        width: 135px;
+    }
+
+    .acciones-usuario {
+        gap: 3px;
+    }
+
+    .notificaciones-dropdown {
+        width: calc(100vw - 20px);
+        right: -43px;
+    }
+
+    .selector-archivo {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-archivo,
+    #nombreArchivo {
+        text-align: center;
+    }
+
+    .editar-perfil {
+        width: 94%;
+        margin: 20px auto;
+    }
+
+    .editar-perfil form {
+        padding: 20px 15px;
+    }
+
+    .acciones {
+        flex-direction: column-reverse;
+    }
+
+    .btn-cancelar,
+    .btn-guardar {
+        width: 100%;
+        min-width: 0;
+    }
+}
