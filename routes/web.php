@@ -11,6 +11,8 @@ Route::get('/perfil',[PerfilController::class,'mostrar'])->middleware('auth')->n
 Route::get('/perfil/editar',[PerfilController::class,'editar'])->middleware('auth')->name('perfil.editar');
 Route::put('/perfil',[PerfilController::class,'actualizar'])->middleware('auth')->name('perfil.actualizar');
 
+Route::get('/usuarios/{usuario}',[PerfilController::class,'publico'])->name('perfil.publico');
+
 Route::post('/notificaciones/{id}/leer',[NotificacionController::class,'marcarLeida'])
     ->middleware('auth')
     ->name('notificaciones.leer');

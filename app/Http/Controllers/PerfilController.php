@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\PerfilActualizado;
+use App\Models\Usuario;
 
 class PerfilController extends Controller
 {
@@ -39,7 +41,16 @@ class PerfilController extends Controller
         }
 
         $usuario->update($datos);
+        $usuario->notify(new PerfilActualizado());
 
         return redirect()->route('perfil')->with('success', 'Perfil actualizado correctamente.');
     }
-}
+    public function publico(Usuario $usuario) {
+        if ($usuario-> estado !== 'activo') abort(404);
+
+        $usuario->load('rol');
+
+        return view('perfil-publico',compact('usuario'));
+    }
+
+    }
