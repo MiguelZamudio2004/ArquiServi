@@ -6,6 +6,13 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RecuperacionController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\RegistroProfesionalController;
+use App\Http\Controllers\RegistroProveedorController;
+
+Route::get('/register/profesional',[RegistroProfesionalController::class,'mostrar'])->name('registro.profesional');
+Route::post('register/profesional',[RegistroProfesionalController::class, 'guardar'])->name('registro.profesional.guardar');
+Route::get('/register/proveedor',[RegistroProveedorController::class,'mostrar'])->name('registro.proveedor');
+Route::post('/register/proveedor',[RegistroProveedorController::class,'guardar'])->name('registro.proveedor.guardar');
 
 Route::get('/perfil',[PerfilController::class,'mostrar'])->middleware('auth')->name('perfil');
 Route::get('/perfil/editar',[PerfilController::class,'editar'])->middleware('auth')->name('perfil.editar');

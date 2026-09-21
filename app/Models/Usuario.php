@@ -42,7 +42,17 @@ class Usuario extends Authenticatable
         return $this->belongsTo(Rol::class, 'rol_id');
     }
 
-    public function codigoRecuperacion()
+    public function proveedor()
+    {
+        return $this->hasOne(Proveedor::class, 'usuario_id');
+    }
+
+    public function profesional()
+    {
+        return $this->hasOne(Profesional::class, 'usuario_id');
+    }
+
+    public function codigosRecuperacion()
     {
         return $this->hasMany(CodigoRecuperacion::class, 'usuario_id');
     }

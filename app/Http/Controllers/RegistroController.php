@@ -49,6 +49,16 @@ class RegistroController extends Controller
 
         $usuario->notify(new BienvenidoArquiServi());
 
+        if ($datos['rol'] === 'profesional') {
+            session(['registro_usuario_id' => $usuario->id]);
+            return redirect() -> route('registro.profesional');
+        }
+
+        IF ($datos['rol'] === 'proveedor') {
+            session(['registro_usuario_id' => $usuario->id]);
+            return redirect() -> route('registro.proveedor');
+        }
+
     
 
         return redirect()

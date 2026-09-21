@@ -15,26 +15,32 @@ body {
     background-color: #F9FAFB;
 }
 
+/* DESCRIPCIÓN DEL PERFIL */
 .perfil-descripcion {
     width: 100%;
     max-width: 650px;
     margin: 15px auto 0;
-    padding: 15px 20px;
-    background-color: #F9FAFB;
+    padding: 12px 18px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
 }
 
-.perfil-descripcion p {
+.perfil-cabecera .perfil-descripcion p {
     margin: 0;
-    color: #333333;
+    padding: 0;
+    color: #FFFFFF;
     font-family: Poppins, sans-serif;
     font-size: 14px;
+    font-weight: 400;
     line-height: 1.6;
-    text-align: justify;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: none;
     overflow-wrap: break-word;
 }
 
 .perfil-descripcion .sin-descripcion {
-    color: #9CA3AF;
+    color: #D1D5DB;
     font-style: italic;
     font-size: 12px;
     text-align: center;
@@ -69,7 +75,8 @@ body {
     gap: 15px;
 }
 
-.perfil-container, .notificaciones-container {
+.perfil-container,
+.notificaciones-container {
     position: relative;
 }
 
@@ -381,10 +388,10 @@ body {
     font-size: 42px;
     font-weight: 600;
     overflow: hidden;
-    transition: 
+    transition:
         width 0.35s ease,
         height 0.35s ease,
-        box-shadwon 0.35s ease,
+        box-shadow 0.35s ease,
         transform 0.35s ease;
     cursor: pointer;
 }
@@ -397,7 +404,6 @@ body {
     height: 320px;
     transform: translate(-50%, -50%);
     z-index: 2000;
-
     outline: none;
     border: 4px solid #FFFFFF;
     box-shadow:
@@ -433,16 +439,16 @@ body:has(.perfil-foto:focus)::before {
 }
 
 .perfil-cabecera h1 {
-    margin: 15px 0 0px;
+    margin: 15px 0 0;
     color: #F9FAFB;
     font-family: 'Libre Baskerville', serif;
     font-size: 32px;
     text-transform: uppercase;
 }
 
-.perfil-cabecera p {
+.perfil-cabecera > p {
     margin: 0;
-    padding: 0px 15px;
+    padding: 0 15px;
     color: #F47A20;
     border-radius: 20px;
     font-family: Poppins, sans-serif;
@@ -683,7 +689,8 @@ body:has(.perfil-foto:focus)::before {
         font-size: 20px;
     }
 
-    .perfil-datos div, .perfil-seccion {
+    .perfil-datos div,
+    .perfil-seccion {
         padding: 15px;
     }
 
