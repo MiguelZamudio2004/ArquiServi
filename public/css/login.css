@@ -90,6 +90,35 @@ main {
 
 }
 
+.eye {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.strength {
+    height: 8px;
+    margin-top: 18px;
+    background: #F47A20;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.bar {
+    width: 0;
+    height: 100%;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.message {
+    margin-top: 10px;
+    font-size: 14px;
+    color:#1E40AF;
+}
+
 .textalter {
     font-family: Poppins, sans-serif;
     font-size: 16px;

@@ -6,6 +6,7 @@
     <title>Iniciar Sesion</title>
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <script src="{{ asset('js/mostrar.js')}}" defer></script>
 </head>
 
 <body>
@@ -33,7 +34,14 @@
                 <label class="etiqueta" for="username">Nombre de usuario:</label>
                 <input class="form-control" type="text" id="username" name="correo" placeholder="Ingrese su nombre de usuario" required>
                 <label class="etiqueta">Contraseña:</label>
-                <input class="form-control" type="password" name="password" placeholder="Ingrese su contraseña" required>
+                <input class="form-control" id="password" type="password" name="password" placeholder="Ingrese su contraseña" required>
+                <span class="eye" id="eye"> &#x1F441 </span>
+                <div class="strength">
+                    <div class="bar" id="bar"></div>
+                </div>
+                <div class="message" id="message">
+                    Start typing...
+                </div>
         
         @if ($errors->any())
     <div class="error">
@@ -50,9 +58,9 @@
         </form>
     </section>
 
-</body>
+    <footer class="pie">
+        <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
+    </footer>
 
-<footer class="pie">
-    <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
-</footer>
+</body>
 </html>
