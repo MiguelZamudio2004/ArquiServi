@@ -52,7 +52,7 @@
 
             <label class="etiqueta">Confirmar contraseña:</label>
             <input class="form-control" type="password" name="password_confirmation" placeholder="Confirme su contraseña" required>
-           
+
             @if ($errors->any())
                 <div class="error">
                     <ul>
@@ -71,10 +71,24 @@
 
     </section>
 
+    <footer class="pie">
+        <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.select').forEach(select => {
+            select.addEventListener('change', () => {
+                if (select.value !== '') {
+                    select.classList.add('seleccionado');
+                } else {
+                    select.classList.remove('seleccionado');
+                }
+            });
+        });
+    </script>
+
 </body>
 
-<footer class="pie">
-    <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
-</footer>
+
 
 </html>

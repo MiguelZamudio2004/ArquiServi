@@ -56,6 +56,11 @@ main {
     transition: 0.3s;
 }
 
+.select.seleccionado {
+    color: #000000;
+    font-weight: normal;
+}
+
 .select:focus {
     border-color: #1E40AF;
     box-shadow: 0 0 5px rgba(30, 64, 175, 0.3);

@@ -22,25 +22,23 @@
             @csrf
 
             <label class="etiqueta" for="profesion_id">Profesión:</label>
-            <select class="form-control" name="profesion_id" id="profesion_id" required>
-                <option value="">Seleccione una profesión</option>
+            <select class="select" name="profesion_id" id="profesion_id" required autocomplete="off">
+                <option value="" selected disabled>Seleccione una profesión</option>
 
                 @foreach($profesiones as $profesion)
-                    <option value="{{ $profesion->id }}" {{ old('profesion_id') == $profesion->id ? 'selected' : '' }}>
+                    <option value="{{ $profesion->id }}">
                         {{ $profesion->nombre }}
                     </option>
                 @endforeach
             </select>
 
             <label class="etiqueta" for="especialidad_id">Especialidad:</label>
-            <select class="form-control" name="especialidad_id" id="especialidad_id" required>
-                <option value="">Seleccione una especialidad</option>
+            <select class="select" name="especialidad_id" id="especialidad_id" required autocomplete="off">
+                <option value="" selected disabled>Seleccione una especialidad</option>
 
                 @foreach($profesiones as $profesion)
                     @foreach($profesion->especialidades as $especialidad)
-                        <option value="{{ $especialidad->id }}"
-                            data-profesion="{{ $profesion->id }}"
-                            {{ old('especialidad_id') == $especialidad->id ? 'selected' : '' }}>
+                        <option value="{{ $especialidad->id }}" data-profesion="{{ $profesion->id }}">
                             {{ $especialidad->nombre }}
                         </option>
                     @endforeach
@@ -108,6 +106,17 @@
         cargarEspecialidades();
     </script>
 
-</body>
+    <script>
+        document.querySelectorAll('.select').forEach(select => {
+            select.addEventListener('change', () => {
+                if (select.value !== '') {
+                    select.classList.add('seleccionado');
+                } else {
+                    select.classList.remove('seleccionado');
+                }
+            });
+        });
+    </script>
 
+</body>
 </html>
