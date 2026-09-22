@@ -462,6 +462,13 @@ main {
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
+.btn-perfiles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
 .subtitulo:hover {
     color: #1E40AF; /* cambia el color */
     text-shadow: 0 0 8px rgba(244, 122, 32, 0.5); /* brillo suave */

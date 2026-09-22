@@ -107,7 +107,7 @@
             <select class="form-control">
             <option disabled selected>Selecciona tu servicio requerido</option>
             </select>
-            <button class="btn">Ver catálogo completo de servicios</button>
+            <a href="{{ route('usuarios.buscar') }}" class="btn btn-perfiles">Ver perfiles</a>
             @guest
             <label class="etiqueta">Inicia sesión para ver detalles de tu cuenta</label>
             <button class="btn"><a href="{{ route('login') }}">Iniciar sesión</a></button>

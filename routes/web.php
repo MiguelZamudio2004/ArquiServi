@@ -9,6 +9,9 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegistroProfesionalController;
 use App\Http\Controllers\RegistroProveedorController;
 
+Route::get('/usuarios',[PerfilController::class,'buscar'])->name('usuarios.buscar');
+Route::get('/usuarios/{usuario}',[PerfilController::class,'publico'])->name('perfil.publico');
+
 Route::get('/register/profesional',[RegistroProfesionalController::class,'mostrar'])->name('registro.profesional');
 Route::post('register/profesional',[RegistroProfesionalController::class, 'guardar'])->name('registro.profesional.guardar');
 Route::get('/register/proveedor',[RegistroProveedorController::class,'mostrar'])->name('registro.proveedor');
