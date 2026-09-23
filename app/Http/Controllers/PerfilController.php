@@ -9,6 +9,7 @@ use App\Models\Profesion;
 use App\Models\Proveedor;
 use App\Models\Usuario;
 use App\Notifications\PerfilActualizado;
+use App\Models\Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -21,39 +22,44 @@ class PerfilController extends Controller
             'rol',
             'proveedor.materiales',
             'profesional.profesiones',
-            'profesional.especialidades'
+            'profesional.especialidades',
+            'profesional.servicios'
         );
 
         return view('perfil', compact('usuario'));
     }
 
     public function editar(Request $request)
-    {
-        $usuario = $request->user()->load(
-            'rol',
-            'proveedor.materiales',
-            'profesional.profesiones',
-            'profesional.especialidades'
-        );
+{
+    $usuario = $request->user()->load(
+        'rol',
+        'proveedor.materiales',
+        'profesional.profesiones',
+        'profesional.especialidades',
+        'profesional.servicios'
+    );
 
-        $profesiones = collect();
-        $materiales = collect();
+    $profesiones = collect();
+    $materiales = collect();
+    $servicios = collect();
 
-        if ($usuario->rol->nombre === 'profesional') {
-            $profesiones = Profesion::where('activo', true)
-                ->with(['especialidades' => function ($query) {
-                    $query->where('activo', true)->orderBy('nombre');
-                }])
-                ->orderBy('nombre')
-                ->get();
-        }
+    if ($usuario->rol->nombre === 'profesional') {
+        $profesiones = Profesion::where('activo', true)
+            ->with(['especialidades' => function ($query) {
+                $query->where('activo', true)->orderBy('nombre');
+            }])
+            ->orderBy('nombre')
+            ->get();
 
-        if ($usuario->rol->nombre === 'proveedor') {
-            $materiales = Material::where('activo', true)->orderBy('nombre')->get();
-        }
-
-        return view('perfil-editar', compact('usuario', 'profesiones', 'materiales'));
+        $servicios = Servicio::where('activo', true)->orderBy('nombre')->get();
     }
+
+    if ($usuario->rol->nombre === 'proveedor') {
+        $materiales = Material::where('activo', true)->orderBy('nombre')->get();
+    }
+
+    return view('perfil-editar', compact('usuario', 'profesiones', 'materiales', 'servicios'));
+}
 
     public function actualizar(Request $request)
     {
@@ -77,6 +83,8 @@ class PerfilController extends Controller
                 'descripcion_profesional' => 'required|string|max:500',
                 'portafolio_url' => 'nullable|url|max:500',
                 'zona_trabajo_profesional' => 'required|string|max:200',
+                'servicios' => 'nullable|array',
+                'servicios.*' => 'integer|distinct|exists:servicios,id',
             ];
         }
 
@@ -138,6 +146,7 @@ class PerfilController extends Controller
 
                 $profesional->profesiones()->sync([$datos['profesion_id']]);
                 $profesional->especialidades()->sync([$datos['especialidad_id']]);
+                $profesional->servicios()->sync($datos['servicios'] ?? []);
             }
 
             if ($usuario->rol->nombre === 'proveedor') {
@@ -176,7 +185,8 @@ class PerfilController extends Controller
         'rol',
         'profesional.profesiones',
         'profesional.especialidades',
-        'proveedor.materiales'
+        'proveedor.materiales',
+        'profesional.servicios'
     )
         ->where('estado', 'activo')
         ->whereHas('rol', function ($query) {
@@ -240,7 +250,8 @@ public function publico(Usuario $usuario)
         'rol',
         'proveedor.materiales',
         'profesional.profesiones',
-        'profesional.especialidades'
+        'profesional.especialidades',
+        'profesional.servicios'
     );
 
     return view('perfil-publico', compact('usuario'));

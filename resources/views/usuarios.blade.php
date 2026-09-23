@@ -248,6 +248,17 @@
                                         </p>
                                     @endif
 
+                                    @if($usuario->profesional->servicios->isNotEmpty())
+                                        <p class="usuario-profesion">
+                                            <strong>Servicios:</strong>
+                                            {{ $usuario->profesional->servicios->pluck('nombre')->take(2)->join(', ') }}
+
+                                    @if($usuario->profesional->servicios->count() > 2)
+                                    y {{ $usuario->profesional->servicios->count() - 2 }} más
+                                @endif
+    </p>
+@endif
+
                                 @elseif($usuario->rol->nombre === 'proveedor' && $usuario->proveedor)
 
                                     @if($usuario->proveedor->materiales->isNotEmpty())

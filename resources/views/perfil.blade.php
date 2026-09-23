@@ -180,6 +180,17 @@
             </section>
 
             <section class="perfil-seccion">
+    <h2>Servicios que ofrece</h2>
+
+    @if($usuario->profesional && $usuario->profesional->servicios->isNotEmpty())
+        <p>{{ $usuario->profesional->servicios->pluck('nombre')->join(', ') }}</p>
+    @else
+        <p>Aún no has registrado servicios.</p>
+    @endif
+</section>
+            
+
+            <section class="perfil-seccion">
                 <h2>Descripción profesional</h2>
 
                 <p>

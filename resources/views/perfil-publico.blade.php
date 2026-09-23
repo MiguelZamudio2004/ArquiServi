@@ -184,26 +184,55 @@
 
     </section>
 
-    @if($usuario->rol->nombre === 'profesional')
-        <section class="perfil-seccion">
-            <h2>Información profesional</h2>
+@if($usuario->rol->nombre === 'profesional')
+    <section class="perfil-seccion">
+        <h2>Información profesional</h2>
 
+        <p><strong>Profesión:</strong> {{ $usuario->profesional?->profesiones->pluck('nombre')->join(', ') ?: 'No especificada' }}</p>
+        <p><strong>Especialidad:</strong> {{ $usuario->profesional?->especialidades->pluck('nombre')->join(', ') ?: 'No especificada' }}</p>
+        <p><strong>Años de experiencia:</strong> {{ $usuario->profesional?->anios_experiencia ?? 'No especificados' }}</p>
+        <p><strong>Zona de trabajo:</strong> {{ $usuario->profesional?->zona_trabajo ?? 'No especificada' }}</p>
+
+        @if($usuario->profesional?->descripcion)
+            <p><strong>Descripción profesional:</strong> {{ $usuario->profesional->descripcion }}</p>
+        @endif
+
+        @if($usuario->profesional?->portafolio_url)
             <p>
-                La información sobre profesión, especialidades y servicios
-                se mostrará aquí cuando se defina la clasificación de los profesionales.
+                <strong>Portafolio:</strong>
+                <a href="{{ $usuario->profesional->portafolio_url }}" target="_blank" rel="noopener noreferrer">Ver portafolio</a>
             </p>
-        </section>
+        @endif
+    </section>
 
-    @elseif($usuario->rol->nombre === 'proveedor')
-        <section class="perfil-seccion">
-            <h2>Información del proveedor</h2>
+    <section class="perfil-seccion">
+        <h2>Servicios que ofrece</h2>
 
-            <p>
-                Aquí se mostrarán los materiales, productos y demás información
-                relacionada con el proveedor.
-            </p>
-        </section>
-    @endif
+        @if($usuario->profesional && $usuario->profesional->servicios->isNotEmpty())
+            <p>{{ $usuario->profesional->servicios->pluck('nombre')->join(', ') }}</p>
+        @else
+            <p>Este profesional aún no ha registrado servicios.</p>
+        @endif
+    </section>
+
+@elseif($usuario->rol->nombre === 'proveedor')
+    <section class="perfil-seccion">
+        <h2>Información del proveedor</h2>
+
+        <p><strong>Descripción de la empresa:</strong> {{ $usuario->proveedor?->descripcion ?? 'Sin descripción' }}</p>
+        <p><strong>Zona de trabajo:</strong> {{ $usuario->proveedor?->zona_trabajo ?? 'No especificada' }}</p>
+    </section>
+
+    <section class="perfil-seccion">
+        <h2>Materiales o productos</h2>
+
+        @if($usuario->proveedor && $usuario->proveedor->materiales->isNotEmpty())
+            <p>{{ $usuario->proveedor->materiales->pluck('nombre')->join(', ') }}</p>
+        @else
+            <p>Este proveedor aún no ha registrado materiales.</p>
+        @endif
+    </section>
+@endif
 
     @auth
         @if(auth()->id() === $usuario->id)

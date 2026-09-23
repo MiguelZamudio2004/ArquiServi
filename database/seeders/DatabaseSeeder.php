@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             RolSeeder::class,
             MaterialSeeder::class,
             ProfesionSeeder::class,
+            ServicioSeeder::class,
         ]);
     }
 }

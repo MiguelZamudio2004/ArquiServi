@@ -114,7 +114,23 @@
                 <input class="form-control" type="text" name="zona_trabajo_profesional" id="zona_trabajo_profesional"
                     value="{{ old('zona_trabajo_profesional', $usuario->profesional?->zona_trabajo) }}" required>
 
-            @elseif($usuario->rol->nombre === 'proveedor')
+                    <label class="etiqueta">Servicios que ofreces:</label>
+
+@php
+    $serviciosSeleccionados = old('servicios', $usuario->profesional?->servicios->pluck('id')->toArray() ?? []);
+@endphp
+
+<div class="materiales">
+    @forelse($servicios as $servicio)
+        <label class="material-opcion">
+            <input type="checkbox" name="servicios[]" value="{{ $servicio->id }}" {{ in_array($servicio->id, $serviciosSeleccionados) ? 'checked' : '' }}>
+            <span>{{ $servicio->nombre }}</span>
+        </label>
+    @empty
+        <p>No hay servicios registrados.</p>
+    @endforelse
+</div>
+    @elseif($usuario->rol->nombre === 'proveedor')
 
                 <h2>Información del proveedor</h2>
 
