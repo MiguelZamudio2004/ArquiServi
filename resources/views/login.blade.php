@@ -31,16 +31,13 @@
             @csrf
         <h2 id="subtitulo">Inicio de sesión</h2>
         <form>
-                <label class="etiqueta" for="username">Nombre de usuario:</label>
-                <input class="form-control" type="text" id="username" name="correo" placeholder="Ingrese su nombre de usuario" required>
+                <label class="etiqueta" for="username">Correo electrónico:</label>
+                <input class="form-control" type="text" id="username" name="correo" placeholder="Ingrese su correo electrónico" required>
                 <label class="etiqueta">Contraseña:</label>
-                <input class="form-control" id="password" type="password" name="password" placeholder="Ingrese su contraseña" required>
-                <span class="eye" id="eye"> &#x1F441 </span>
-                <div class="strength">
-                    <div class="bar" id="bar"></div>
-                </div>
-                <div class="message" id="message">
-                    Start typing...
+
+                <div class="campo-password">
+                    <input class="form-control" id="password" type="password" name="password" placeholder="Ingrese su contraseña" required>
+                    <span class="eye" id="eye"> &#x1F441 </span>
                 </div>
         
         @if ($errors->any())

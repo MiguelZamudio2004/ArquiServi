@@ -7,6 +7,7 @@
     <title>Registro</title>
     <link rel="stylesheet" href="{{ asset('css/register.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <script src="{{ asset('js/mostrar.js')}}" defer></script>
 </head>
 
 <body>
@@ -48,10 +49,28 @@
                 <option value="proveedor" {{ old('rol') == 'proveedor' ? 'selected' : '' }}> Proveedor </option></select>
 
             <label class="etiqueta">Contraseña:</label>
-            <input class="form-control" type="password" name="password" placeholder="Ingrese su contraseña" required>
+
+            <div class="campo-password">
+                <input class="form-control" id="password" type="password" name="password" placeholder="Ingrese su contraseña" required>
+                <span class="eye" id="eye"> &#x1F441 </span>
+            </div>
+
+            <div class="strength">
+                <div class="bar" id="bar"></div>
+            </div>
+
+            <div class="message" id="message">
+                Empieza a escribir...
+            </div>
 
             <label class="etiqueta">Confirmar contraseña:</label>
-            <input class="form-control" type="password" name="password_confirmation" placeholder="Confirme su contraseña" required>
+
+            <div class="campo-password">
+                <input class="form-control" id="confirmPassword" type="password" name="password_confirmation" placeholder="Confirme su contraseña" required>
+                <span class="eye" id="eye"> &#x1F441 </span>
+            </div>
+
+            <div class="message" id="confirmMessage"></div>
 
             @if ($errors->any())
                 <div class="error">

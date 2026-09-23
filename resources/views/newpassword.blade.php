@@ -6,6 +6,7 @@
     <title>Nueva Contraseña</title>
     <link rel="stylesheet" href="{{ asset('css/newpassword.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <script src="{{ asset('js/mostrar.js')}}" defer></script>
 </head>
 <body>
     <header class="encabezado">
@@ -17,14 +18,33 @@
             @csrf 
         <h2 id="subtitulo">Nueva Contraseña</h2>
         <label class="etiqueta">Ingrese su nueva contraseña:</label>
-        <input class="form-control" type="password" placeholder="Nueva contraseña" name="password" required>
+
+        <div class="campo-password">
+            <input class="form-control" id="password" type="password" placeholder="Nueva contraseña" name="password" required>
+            <span class="eye" id="eye"> &#x1F441 </span>
+        </div>
+
+        <div class="strength">
+            <div class="bar" id="bar"></div>
+        </div>
+
+        <div class="message" id="message">
+            Empieza a escribir...
+        </div>
 
         @error('password')
             <p class="error">{{ $message }}</p>
         @enderror
 
         <label class="etiqueta">Confirme su nueva contraseña:</label>
-        <input class="form-control" type="password" placeholder="Confirmar contraseña" name="password_confirmation" required>
+        
+        <div class="campo-password">
+            <input class="form-control" id="confirmPassword" type="password" placeholder="Confirmar contraseña" name="password_confirmation" required>
+            <span class="eye" id="eye"> &#x1F441 </span>
+        </div>
+
+        <div class="message" id="confirmMessage"></div>
+
         <button class="btn">Cambiar contraseña</button>
     </form>
     </section>
