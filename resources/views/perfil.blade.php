@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Mi Perfil</title>
     <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
@@ -37,8 +38,8 @@
                     <div class="notificaciones-lista">
                         @forelse(auth()->user()->notifications()->latest()->take(10)->get() as $notificacion)
                             <button type="button"
-                                class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
-                                data-id="{{ $notificacion->id }}">
+                            class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
+                            data-url="{{ route('notificaciones.leer', $notificacion->id) }}">
 
                                 <div class="notificacion-contenido">
                                     <span class="notificacion-titulo">
