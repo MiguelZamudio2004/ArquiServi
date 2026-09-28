@@ -1,0 +1,155 @@
+.estrellas-calificacion {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    line-height: 1;
+}
+
+.estrella-calificacion {
+    --relleno: 0%;
+
+    display: inline-block;
+
+    background: linear-gradient(
+        90deg,
+        #F5B301 0%,
+        #F5B301 var(--relleno),
+        #D1D5DB var(--relleno),
+        #D1D5DB 100%
+    );
+
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    font-family: Arial, sans-serif;
+    font-size: 23px;
+    line-height: 1;
+}
+
+.calificacion-perfil {
+    margin-top: 13px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.calificacion-perfil .estrella-calificacion {
+    font-size: 27px;
+}
+
+.calificacion-datos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    font-family: Poppins, sans-serif;
+}
+
+.calificacion-datos strong {
+    color: #333333;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.calificacion-datos span {
+    color: #6B7280;
+
+    font-size: 12px;
+}
+
+.sin-calificaciones {
+    color: #9CA3AF;
+
+    font-family: Poppins, sans-serif;
+    font-size: 12px;
+}
+
+.calificacion-tarjeta {
+    min-height: 25px;
+
+    margin-top: 7px;
+    margin-bottom: 9px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    font-family: Poppins, sans-serif;
+}
+
+.estrellas-tarjeta {
+    gap: 1px;
+}
+
+.estrellas-tarjeta .estrella-calificacion {
+    font-size: 18px;
+}
+
+.promedio-tarjeta {
+    color: #333333;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cantidad-tarjeta {
+    color: #9CA3AF;
+
+    font-size: 11px;
+}
+
+.sin-calificaciones-tarjeta {
+    color: #9CA3AF;
+
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .calificacion-perfil .estrella-calificacion {
+        font-size: 25px;
+    }
+
+    .estrellas-tarjeta .estrella-calificacion {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calificacion-perfil {
+        margin-top: 10px;
+    }
+
+    .calificacion-perfil .estrella-calificacion {
+        font-size: 23px;
+    }
+
+    .calificacion-datos {
+        gap: 5px;
+    }
+
+    .calificacion-datos strong {
+        font-size: 14px;
+    }
+
+    .calificacion-datos span {
+        font-size: 11px;
+    }
+
+    .calificacion-tarjeta {
+        justify-content: center;
+    }
+
+    .estrellas-tarjeta .estrella-calificacion {
+        font-size: 17px;
+    }
+}

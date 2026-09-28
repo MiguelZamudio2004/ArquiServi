@@ -15,30 +15,6 @@ body {
     background-color: #F9FAFB;
 }
 
-.perfil-descripcion {
-    width: 100%;
-    max-width: 650px;
-    margin-top: 15px;
-    padding: 15px 20px;
-    background-color: #F9FAFB;
-    border-radius: 10px;
-}
-
-.perfil-descripcion p {
-    margin: 0;
-    color: #4B5563;
-    font-family: Poppins, sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
-    text-align: center;
-    overflow-wrap: break-word;
-}
-
-.perfil-descripcion .sin-descripcion {
-    color: #9CA3AF;
-    font-style: italic;
-}
-
 /* ENCABEZADO */
 .encabezado {
     width: 100%;
@@ -68,11 +44,12 @@ body {
     gap: 15px;
 }
 
-.perfil-container, .notificaciones-container {
+.perfil-container,
+.notificaciones-container {
     position: relative;
 }
 
-/* BOTÓN DE PERFIL */
+/* BOTÓN PERFIL */
 .perfil-boton {
     display: flex;
     align-items: center;
@@ -121,7 +98,7 @@ body {
     font-size: 9px;
 }
 
-/* DESPLEGABLE DE PERFIL */
+/* DROPDOWN PERFIL */
 .perfil-dropdown {
     display: none;
     position: absolute;
@@ -236,7 +213,7 @@ body {
     border-radius: 50%;
 }
 
-/* DESPLEGABLE DE NOTIFICACIONES */
+/* NOTIFICACIONES */
 .notificaciones-dropdown {
     display: none;
     position: absolute;
@@ -346,6 +323,7 @@ body {
     text-align: center;
 }
 
+/* PERFIL PÚBLICO */
 .perfil-publico {
     width: 90%;
     max-width: 900px;
@@ -362,9 +340,10 @@ body {
     border: 1px solid #E5E7EB;
     border-radius: 15px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
+/* FOTO PERFIL */
 .perfil-foto {
     width: 125px;
     height: 125px;
@@ -380,12 +359,16 @@ body {
     font-size: 42px;
     font-weight: 600;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
-.perfil img {
+.perfil-foto img {
     width: 100%;
     height: 100%;
+    display: block;
     object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
 }
 
 .perfil-cabecera h1 {
@@ -405,6 +388,7 @@ body {
     font-weight: 500;
 }
 
+/* DESCRIPCIÓN */
 .perfil-descripcion {
     width: 100%;
     max-width: 650px;
@@ -420,6 +404,7 @@ body {
     font-family: Poppins, sans-serif;
     font-size: 14px;
     line-height: 1.7;
+    text-align: center;
     overflow-wrap: break-word;
 }
 
@@ -428,6 +413,7 @@ body {
     font-style: italic;
 }
 
+/* DATOS */
 .perfil-datos {
     margin-top: 25px;
     display: grid;
@@ -458,6 +444,7 @@ body {
     font-weight: 500;
 }
 
+/* SECCIONES */
 .perfil-seccion {
     margin-top: 25px;
     padding: 25px;
@@ -482,10 +469,20 @@ body {
     line-height: 1.6;
 }
 
+.perfil-seccion p + p {
+    margin-top: 7px;
+}
+
+.perfil-seccion a:not(.btn-solicitar) {
+    color: #F47A20;
+}
+
+/* ACCIONES */
 .acciones-perfil {
-    margin-top: 30px;
+    margin-top: 25px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .btn-editar {
@@ -510,6 +507,89 @@ body {
     color: #FFFFFF;
 }
 
+/* SOLICITAR SERVICIO */
+.btn-solicitar {
+    min-width: 190px;
+    min-height: 42px;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    color: #F47A20;
+    border: 1px solid #F47A20;
+    border-radius: 10px;
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-solicitar:hover {
+    background-color: #F47A20;
+    color: #FFFFFF;
+}
+
+.estado-terminada {
+    background-color: #EFF6FF;
+    color: #1D4ED8;
+}
+
+.form-accion-tabla {
+    margin: 0;
+    display: inline-flex;
+}
+
+.btn-terminar,
+.btn-calificar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 13px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    font-family: Poppins, sans-serif;
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-terminar {
+    color: #0C2D5A;
+    border: 1px solid #0C2D5A;
+}
+
+.btn-terminar:hover {
+    background-color: #0C2D5A;
+    color: #FFFFFF;
+}
+
+.btn-calificar {
+    color: #F47A20;
+    border: 1px solid #F47A20;
+}
+
+.btn-calificar:not(:disabled):hover {
+    background-color: #F47A20;
+    color: #FFFFFF;
+}
+
+.btn-calificar:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.acciones-trabajo,
+.acciones-calificacion {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #E5E7EB;
+}
+
 /* FOOTER */
 .pie {
     width: 100%;
@@ -526,7 +606,7 @@ body {
     margin: 0;
 }
 
-/* TABLET / CELULAR */
+/* TABLET */
 @media (max-width: 768px) {
     .encabezado {
         min-height: 70px;
@@ -593,7 +673,7 @@ body {
     }
 }
 
-/* CELULARES PEQUEÑOS */
+/* CELULARES */
 @media (max-width: 480px) {
     .encabezado {
         padding: 0 10px;
@@ -665,5 +745,10 @@ body {
 
     .btn-editar {
         max-width: 100%;
+    }
+
+    .btn-solicitar {
+        width: 100%;
+        min-width: 0;
     }
 }
