@@ -125,10 +125,10 @@
         <div class="bloque-contenido">
             <div class="bloque-texto">
             <h3 class="subtitulo">¿Qué es ArquiServi?</h3>
-            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p class="parrafo">ArquiServi es la plataforma digital que concentra y conecta el entorno de la arquitectura, construcción, remodelación y servicios relacionados. Es el medio de encuentro donde usuarios con profesionales de la industria de la construcción, arquitectura e ingeniería, proveedores de materiales e insumos y servicios relacionados conectan de manera directa, eficiente y transparente.</p>
             </div>
             <div class="bloque-imagen">
-            <img src="{{ asset('prueba.png') }}" alt="¿Qué es ArquiServi?">
+            <img src="{{ asset('images/Que es.png') }}" alt="¿Qué es ArquiServi?">
             </div>
         </div>
         </div>
@@ -137,11 +137,11 @@
         <div class="bloque alterno">
         <div class="bloque-contenido">
             <div class="bloque-imagen">
-            <img src="{{ asset('prueba.png') }}" alt="Finalidad de ArquiServi">
+            <img src="{{ asset('images/Finalidad.png') }}" alt="Finalidad de ArquiServi">
             </div>
             <div class="bloque-texto">
             <h3 class="subtitulo">Finalidad</h3>
-            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p class="parrafo">Está enfocada en el contacto rápido entre particulares que necesitan obras/remodelaciones y profesionales o contratistas, materiales y servicios relacionados al sector. Nuestra finalidad es democratizar y simplificar la gestión de proyectos e insumos de construcción y diseño, facilitando la visibilidad de talento profesional, y contacto directo entre las partes sin intermediarios.</p>
             </div>
         </div>
         </div>
@@ -151,10 +151,10 @@
         <div class="bloque-contenido">
             <div class="bloque-texto">
             <h3 class="subtitulo">Misión</h3>
-            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p class="parrafo">Conectar e integrar a las personas a crear el hogar en el que desean vivir, facilitándolo de forma confiable y mejor la experiencia en el diseño técnico de construcción y servicios relacionados en el hogar, enlazando a profesionales, prestadores de servicios relacionados, mano de obra calificada, brindando soluciones en espacios habitables a través de una plataforma digital intuitiva.</p>
             </div>
             <div class="bloque-imagen">
-            <img src="{{ asset('prueba.png') }}" alt="Misión de ArquiServi">
+            <img src="{{ asset('images/Mision.png') }}" alt="Misión de ArquiServi">
             </div>
         </div>
         </div>
@@ -163,11 +163,11 @@
         <div class="bloque alterno">
         <div class="bloque-contenido">
             <div class="bloque-imagen">
-            <img src="{{ asset('prueba.png') }}" alt="Visión de ArquiServi">
+            <img src="{{ asset('images/Vision.png') }}" alt="Visión de ArquiServi">
             </div>
             <div class="bloque-texto">
             <h3 class="subtitulo">Visión</h3>
-            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p class="parrafo">Ser el directorio global y digital de referencia en el sector para que tu vida sea sencilla, siendo imprescindible para integrar y atender las necesidades de nuestros usuarios, con calidad, confianza, rapidez y servicio profesional en la contratación de servicios, optimizando la cadena de valor.</p>
             </div>
         </div>
         </div>
@@ -176,11 +176,19 @@
         <div class="bloque">
         <div class="bloque-contenido">
             <div class="bloque-texto">
-            <h3 class="subtitulo">Valores</h3>
-            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <h3 class="subtitulo">Objetivos</h3>
+            <ul class="lista">
+                <li>Simplificar la búsqueda de profesionales éticos mediante portafolios visuales y reseñas verificadas y calificadas.</li>
+                <li>Reducir el tiempo de investigación técnica para identificar despachos de arquitectura, directores responsables de obra y trámites ante instancias gubernamentales.</li>
+                <li>Ser un canal impulsador para proveedores de la construcción y servicios relacionados.</li>
+                <li>Facilitar a los profesionales herramientas y mecanismo de gestión comercial y visibilidad de servicios a prestar.</li>
+                <li>Conectar mediante suscripciones y registros de visibilidad para profesionales, prestadores de servicios y materiales en negociación directa.</li>
+                <li>Generar una base de datos de materiales calificados por criterios técnicos, de alta calidad, sustentabilidad y aplicación.</li>
+                <li>Fomentar la profesionalización e inclusión digital de pequeñas empresas y técnicos de la construcción.</li>
+            </ul>
             </div>
             <div class="bloque-imagen">
-            <img src="{{ asset('prueba.png') }}" alt="Valores de ArquiServi">
+            <img src="{{ asset('images/Objetivos.png') }}" alt="Objetivos de ArquiServi">
             </div>
         </div>
         </div>
@@ -189,11 +197,51 @@
         <div class="bloque alterno">
         <div class="bloque-contenido">
             <div class="bloque-imagen">
-            <img src="{{ asset('prueba.png') }}" alt="¿Por qué elegirnos?">
+            <img src="{{ asset('images/Valores.png') }}" alt="Valores de ArquiServi">
             </div>
             <div class="bloque-texto">
+            <h3 class="subtitulo">Valores</h3>
+            <ul class="lista">
+                <li>Transparencia: Promovemos relaciones directas, claras y honestas entre clientes, profesionales y proveedores.</li>
+                <li>Colaboración: Creemos en la fuerza de la comunidad para potenciar el crecimiento técnico y comercial del sector.</li>
+                <li>Calidad y Excelencia: Incentivamos el trabajo bien hecho a través de portafolios verificables y evaluaciones de experiencias reales.</li>
+                <li>Innovación: Digitalizamos procesos tradicionales de búsqueda, contacto y selección en la industria de la edificación.</li>
+                <li>Inclusión Sectorial: Brindamos las mismas oportunidades de visibilidad tanto a grandes empresas de servicios como a profesionales e independientes.</li>
+            </ul>
+            </div>
+        </div>
+        </div>
+
+        <!-- Bloque 7 -->
+        <div class="bloque">
+        <div class="bloque-contenido">
+            <div class="bloque-texto">
             <h3 class="subtitulo">¿Por qué elegirnos?</h3>
-            <p class="parrafo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            
+            <h4 class="subapartado">Para clientes y usuarios</h4>
+            <ul class="lista">
+                <li>Todo en un solo lugar: Encuentra desde el arquitecto para tu proyecto hasta el proveedor del material y servicios de reparación y remodelación que necesitas.</li>
+                <li>Decisiones informadas: Explora portafolios visuales, catálogos actualizados y opiniones de otros usuarios.</li>
+                <li>Contacto directo: Negocia, cotiza y acuerda sin intermediarios ni comisiones ocultas.</li>
+            </ul>
+
+            <h4 class="subapartado">Para profesionales</h4>
+            <ul class="lista">
+                <li>Vitrina profesional: Exhibe tu portafolio, especialidad y zona de cobertura ante clientes potenciales.</li>
+                <li>Reputación digital: Construye credibilidad en el sector a través de valoraciones y experiencias reales.</li>
+                <li>Red de alianzas: Localiza proveedores de materiales cerca de tus zonas de obra.</li>
+            </ul>
+
+            <h4 class="subapartado">Para proveedores</h4>
+            <ul class="lista">
+                <li>Catálogo activo: Publica tus insumos y productos para que sean vistos por profesionales en etapa de especificación.</li>
+                <li>Alcance local y regional: Posiciona tu negocio en las zonas de trabajo donde entregas material</li>
+                <li>Crecimiento B2B y B2C: Impacta tanto al cliente final como a los contratistas y despachos de arquitectura.</li>
+            </ul>
+
+            </div>
+            <div class="bloque-imagen">
+            <img src="{{ asset('images/Porque elegirnos.png') }}" alt="¿Por qué elegirnos?">
             </div>
         </div>
         </div>

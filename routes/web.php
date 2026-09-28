@@ -66,3 +66,7 @@ Route::get('/newpassword', [RecuperacionController::class,'mostrarNuevaPassword'
 
 Route::post('/newpassword', [RecuperacionController::class,'cambiarPassword'])->name('recuperacion.cambiar');
 
+
+Route::get('/calificacion', function () {
+    return view('calificacion');
+})->name('calificacion');
