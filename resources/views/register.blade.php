@@ -161,7 +161,7 @@
                 class="eye"
                 id="eye"
             >
-                👁
+                &#x1F441
             </span>
 
         </div>
@@ -197,9 +197,9 @@
 
             <span
                 class="eye"
-                id="eye"
+                id="eyeConfirm"
             >
-                👁
+                &#x1F441
             </span>
 
         </div>
