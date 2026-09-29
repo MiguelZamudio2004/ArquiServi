@@ -11,16 +11,35 @@ class Proveedor extends Model
     protected $fillable = [
         'usuario_id',
         'descripcion',
-        'zona_trabajo',
+        'zona_trabajo'
     ];
 
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'usuario_id');
+        return $this->belongsTo(
+            Usuario::class,
+            'usuario_id'
+        );
     }
 
     public function materiales()
     {
-        return $this->belongsToMany(Material::class, 'proveedor_material');
+        return $this->belongsToMany(
+            Material::class,
+            'proveedor_material',
+            'proveedor_id',
+            'material_id'
+        )
+        ->withPivot('disponible')
+        ->withTimestamps();
+    }
+
+    public function solicitudesRecibidas()
+    {
+        return $this->hasMany(
+            Solicitud::class,
+            'destinatario_id',
+            'usuario_id'
+        );
     }
 }

@@ -9,26 +9,27 @@ class Solicitud extends Model
     protected $table = 'solicitudes';
 
     protected $fillable = [
-        'usuario_id',
-        'profesional_id',
+        'solicitante_id',
+        'destinatario_id',
         'servicio_id',
+        'material_id',
         'descripcion',
         'estado'
     ];
 
-    public function usuario()
+    public function solicitante()
     {
         return $this->belongsTo(
             Usuario::class,
-            'usuario_id'
+            'solicitante_id'
         );
     }
 
-    public function profesional()
+    public function destinatario()
     {
         return $this->belongsTo(
-            Profesional::class,
-            'profesional_id'
+            Usuario::class,
+            'destinatario_id'
         );
     }
 
@@ -37,6 +38,14 @@ class Solicitud extends Model
         return $this->belongsTo(
             Servicio::class,
             'servicio_id'
+        );
+    }
+
+    public function material()
+    {
+        return $this->belongsTo(
+            Material::class,
+            'material_id'
         );
     }
 

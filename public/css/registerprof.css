@@ -29,9 +29,11 @@ main {
 }
 
 .form-register {
+    width: calc(100% - 40px);
+    max-width: 650px;
     background-color: #F9FAFB;
-    border: #F47A20 1px solid;
-    margin: 5% 10% 10% 10%;
+    border: 1px solid #F47A20;
+    margin: 50px auto;
     padding: 0 5% 2% 5%;
     position: relative;
     display: flex;

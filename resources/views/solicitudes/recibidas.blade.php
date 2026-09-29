@@ -17,26 +17,39 @@
         <img
             src="{{ asset('encabezado2.png') }}"
             class="logo"
-            alt="ArquiServi">
+            alt="ArquiServi"
+        >
     </a>
 </header>
 
 <main class="solicitudes-contenedor">
 
-    <h1>Solicitudes recibidas</h1>
+    <h1>
+        Solicitudes recibidas
+    </h1>
 
     @if(session('exito'))
+
         <div class="mensaje-exito">
             {{ session('exito') }}
         </div>
+
     @endif
 
     @if($errors->any())
+
         <div class="errores">
+
             @foreach($errors->all() as $error)
-                <p>{{ $error }}</p>
+
+                <p>
+                    {{ $error }}
+                </p>
+
             @endforeach
+
         </div>
+
     @endif
 
     @if($solicitudes->isNotEmpty())
@@ -46,33 +59,49 @@
             <table class="tabla-solicitudes">
 
                 <thead>
+
                     <tr>
-                        <th>Cliente</th>
-                        <th>Servicio</th>
+                        <th>Solicitante</th>
+                        <th>Tipo</th>
+                        <th>Servicio / Material</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
+
                 </thead>
 
                 <tbody>
 
                     @foreach($solicitudes as $solicitud)
 
+                        @php
+                            $concepto =
+                                $solicitud->servicio?->nombre
+                                ?? $solicitud->material?->nombre
+                                ?? 'Sin especificar';
+                        @endphp
+
                         <tr>
 
                             <td>
-                                {{ $solicitud->usuario->nombre }}
-                                {{ $solicitud->usuario->apellido_paterno }}
+                                {{ $solicitud->solicitante->nombre }}
+                                {{ $solicitud->solicitante->apellido_paterno }}
                             </td>
 
                             <td>
-                                {{ $solicitud->servicio->nombre }}
+                                {{ ucfirst($solicitud->solicitante->rol->nombre) }}
                             </td>
 
                             <td>
+                                {{ $concepto }}
+                            </td>
+
+                            <td>
+
                                 <span class="estado estado-{{ $solicitud->estado }}">
                                     {{ ucfirst($solicitud->estado) }}
                                 </span>
+
                             </td>
 
                             <td>
@@ -81,35 +110,43 @@
 
                                     <a
                                         href="{{ route('solicitudes.mostrar', $solicitud) }}"
-                                        class="btn-ver">
+                                        class="btn-ver"
+                                    >
                                         Ver
                                     </a>
 
                                     @if(
-                                        in_array($solicitud->estado, ['aceptada', 'terminada']) &&
-                                        $solicitud->usuario->telefono
+                                        in_array(
+                                            $solicitud->estado,
+                                            ['aceptada', 'terminada']
+                                        ) &&
+                                        $solicitud->solicitante->telefono
                                     )
 
                                         @php
-                                            $telefono = $solicitud->usuario->telefonoWhatsapp();
+                                            $telefono =
+                                                $solicitud
+                                                    ->solicitante
+                                                    ->telefonoWhatsapp();
 
                                             $mensaje =
-                                                "Hola {$solicitud->usuario->nombre}, soy {$solicitud->profesional->usuario->nombre}. "
-                                                . "Te contacto desde ArquiServi respecto a tu solicitud del servicio \"{$solicitud->servicio->nombre}\". "
-                                                . "Podemos continuar con los detalles del servicio.";
+                                                "Hola {$solicitud->solicitante->nombre}, soy {$solicitud->destinatario->nombre}. "
+                                                . "Te contacto desde ArquiServi respecto a tu solicitud de \"{$concepto}\". "
+                                                . "Podemos continuar con los detalles.";
 
                                             $whatsappUrl =
-                                                'https://wa.me/' .
-                                                $telefono .
-                                                '?text=' .
-                                                urlencode($mensaje);
+                                                'https://wa.me/'
+                                                . $telefono
+                                                . '?text='
+                                                . urlencode($mensaje);
                                         @endphp
 
                                         <a
                                             href="{{ $whatsappUrl }}"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            class="btn-whatsapp">
+                                            class="btn-whatsapp"
+                                        >
                                             WhatsApp
                                         </a>
 
@@ -120,14 +157,16 @@
                                         <form
                                             action="{{ route('solicitudes.terminar', $solicitud) }}"
                                             method="POST"
-                                            class="form-accion-tabla">
+                                            class="form-accion-tabla"
+                                        >
 
                                             @csrf
                                             @method('PATCH')
 
                                             <button
                                                 type="submit"
-                                                class="btn-terminar">
+                                                class="btn-terminar"
+                                            >
                                                 Terminar
                                             </button>
 
@@ -137,14 +176,18 @@
 
                                     @if(
                                         $solicitud->estado === 'terminada' &&
-                                        !$solicitud->calificaciones->contains('evaluador_id', auth()->id())
+                                        !$solicitud->calificaciones->contains(
+                                            'evaluador_id',
+                                            auth()->id()
+                                        )
                                     )
 
                                         <button
                                             type="button"
                                             class="btn-calificar btn-abrir-calificacion"
-                                            data-url="{{ route('solicitudes.calificar', $solicitud) }}">
-                                            Calificar cliente
+                                            data-url="{{ route('solicitudes.calificar', $solicitud) }}"
+                                        >
+                                            Calificar solicitante
                                         </button>
 
                                     @endif
@@ -166,9 +209,11 @@
     @else
 
         <div class="sin-solicitudes">
+
             <p>
                 Aún no has recibido solicitudes.
             </p>
+
         </div>
 
     @endif
@@ -176,9 +221,11 @@
 </main>
 
 <footer class="pie">
+
     <p>
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
+
 </footer>
 
 <div id="modalCalificacionContenedor"></div>

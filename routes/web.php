@@ -10,12 +10,6 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegistroProfesionalController;
 use App\Http\Controllers\RegistroProveedorController;
 
-/*
-|--------------------------------------------------------------------------
-| SOLICITUDES
-|--------------------------------------------------------------------------
-*/
-
 Route::middleware('auth')->group(function () {
     Route::get('/solicitudes/mias', [SolicitudController::class, 'mias'])
         ->name('solicitudes.mias');
@@ -23,19 +17,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/solicitudes/recibidas', [SolicitudController::class, 'recibidas'])
         ->name('solicitudes.recibidas');
 
-    Route::get('/solicitudes/crear/{profesional}', [SolicitudController::class, 'crear'])
+    Route::get('/solicitudes/crear/{destinatario}', [SolicitudController::class, 'crear'])
         ->name('solicitudes.crear');
 
     Route::post('/solicitudes', [SolicitudController::class, 'guardar'])
         ->name('solicitudes.guardar');
-
-    /*
-    |--------------------------------------------------------------------------
-    | CALIFICACIONES
-    |--------------------------------------------------------------------------
-    | GET  -> abre el modal
-    | POST -> guarda la calificación
-    */
 
     Route::get('/solicitudes/{solicitud}/calificar', [SolicitudController::class, 'calificar'])
         ->name('solicitudes.calificar');
@@ -43,20 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/solicitudes/{solicitud}/calificar', [SolicitudController::class, 'guardarCalificacion'])
         ->name('solicitudes.calificar.guardar');
 
-    /*
-    |--------------------------------------------------------------------------
-    | DETALLE DE SOLICITUD
-    |--------------------------------------------------------------------------
-    */
-
     Route::get('/solicitudes/{solicitud}', [SolicitudController::class, 'mostrar'])
         ->name('solicitudes.mostrar');
-
-    /*
-    |--------------------------------------------------------------------------
-    | ESTADOS DE SOLICITUD
-    |--------------------------------------------------------------------------
-    */
 
     Route::patch('/solicitudes/{solicitud}/aceptar', [SolicitudController::class, 'aceptar'])
         ->name('solicitudes.aceptar');
@@ -71,23 +45,11 @@ Route::middleware('auth')->group(function () {
         ->name('solicitudes.terminar');
 });
 
-/*
-|--------------------------------------------------------------------------
-| CATÁLOGO Y PERFILES PÚBLICOS
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/usuarios', [PerfilController::class, 'buscar'])
     ->name('usuarios.buscar');
 
 Route::get('/usuarios/{usuario}', [PerfilController::class, 'publico'])
     ->name('perfil.publico');
-
-/*
-|--------------------------------------------------------------------------
-| REGISTRO PROFESIONAL
-|--------------------------------------------------------------------------
-*/
 
 Route::get('/register/profesional', [RegistroProfesionalController::class, 'mostrar'])
     ->name('registro.profesional');
@@ -95,23 +57,11 @@ Route::get('/register/profesional', [RegistroProfesionalController::class, 'most
 Route::post('/register/profesional', [RegistroProfesionalController::class, 'guardar'])
     ->name('registro.profesional.guardar');
 
-/*
-|--------------------------------------------------------------------------
-| REGISTRO PROVEEDOR
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/register/proveedor', [RegistroProveedorController::class, 'mostrar'])
     ->name('registro.proveedor');
 
 Route::post('/register/proveedor', [RegistroProveedorController::class, 'guardar'])
     ->name('registro.proveedor.guardar');
-
-/*
-|--------------------------------------------------------------------------
-| PERFIL
-|--------------------------------------------------------------------------
-*/
 
 Route::middleware('auth')->group(function () {
     Route::get('/perfil', [PerfilController::class, 'mostrar'])
@@ -124,31 +74,13 @@ Route::middleware('auth')->group(function () {
         ->name('perfil.actualizar');
 });
 
-/*
-|--------------------------------------------------------------------------
-| NOTIFICACIONES
-|--------------------------------------------------------------------------
-*/
-
 Route::post('/notificaciones/{id}/leer', [NotificacionController::class, 'marcarLeida'])
     ->middleware('auth')
     ->name('notificaciones.leer');
 
-/*
-|--------------------------------------------------------------------------
-| INICIO
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/', function () {
     return view('menu');
 })->name('menu');
-
-/*
-|--------------------------------------------------------------------------
-| LOGIN / LOGOUT
-|--------------------------------------------------------------------------
-*/
 
 Route::get('/login', function () {
     return view('login');
@@ -159,12 +91,6 @@ Route::post('/login', [LoginController::class, 'login'])
 
 Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout');
-
-/*
-|--------------------------------------------------------------------------
-| RECUPERACIÓN DE CONTRASEÑA
-|--------------------------------------------------------------------------
-*/
 
 Route::get('/recuperation', [RecuperacionController::class, 'mostrarCorreo'])
     ->name('recuperacion');
@@ -182,29 +108,17 @@ Route::get('/validar', [RecuperacionController::class, 'mostrarCodigo'])
 Route::post('/validar', [RecuperacionController::class, 'validarCodigo'])
     ->name('recuperacion.validar');
 
-Route::get('/newpassword', [RecuperacionController::class, 'mostrarNuevaPassword'])
-    ->name('recuperacion.password');
-
-Route::post('/newpassword', [RecuperacionController::class, 'cambiarPassword'])
-    ->name('recuperacion.cambiar');
-
-/*
-|--------------------------------------------------------------------------
-| REGISTRO DE USUARIO
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/register', [RegistroController::class, 'create'])
     ->name('register');
 
 Route::post('/register', [RegistroController::class, 'store'])
     ->name('register.store');
 
-/*
-|--------------------------------------------------------------------------
-| VISTAS AUXILIARES DE REGISTRO
-|--------------------------------------------------------------------------
-*/
+Route::get('/newpassword', [RecuperacionController::class, 'mostrarNuevaPassword'])
+    ->name('recuperacion.password');
+
+Route::post('/newpassword', [RecuperacionController::class, 'cambiarPassword'])
+    ->name('recuperacion.cambiar');
 
 Route::get('/registerprof', function () {
     return view('registerprof');

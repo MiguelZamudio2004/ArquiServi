@@ -97,20 +97,16 @@ document.addEventListener('click', async function(event) {
             await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Accept': 'text/html',
+                    'Accept':
+                        'text/html',
+
                     'X-Requested-With':
                         'XMLHttpRequest'
                 }
             });
 
         if (!respuesta.ok) {
-            const mensaje =
-                await respuesta.text();
-
-            throw new Error(
-                mensaje ||
-                'No se pudo abrir la calificación.'
-            );
+            throw new Error();
         }
 
         const html =
@@ -128,12 +124,13 @@ document.addEventListener('click', async function(event) {
         contenedor.innerHTML =
             html;
 
-        document.body.classList.add(
-            'modal-abierto'
-        );
+        document.body
+            .classList
+            .add(
+                'modal-abierto'
+            );
 
         inicializarCalificacion();
-
     } catch (error) {
         alert(
             'No fue posible abrir la ventana de calificación.'
@@ -249,9 +246,7 @@ function inicializarCalificacion() {
     if (botonCancelar) {
         botonCancelar.addEventListener(
             'click',
-            function() {
-                cerrarCalificacion();
-            }
+            cerrarCalificacion
         );
     }
 
@@ -278,7 +273,9 @@ function inicializarCalificacion() {
                         await fetch(
                             submitUrl,
                             {
-                                method: 'POST',
+                                method:
+                                    'POST',
+
                                 headers: {
                                     'Content-Type':
                                         'application/json',
@@ -358,7 +355,6 @@ function inicializarCalificacion() {
                             .disabled =
                             true;
                     }
-
                 } catch (error) {
                     mostrarError(
                         mensajeError,
@@ -397,7 +393,7 @@ function configurarInterfaz(
             'Califica al profesional',
 
         cliente:
-            'Califica al cliente',
+            'Califica al solicitante',
 
         proveedor:
             'Califica al proveedor'
@@ -408,7 +404,7 @@ function configurarInterfaz(
             'Profesional',
 
         cliente:
-            'Cliente',
+            'Solicitante',
 
         proveedor:
             'Proveedor'
@@ -658,7 +654,6 @@ function actualizarEstrellas(
                 valorEstrella
             ) {
                 relleno = 100;
-
             } else if (
                 valor >=
                 valorEstrella - 0.5

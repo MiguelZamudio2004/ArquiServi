@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Usuario extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     protected $table = 'usuarios';
 
@@ -23,71 +24,108 @@ class Usuario extends Authenticatable
         'descripcion',
         'foto_perfil',
         'estado',
+        'email_verified_at'
     ];
 
     protected $hidden = [
         'password',
+        'remember_token'
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-            'email_verified_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime'
+    ];
 
     public function rol()
     {
-        return $this->belongsTo(Rol::class, 'rol_id');
-    }
-
-    public function proveedor()
-    {
-        return $this->hasOne(Proveedor::class, 'usuario_id');
+        return $this->belongsTo(
+            Rol::class,
+            'rol_id'
+        );
     }
 
     public function profesional()
     {
-        return $this->hasOne(Profesional::class, 'usuario_id');
+        return $this->hasOne(
+            Profesional::class,
+            'usuario_id'
+        );
     }
 
-    public function codigosRecuperacion()
+    public function proveedor()
     {
-        return $this->hasMany(CodigoRecuperacion::class, 'usuario_id');
+        return $this->hasOne(
+            Proveedor::class,
+            'usuario_id'
+        );
     }
 
-    public function solicitudes() {
-        return $this->hasMany(Solicitud::class,'usuario_id');
+    public function solicitudes()
+    {
+        return $this->hasMany(
+            Solicitud::class,
+            'solicitante_id'
+        );
+    }
+
+    public function solicitudesRealizadas()
+    {
+        return $this->hasMany(
+            Solicitud::class,
+            'solicitante_id'
+        );
+    }
+
+    public function solicitudesRecibidas()
+    {
+        return $this->hasMany(
+            Solicitud::class,
+            'destinatario_id'
+        );
+    }
+
+    public function calificacionesRealizadas()
+    {
+        return $this->hasMany(
+            Calificacion::class,
+            'evaluador_id'
+        );
+    }
+
+    public function calificacionesRecibidas()
+    {
+        return $this->hasMany(
+            Calificacion::class,
+            'evaluado_id'
+        );
     }
 
     public function telefonoWhatsapp()
-{
-    if (!$this->telefono) return null;
+    {
+        if (!$this->telefono) {
+            return null;
+        }
 
-    $telefono = preg_replace('/\D/', '', $this->telefono);
+        $telefono = preg_replace(
+            '/\D/',
+            '',
+            $this->telefono
+        );
 
-    if (strlen($telefono) === 10) {
-        $telefono = '52' . $telefono;
+        if (strlen($telefono) === 10) {
+            return '52' . $telefono;
+        }
+
+        if (
+            strlen($telefono) === 13 &&
+            str_starts_with($telefono, '521')
+        ) {
+            return '52' . substr(
+                $telefono,
+                3
+            );
+        }
+
+        return $telefono;
     }
-
-    return $telefono;
-}
-
-public function calificacionesRealizadas()
-{
-    return $this->hasMany(
-        Calificacion::class,
-        'evaluador_id'
-    );
-}
-
-public function calificacionesRecibidas()
-{
-    return $this->hasMany(
-        Calificacion::class,
-        'evaluado_id'
-    );
-}
-
 }

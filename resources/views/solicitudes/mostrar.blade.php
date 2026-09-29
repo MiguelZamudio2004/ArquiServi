@@ -15,17 +15,29 @@
 <header class="encabezado">
 
     <a href="{{ route('menu') }}">
+
         <img
             src="{{ asset('encabezado2.png') }}"
             class="logo"
-            alt="ArquiServi">
+            alt="ArquiServi"
+        >
+
     </a>
 
 </header>
 
+@php
+    $concepto =
+        $solicitud->servicio?->nombre
+        ?? $solicitud->material?->nombre
+        ?? 'Sin especificar';
+@endphp
+
 <main class="solicitudes-contenedor">
 
-    <h1>Solicitud de servicio</h1>
+    <h1>
+        Solicitud
+    </h1>
 
     @if(session('exito'))
 
@@ -40,7 +52,11 @@
         <div class="errores">
 
             @foreach($errors->all() as $error)
-                <p>{{ $error }}</p>
+
+                <p>
+                    {{ $error }}
+                </p>
+
             @endforeach
 
         </div>
@@ -49,30 +65,34 @@
 
     <section class="detalle-solicitud">
 
-        @if($esCliente)
+        @if($esSolicitante)
 
             <div class="detalle-item">
 
-                <span>Profesional</span>
+                <span>
+                    {{ $solicitud->destinatario->rol->nombre === 'proveedor' ? 'Proveedor' : 'Profesional' }}
+                </span>
 
                 <strong>
-                    {{ $solicitud->profesional->usuario->nombre }}
-                    {{ $solicitud->profesional->usuario->apellido_paterno }}
+                    {{ $solicitud->destinatario->nombre }}
+                    {{ $solicitud->destinatario->apellido_paterno }}
                 </strong>
 
             </div>
 
         @endif
 
-        @if($esProfesional)
+        @if($esDestinatario)
 
             <div class="detalle-item">
 
-                <span>Cliente</span>
+                <span>
+                    Solicitante
+                </span>
 
                 <strong>
-                    {{ $solicitud->usuario->nombre }}
-                    {{ $solicitud->usuario->apellido_paterno }}
+                    {{ $solicitud->solicitante->nombre }}
+                    {{ $solicitud->solicitante->apellido_paterno }}
                 </strong>
 
             </div>
@@ -81,29 +101,37 @@
 
         <div class="detalle-item">
 
-            <span>Servicio</span>
+            <span>
+                {{ $solicitud->material_id ? 'Material / Producto' : 'Servicio' }}
+            </span>
 
             <strong>
-                {{ $solicitud->servicio->nombre }}
+                {{ $concepto }}
             </strong>
 
         </div>
 
         <div class="detalle-item">
 
-            <span>Estado</span>
+            <span>
+                Estado
+            </span>
 
             <strong>
+
                 <span class="estado estado-{{ $solicitud->estado }}">
                     {{ ucfirst($solicitud->estado) }}
                 </span>
+
             </strong>
 
         </div>
 
         <div class="detalle-item">
 
-            <span>Fecha</span>
+            <span>
+                Fecha
+            </span>
 
             <strong>
                 {{ $solicitud->created_at->format('d/m/Y') }}
@@ -113,7 +141,9 @@
 
         <div class="detalle-descripcion">
 
-            <span>Descripción</span>
+            <span>
+                Descripción
+            </span>
 
             <p>
                 {{ $solicitud->descripcion }}
@@ -125,18 +155,20 @@
 
             <div class="acciones">
 
-                @if($esCliente)
+                @if($esSolicitante)
 
                     <form
                         action="{{ route('solicitudes.cancelar', $solicitud) }}"
-                        method="POST">
+                        method="POST"
+                    >
 
                         @csrf
                         @method('PATCH')
 
                         <button
                             type="submit"
-                            class="btn-cancelar">
+                            class="btn-cancelar"
+                        >
                             Cancelar solicitud
                         </button>
 
@@ -144,18 +176,20 @@
 
                 @endif
 
-                @if($esProfesional)
+                @if($esDestinatario)
 
                     <form
                         action="{{ route('solicitudes.rechazar', $solicitud) }}"
-                        method="POST">
+                        method="POST"
+                    >
 
                         @csrf
                         @method('PATCH')
 
                         <button
                             type="submit"
-                            class="btn-rechazar">
+                            class="btn-rechazar"
+                        >
                             Rechazar
                         </button>
 
@@ -163,14 +197,16 @@
 
                     <form
                         action="{{ route('solicitudes.aceptar', $solicitud) }}"
-                        method="POST">
+                        method="POST"
+                    >
 
                         @csrf
                         @method('PATCH')
 
                         <button
                             type="submit"
-                            class="btn-aceptar">
+                            class="btn-aceptar"
+                        >
                             Aceptar
                         </button>
 
@@ -182,70 +218,78 @@
 
         @endif
 
-        @if(in_array($solicitud->estado, ['aceptada', 'terminada']))
+        @if(
+            in_array(
+                $solicitud->estado,
+                ['aceptada', 'terminada']
+            )
+        )
 
             <div class="contacto-whatsapp">
 
                 @if(
-                    $esCliente &&
-                    $solicitud->profesional->usuario->telefono
+                    $esSolicitante &&
+                    $solicitud->destinatario->telefono
                 )
 
                     @php
                         $telefono =
-                            $solicitud->profesional
-                                ->usuario
+                            $solicitud
+                                ->destinatario
                                 ->telefonoWhatsapp();
 
                         $mensaje =
-                            "Hola {$solicitud->profesional->usuario->nombre}, soy {$solicitud->usuario->nombre}. "
-                            . "Te contacto desde ArquiServi por mi solicitud del servicio \"{$solicitud->servicio->nombre}\". "
-                            . "Me gustaría continuar con los detalles del servicio.";
+                            "Hola {$solicitud->destinatario->nombre}, soy {$solicitud->solicitante->nombre}. "
+                            . "Te contacto desde ArquiServi respecto a mi solicitud de \"{$concepto}\". "
+                            . "Me gustaría continuar con los detalles.";
 
                         $whatsappUrl =
-                            'https://wa.me/' .
-                            $telefono .
-                            '?text=' .
-                            urlencode($mensaje);
+                            'https://wa.me/'
+                            . $telefono
+                            . '?text='
+                            . urlencode($mensaje);
                     @endphp
 
                     <a
                         href="{{ $whatsappUrl }}"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="btn-whatsapp">
+                        class="btn-whatsapp"
+                    >
                         Contactar por WhatsApp
                     </a>
 
                 @endif
 
                 @if(
-                    $esProfesional &&
-                    $solicitud->usuario->telefono
+                    $esDestinatario &&
+                    $solicitud->solicitante->telefono
                 )
 
                     @php
                         $telefono =
-                            $solicitud->usuario
+                            $solicitud
+                                ->solicitante
                                 ->telefonoWhatsapp();
 
                         $mensaje =
-                            "Hola {$solicitud->usuario->nombre}, soy {$solicitud->profesional->usuario->nombre}. "
-                            . "Te contacto desde ArquiServi respecto a tu solicitud del servicio \"{$solicitud->servicio->nombre}\". "
-                            . "Podemos continuar con los detalles del servicio.";
+                            "Hola {$solicitud->solicitante->nombre}, soy {$solicitud->destinatario->nombre}. "
+                            . "Te contacto desde ArquiServi respecto a tu solicitud de \"{$concepto}\". "
+                            . "Podemos continuar con los detalles.";
 
                         $whatsappUrl =
-                            'https://wa.me/' .
-                            $telefono .
-                            '?text=' .
-                            urlencode($mensaje);
+                            'https://wa.me/'
+                            . $telefono
+                            . '?text='
+                            . urlencode($mensaje);
                     @endphp
 
                     <a
                         href="{{ $whatsappUrl }}"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="btn-whatsapp">
+                        class="btn-whatsapp"
+                    >
                         Contactar por WhatsApp
                     </a>
 
@@ -257,22 +301,24 @@
 
         @if(
             $solicitud->estado === 'aceptada' &&
-            $esProfesional
+            $esDestinatario
         )
 
             <div class="acciones acciones-trabajo">
 
                 <form
                     action="{{ route('solicitudes.terminar', $solicitud) }}"
-                    method="POST">
+                    method="POST"
+                >
 
                     @csrf
                     @method('PATCH')
 
                     <button
                         type="submit"
-                        class="btn-terminar">
-                        Terminar trabajo
+                        class="btn-terminar"
+                    >
+                        Terminar solicitud
                     </button>
 
                 </form>
@@ -283,8 +329,10 @@
 
         @if(
             $solicitud->estado === 'terminada' &&
-            $esCliente &&
-            !$solicitud->calificaciones->contains('evaluador_id', auth()->id())
+            !$solicitud->calificaciones->contains(
+                'evaluador_id',
+                auth()->id()
+            )
         )
 
             <div class="acciones acciones-calificacion">
@@ -292,27 +340,20 @@
                 <button
                     type="button"
                     class="btn-calificar btn-abrir-calificacion"
-                    data-url="{{ route('solicitudes.calificar', $solicitud) }}">
-                    Calificar profesional
-                </button>
+                    data-url="{{ route('solicitudes.calificar', $solicitud) }}"
+                >
 
-            </div>
+                    @if($esSolicitante)
 
-        @endif
+                        Calificar
+                        {{ $solicitud->destinatario->rol->nombre === 'proveedor' ? 'proveedor' : 'profesional' }}
 
-        @if(
-            $solicitud->estado === 'terminada' &&
-            $esProfesional &&
-            !$solicitud->calificaciones->contains('evaluador_id', auth()->id())
-        )
+                    @else
 
-            <div class="acciones acciones-calificacion">
+                        Calificar solicitante
 
-                <button
-                    type="button"
-                    class="btn-calificar btn-abrir-calificacion"
-                    data-url="{{ route('solicitudes.calificar', $solicitud) }}">
-                    Calificar cliente
+                    @endif
+
                 </button>
 
             </div>
@@ -321,7 +362,7 @@
 
         <div class="volver">
 
-            @if($esCliente)
+            @if($esSolicitante)
 
                 <a href="{{ route('solicitudes.mias') }}">
                     ← Volver a mis solicitudes
@@ -342,9 +383,11 @@
 </main>
 
 <footer class="pie">
+
     <p>
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
+
 </footer>
 
 <div id="modalCalificacionContenedor"></div>

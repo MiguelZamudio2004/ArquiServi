@@ -14,39 +14,63 @@ class RegistroProveedorController extends Controller
     {
         $usuarioId = session('registro_usuario_id');
 
-        if (!$usuarioId) return redirect()->route('registro')->withErrors(['registro' => 'Debes iniciar el registro nuevamente.']);
+        if (!$usuarioId) {
+            return redirect()
+                ->route('register')
+                ->withErrors([
+                    'registro' => 'Debes iniciar el registro nuevamente.'
+                ]);
+        }
 
         $usuario = Usuario::with('rol')->findOrFail($usuarioId);
 
-        if ($usuario->rol->nombre !== 'proveedor') abort(403);
+        if ($usuario->rol->nombre !== 'proveedor') {
+            abort(403);
+        }
 
-        $materiales = Material::orderBy('nombre')->get();
+        $materiales = Material::where('activo', true)
+            ->orderBy('nombre')
+            ->get();
 
-        return view('registerprov', compact('usuario', 'materiales'));
+        return view(
+            'registerprov',
+            compact('usuario', 'materiales')
+        );
     }
 
     public function guardar(Request $request)
     {
         $usuarioId = session('registro_usuario_id');
 
-        if (!$usuarioId) return redirect()->route('registro')->withErrors(['registro' => 'Debes iniciar el registro nuevamente.']);
+        if (!$usuarioId) {
+            return redirect()
+                ->route('register')
+                ->withErrors([
+                    'registro' => 'Debes iniciar el registro nuevamente.'
+                ]);
+        }
 
         $usuario = Usuario::with('rol')->findOrFail($usuarioId);
 
-        if ($usuario->rol->nombre !== 'proveedor') abort(403);
+        if ($usuario->rol->nombre !== 'proveedor') {
+            abort(403);
+        }
 
-        $datos = $request->validate([
-            'descripcion' => 'nullable|string|max:500',
-            'zona_trabajo' => 'required|string|max:200',
-            'materiales' => 'required|array|min:1',
-            'materiales.*' => 'required|exists:materiales,id',
-        ], [
-            'zona_trabajo.required' => 'Debes indicar tu zona de trabajo.',
-            'materiales.required' => 'Debes seleccionar al menos un material.',
-            'materiales.min' => 'Debes seleccionar al menos un material.',
-            'materiales.*.exists' => 'Uno de los materiales seleccionados no es válido.',
-            'descripcion.max' => 'La descripción no puede superar los 500 caracteres.',
-        ]);
+        $datos = $request->validate(
+            [
+                'descripcion' => 'nullable|string|max:500',
+                'zona_trabajo' => 'required|string|max:200',
+                'materiales' => 'required|array|min:1',
+                'materiales.*' => 'required|exists:materiales,id',
+            ],
+            [
+                'zona_trabajo.required' => 'Debes indicar tu zona de trabajo.',
+                'materiales.required' => 'Debes seleccionar al menos un material.',
+                'materiales.min' => 'Debes seleccionar al menos un material.',
+                'materiales.*.exists' => 'Uno de los materiales seleccionados no es válido.',
+                'descripcion.max' => 'La descripción no puede superar los 500 caracteres.',
+            ]
+        );
 
         DB::transaction(function () use ($usuario, $datos) {
             $proveedor = Proveedor::create([
@@ -55,11 +79,24 @@ class RegistroProveedorController extends Controller
                 'zona_trabajo' => $datos['zona_trabajo'],
             ]);
 
-            $proveedor->materiales()->sync($datos['materiales']);
+            $materiales = [];
+
+            foreach ($datos['materiales'] as $materialId) {
+                $materiales[$materialId] = [
+                    'disponible' => true
+                ];
+            }
+
+            $proveedor->materiales()->sync($materiales);
         });
 
         session()->forget('registro_usuario_id');
 
-        return redirect()->route('login')->with('success', 'Tu registro como proveedor se completó correctamente.');
+        return redirect()
+            ->route('login')
+            ->with(
+                'success',
+                'Tu registro como proveedor se completó correctamente.'
+            );
     }
 }

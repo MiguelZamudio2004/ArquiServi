@@ -17,26 +17,39 @@
         <img
             src="{{ asset('encabezado2.png') }}"
             class="logo"
-            alt="ArquiServi">
+            alt="ArquiServi"
+        >
     </a>
 </header>
 
 <main class="solicitudes-contenedor">
 
-    <h1>Mis solicitudes</h1>
+    <h1>
+        Mis solicitudes
+    </h1>
 
     @if(session('exito'))
+
         <div class="mensaje-exito">
             {{ session('exito') }}
         </div>
+
     @endif
 
     @if($errors->any())
+
         <div class="errores">
+
             @foreach($errors->all() as $error)
-                <p>{{ $error }}</p>
+
+                <p>
+                    {{ $error }}
+                </p>
+
             @endforeach
+
         </div>
+
     @endif
 
     @if($solicitudes->isNotEmpty())
@@ -46,33 +59,49 @@
             <table class="tabla-solicitudes">
 
                 <thead>
+
                     <tr>
-                        <th>Profesional</th>
-                        <th>Servicio</th>
+                        <th>Destinatario</th>
+                        <th>Tipo</th>
+                        <th>Servicio / Material</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
+
                 </thead>
 
                 <tbody>
 
                     @foreach($solicitudes as $solicitud)
 
+                        @php
+                            $concepto =
+                                $solicitud->servicio?->nombre
+                                ?? $solicitud->material?->nombre
+                                ?? 'Sin especificar';
+                        @endphp
+
                         <tr>
 
                             <td>
-                                {{ $solicitud->profesional->usuario->nombre }}
-                                {{ $solicitud->profesional->usuario->apellido_paterno }}
+                                {{ $solicitud->destinatario->nombre }}
+                                {{ $solicitud->destinatario->apellido_paterno }}
                             </td>
 
                             <td>
-                                {{ $solicitud->servicio->nombre }}
+                                {{ ucfirst($solicitud->destinatario->rol->nombre) }}
                             </td>
 
                             <td>
+                                {{ $concepto }}
+                            </td>
+
+                            <td>
+
                                 <span class="estado estado-{{ $solicitud->estado }}">
                                     {{ ucfirst($solicitud->estado) }}
                                 </span>
+
                             </td>
 
                             <td>
@@ -81,35 +110,43 @@
 
                                     <a
                                         href="{{ route('solicitudes.mostrar', $solicitud) }}"
-                                        class="btn-ver">
+                                        class="btn-ver"
+                                    >
                                         Ver
                                     </a>
 
                                     @if(
-                                        in_array($solicitud->estado, ['aceptada', 'terminada']) &&
-                                        $solicitud->profesional->usuario->telefono
+                                        in_array(
+                                            $solicitud->estado,
+                                            ['aceptada', 'terminada']
+                                        ) &&
+                                        $solicitud->destinatario->telefono
                                     )
 
                                         @php
-                                            $telefono = $solicitud->profesional->usuario->telefonoWhatsapp();
+                                            $telefono =
+                                                $solicitud
+                                                    ->destinatario
+                                                    ->telefonoWhatsapp();
 
                                             $mensaje =
-                                                "Hola {$solicitud->profesional->usuario->nombre}, soy {$solicitud->usuario->nombre}. "
-                                                . "Te contacto desde ArquiServi por mi solicitud del servicio \"{$solicitud->servicio->nombre}\". "
-                                                . "Me gustaría continuar con los detalles del servicio.";
+                                                "Hola {$solicitud->destinatario->nombre}, soy {$solicitud->solicitante->nombre}. "
+                                                . "Te contacto desde ArquiServi respecto a mi solicitud de \"{$concepto}\". "
+                                                . "Me gustaría continuar con los detalles.";
 
                                             $whatsappUrl =
-                                                'https://wa.me/' .
-                                                $telefono .
-                                                '?text=' .
-                                                urlencode($mensaje);
+                                                'https://wa.me/'
+                                                . $telefono
+                                                . '?text='
+                                                . urlencode($mensaje);
                                         @endphp
 
                                         <a
                                             href="{{ $whatsappUrl }}"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            class="btn-whatsapp">
+                                            class="btn-whatsapp"
+                                        >
                                             WhatsApp
                                         </a>
 
@@ -117,14 +154,19 @@
 
                                     @if(
                                         $solicitud->estado === 'terminada' &&
-                                        !$solicitud->calificaciones->contains('evaluador_id', auth()->id())
+                                        !$solicitud->calificaciones->contains(
+                                            'evaluador_id',
+                                            auth()->id()
+                                        )
                                     )
 
                                         <button
                                             type="button"
                                             class="btn-calificar btn-abrir-calificacion"
-                                            data-url="{{ route('solicitudes.calificar', $solicitud) }}">
-                                            Calificar profesional
+                                            data-url="{{ route('solicitudes.calificar', $solicitud) }}"
+                                        >
+                                            Calificar
+                                            {{ $solicitud->destinatario->rol->nombre === 'proveedor' ? 'proveedor' : 'profesional' }}
                                         </button>
 
                                     @endif
@@ -152,7 +194,7 @@
             </p>
 
             <a href="{{ route('usuarios.buscar') }}">
-                Buscar profesionales
+                Buscar perfiles
             </a>
 
         </div>
@@ -162,9 +204,11 @@
 </main>
 
 <footer class="pie">
+
     <p>
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
+
 </footer>
 
 <div id="modalCalificacionContenedor"></div>
