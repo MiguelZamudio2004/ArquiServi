@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +10,11 @@
 
     <link rel="stylesheet" href="{{ asset('css/usuarios.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <script src="{{ asset('js/notification.js') }}" defer></script>
     <script src="{{ asset('js/perfil.js') }}" defer></script>
     <script src="{{ asset('js/usuarios.js') }}" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -24,35 +25,56 @@
         <img
             src="{{ asset('encabezado2.png') }}"
             class="logo"
-            alt="ArquiServi">
+            alt="ArquiServi"
+        >
     </a>
 
     <nav class="menu-superior">
         <ul class="menu-lista">
+
             <li>
-                <a href="#">
+                <a href="{{ route('menu') }}">
                     <i class="fa-solid fa-house icono"></i>
                     <span class="texto">Inicio</span>
                 </a>
             </li>
+
             <li>
-                <a href="#">
+                <a href="{{ route('usuarios.buscar') }}">
                     <i class="fa-solid fa-folder-open icono"></i>
                     <span class="texto">Catálogo</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-envelope icono"></i>
-                    <span class="texto">Solicitudes</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-user icono"></i>
-                    <span class="texto">Perfil</span>
-                </a>
-            </li>
+
+            @auth
+
+                @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional']))
+                    <li>
+                        <a href="{{ route('solicitudes.mias') }}">
+                            <i class="fa-solid fa-envelope icono"></i>
+                            <span class="texto">Mis solicitudes</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if(in_array(auth()->user()->rol->nombre, ['profesional', 'proveedor']))
+                    <li>
+                        <a href="{{ route('solicitudes.recibidas') }}">
+                            <i class="fa-solid fa-inbox icono"></i>
+                            <span class="texto">Solicitudes recibidas</span>
+                        </a>
+                    </li>
+                @endif
+
+                <li>
+                    <a href="{{ route('perfil') }}">
+                        <i class="fa-solid fa-user icono"></i>
+                        <span class="texto">Perfil</span>
+                    </a>
+                </li>
+
+            @endauth
+
         </ul>
     </nav>
 
@@ -62,30 +84,34 @@
 
             <div class="notificaciones-container">
 
+                <input
+                    type="hidden"
+                    id="csrf-notificaciones"
+                    value="{{ csrf_token() }}"
+                >
+
                 <button
                     type="button"
                     class="campana"
-                    id="btnNotificaciones">
-
-                    <span class="campana-icono">🔔</span>
+                    id="btnNotificaciones"
+                    aria-label="Notificaciones"
+                >
+                    <i class="fa-solid fa-bell campana-icono"></i>
 
                     @if(auth()->user()->unreadNotifications->count() > 0)
-
                         <span
                             class="contador-notificaciones"
-                            id="contadorNotificaciones">
-
+                            id="contadorNotificaciones"
+                        >
                             {{ auth()->user()->unreadNotifications->count() }}
-
                         </span>
-
                     @endif
-
                 </button>
 
                 <div
                     class="notificaciones-dropdown"
-                    id="notificacionesDropdown">
+                    id="notificacionesDropdown"
+                >
 
                     <div class="notificaciones-header">
                         <h3>Notificaciones</h3>
@@ -105,21 +131,22 @@
                             <button
                                 type="button"
                                 class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
-                                data-url="{{ route('notificaciones.leer', $notificacion->id) }}">
+                                data-url="{{ route('notificaciones.leer', $notificacion->id) }}"
+                            >
 
                                 <div class="notificacion-contenido">
 
-                                    <span class="notificacion-titulo">
+                                    <strong class="notificacion-titulo">
                                         {{ $notificacion->data['titulo'] ?? 'Notificación' }}
-                                    </span>
+                                    </strong>
 
                                     <p class="notificacion-mensaje">
                                         {{ $notificacion->data['mensaje'] ?? '' }}
                                     </p>
 
-                                    <span class="notificacion-fecha">
+                                    <small class="notificacion-fecha">
                                         {{ $notificacion->created_at->diffForHumans() }}
-                                    </span>
+                                    </small>
 
                                 </div>
 
@@ -131,9 +158,9 @@
 
                         @empty
 
-                            <p class="sin-notificaciones">
+                            <div class="sin-notificaciones">
                                 No tienes notificaciones.
-                            </p>
+                            </div>
 
                         @endforelse
 
@@ -148,20 +175,19 @@
                 <button
                     type="button"
                     class="perfil-boton"
-                    id="btnPerfil">
+                    id="btnPerfil"
+                    aria-label="Abrir menú de perfil"
+                >
 
                     <span class="perfil-avatar">
 
                         @if(auth()->user()->foto_perfil)
-
                             <img
                                 src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
-                                alt="Foto de perfil">
-
+                                alt="Foto de perfil"
+                            >
                         @else
-
                             {{ strtoupper(substr(auth()->user()->nombre, 0, 1)) }}
-
                         @endif
 
                     </span>
@@ -171,14 +197,15 @@
                     </span>
 
                     <span class="perfil-flecha">
-                        ▼
+                        <i class="fa-solid fa-chevron-down"></i>
                     </span>
 
                 </button>
 
                 <div
                     class="perfil-dropdown"
-                    id="perfilDropdown">
+                    id="perfilDropdown"
+                >
 
                     <div class="perfil-info">
 
@@ -195,55 +222,46 @@
 
                     <a
                         href="{{ route('perfil') }}"
-                        class="perfil-opcion">
-                        Mi perfil
+                        class="perfil-opcion"
+                    >
+                        Mi Perfil
                     </a>
 
-                    @if(auth()->user()->rol->nombre === 'usuario')
+                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional']))
                         <a
                             href="{{ route('solicitudes.mias') }}"
-                            class="perfil-opcion">
+                            class="perfil-opcion"
+                        >
                             Mis solicitudes
                         </a>
                     @endif
 
-                    @if(auth()->user()->rol->nombre === 'profesional')
+                    @if(in_array(auth()->user()->rol->nombre, ['profesional', 'proveedor']))
                         <a
                             href="{{ route('solicitudes.recibidas') }}"
-                            class="perfil-opcion">
+                            class="perfil-opcion"
+                        >
                             Solicitudes recibidas
                         </a>
                     @endif
 
                     <form
                         action="{{ route('logout') }}"
-                        method="POST">
-
+                        method="POST"
+                    >
                         @csrf
 
                         <button
                             type="submit"
-                            class="perfil-opcion cerrar-sesion">
+                            class="perfil-opcion cerrar-sesion"
+                        >
                             Cerrar sesión
                         </button>
-
                     </form>
 
                 </div>
 
             </div>
-
-        </div>
-
-    @else
-
-        <div class="acciones-invitado">
-
-            <a
-                href="{{ route('login') }}"
-                class="btn-login">
-                Iniciar sesión
-            </a>
 
         </div>
 
@@ -269,7 +287,8 @@
 
         <form
             action="{{ route('usuarios.buscar') }}"
-            method="GET">
+            method="GET"
+        >
 
             <div class="campo-busqueda">
 
@@ -277,7 +296,8 @@
                     type="text"
                     name="buscar"
                     value="{{ $busqueda }}"
-                    placeholder="Buscar por nombre, profesión, especialidad, material o ubicación...">
+                    placeholder="Buscar por nombre, profesión, especialidad, material o ubicación..."
+                >
 
                 <button type="submit">
                     Buscar
@@ -295,19 +315,22 @@
 
                     <option
                         value="usuario"
-                        {{ $tipo === 'usuario' ? 'selected' : '' }}>
+                        {{ $tipo === 'usuario' ? 'selected' : '' }}
+                    >
                         Usuarios
                     </option>
 
                     <option
                         value="profesional"
-                        {{ $tipo === 'profesional' ? 'selected' : '' }}>
+                        {{ $tipo === 'profesional' ? 'selected' : '' }}
+                    >
                         Profesionales
                     </option>
 
                     <option
                         value="proveedor"
-                        {{ $tipo === 'proveedor' ? 'selected' : '' }}>
+                        {{ $tipo === 'proveedor' ? 'selected' : '' }}
+                    >
                         Proveedores
                     </option>
 
@@ -315,7 +338,8 @@
 
                 <select
                     name="profesion_id"
-                    id="profesion_id">
+                    id="profesion_id"
+                >
 
                     <option value="">
                         Todas las profesiones
@@ -325,10 +349,9 @@
 
                         <option
                             value="{{ $profesion->id }}"
-                            {{ $profesionId == $profesion->id ? 'selected' : '' }}>
-
+                            {{ $profesionId == $profesion->id ? 'selected' : '' }}
+                        >
                             {{ $profesion->nombre }}
-
                         </option>
 
                     @endforeach
@@ -337,7 +360,8 @@
 
                 <select
                     name="especialidad_id"
-                    id="especialidad_id">
+                    id="especialidad_id"
+                >
 
                     <option value="">
                         Todas las especialidades
@@ -350,10 +374,9 @@
                             <option
                                 value="{{ $especialidad->id }}"
                                 data-profesion="{{ $profesion->id }}"
-                                {{ $especialidadId == $especialidad->id ? 'selected' : '' }}>
-
+                                {{ $especialidadId == $especialidad->id ? 'selected' : '' }}
+                            >
                                 {{ $especialidad->nombre }}
-
                             </option>
 
                         @endforeach
@@ -371,7 +394,8 @@
 
                     <a
                         href="{{ route('usuarios.buscar') }}"
-                        class="btn-limpiar">
+                        class="btn-limpiar"
+                    >
                         Limpiar filtros
                     </a>
 
@@ -404,7 +428,6 @@
 
                     @php
                         $calificacionesUsuario = $usuario->calificacionesRecibidas;
-
                         $totalCalificaciones = $calificacionesUsuario->count();
 
                         $promedioCalificacion = $totalCalificaciones > 0
@@ -420,7 +443,8 @@
 
                                 <img
                                     src="{{ asset('storage/' . $usuario->foto_perfil) }}"
-                                    alt="Foto de {{ $usuario->nombre }}">
+                                    alt="Foto de {{ $usuario->nombre }}"
+                                >
 
                             @else
 
@@ -439,35 +463,29 @@
                             </span>
 
                             <h3 class="usuario-nombre">
-
                                 {{ $usuario->nombre }}
                                 {{ $usuario->apellido_paterno }}
-
                             </h3>
 
                             <div class="calificacion-tarjeta">
 
                                 <div
                                     class="estrellas-calificacion"
-                                    aria-label="Calificación promedio {{ number_format($promedioCalificacion, 1) }} de 5">
+                                    aria-label="Calificación promedio {{ number_format($promedioCalificacion, 1) }} de 5"
+                                >
 
                                     @for($i = 1; $i <= 5; $i++)
 
                                         @php
-                                            $relleno =
-                                                ($promedioCalificacion - ($i - 1)) * 100;
-
-                                            $relleno =
-                                                max(
-                                                    0,
-                                                    min(100, $relleno)
-                                                );
+                                            $relleno = ($promedioCalificacion - ($i - 1)) * 100;
+                                            $relleno = max(0, min(100, $relleno));
                                         @endphp
 
                                         <span
                                             class="estrella-calificacion"
                                             style="--relleno: {{ $relleno }}%"
-                                            aria-hidden="true">
+                                            aria-hidden="true"
+                                        >
                                             ★
                                         </span>
 
@@ -503,9 +521,7 @@
                                 @if($usuario->profesional->profesiones->isNotEmpty())
 
                                     <p class="usuario-profesion-principal">
-
                                         {{ $usuario->profesional->profesiones->pluck('nombre')->join(', ') }}
-
                                     </p>
 
                                 @endif
@@ -513,9 +529,7 @@
                                 @if($usuario->profesional->especialidades->isNotEmpty())
 
                                     <p class="usuario-especialidad">
-
                                         {{ $usuario->profesional->especialidades->pluck('nombre')->join(', ') }}
-
                                     </p>
 
                                 @endif
@@ -531,11 +545,9 @@
                                         {{ $usuario->profesional->servicios->pluck('nombre')->take(2)->join(', ') }}
 
                                         @if($usuario->profesional->servicios->count() > 2)
-
                                             y
                                             {{ $usuario->profesional->servicios->count() - 2 }}
                                             más
-
                                         @endif
 
                                     </p>
@@ -551,7 +563,9 @@
 
                                     <p class="usuario-servicios">
 
-                                        <strong>Materiales:</strong>
+                                        <strong>
+                                            Materiales:
+                                        </strong>
 
                                         {{ $usuario->proveedor->materiales->pluck('nombre')->take(3)->join(', ') }}
 
@@ -564,7 +578,8 @@
                             @if($usuario->ubicacion)
 
                                 <p class="usuario-ubicacion">
-                                    📍 {{ $usuario->ubicacion }}
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    {{ $usuario->ubicacion }}
                                 </p>
 
                             @endif
@@ -576,25 +591,21 @@
                                     !$descripcion &&
                                     $usuario->rol->nombre === 'profesional'
                                 ) {
-                                    $descripcion =
-                                        $usuario->profesional?->descripcion;
+                                    $descripcion = $usuario->profesional?->descripcion;
                                 }
 
                                 if (
                                     !$descripcion &&
                                     $usuario->rol->nombre === 'proveedor'
                                 ) {
-                                    $descripcion =
-                                        $usuario->proveedor?->descripcion;
+                                    $descripcion = $usuario->proveedor?->descripcion;
                                 }
                             @endphp
 
                             @if($descripcion)
 
                                 <p class="usuario-descripcion">
-
                                     {{ \Illuminate\Support\Str::limit($descripcion, 100) }}
-
                                 </p>
 
                             @else
@@ -609,7 +620,8 @@
 
                         <a
                             href="{{ route('perfil.publico', $usuario) }}"
-                            class="btn-ver-perfil">
+                            class="btn-ver-perfil"
+                        >
                             Ver perfil
                         </a>
 
@@ -638,12 +650,10 @@
                     @endif
 
                     <span class="pagina-actual">
-
                         Página
                         {{ $usuarios->currentPage() }}
                         de
                         {{ $usuarios->lastPage() }}
-
                     </span>
 
                     @if($usuarios->hasMorePages())
@@ -693,4 +703,5 @@
 </footer>
 
 </body>
+
 </html>

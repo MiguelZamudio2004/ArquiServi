@@ -1,12 +1,21 @@
 const btnNotificaciones = document.getElementById('btnNotificaciones');
 const dropdownNotificaciones = document.getElementById('notificacionesDropdown');
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
-    || document.getElementById('csrf-notificaciones')?.value;
+
+const csrfToken =
+    document.querySelector('meta[name="csrf-token"]')?.content ||
+    document.getElementById('csrf-notificaciones')?.value;
 
 if (btnNotificaciones && dropdownNotificaciones) {
     btnNotificaciones.addEventListener('click', function (event) {
         event.stopPropagation();
+
         dropdownNotificaciones.classList.toggle('activo');
+
+        const perfilDropdown = document.getElementById('perfilDropdown');
+
+        if (perfilDropdown) {
+            perfilDropdown.classList.remove('activo');
+        }
     });
 
     dropdownNotificaciones.addEventListener('click', function (event) {
@@ -20,10 +29,7 @@ if (btnNotificaciones && dropdownNotificaciones) {
 
 document.querySelectorAll('.notificacion').forEach(function (notificacion) {
     notificacion.addEventListener('click', async function () {
-        if (!this.classList.contains('no-leida')) return;
-
         if (!csrfToken || !this.dataset.url) {
-            console.error('Falta el token CSRF o la URL de la notificación.');
             return;
         }
 
@@ -32,17 +38,26 @@ document.querySelectorAll('.notificacion').forEach(function (notificacion) {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/json'
-                }
+                },
+                credentials: 'same-origin'
             });
 
-            if (!respuesta.ok) throw new Error('No se pudo marcar la notificación como leída.');
+            if (!respuesta.ok) {
+                return;
+            }
 
             const datos = await respuesta.json();
 
             this.classList.remove('no-leida');
             this.classList.add('leida');
-            this.querySelector('.indicador-no-leida')?.remove();
+
+            const indicador = this.querySelector('.indicador-no-leida');
+
+            if (indicador) {
+                indicador.remove();
+            }
 
             const contador = document.getElementById('contadorNotificaciones');
 
@@ -53,8 +68,13 @@ document.querySelectorAll('.notificacion').forEach(function (notificacion) {
                     contador.remove();
                 }
             }
+
+            if (datos.redirect_url) {
+                window.location.href = datos.redirect_url;
+            }
+
         } catch (error) {
-            console.error(error);
+            return;
         }
     });
 });

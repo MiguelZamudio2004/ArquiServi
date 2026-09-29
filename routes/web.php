@@ -11,6 +11,7 @@ use App\Http\Controllers\RegistroProfesionalController;
 use App\Http\Controllers\RegistroProveedorController;
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/solicitudes/mias', [SolicitudController::class, 'mias'])
         ->name('solicitudes.mias');
 
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/solicitudes/{solicitud}/terminar', [SolicitudController::class, 'terminar'])
         ->name('solicitudes.terminar');
+
 });
 
 Route::get('/usuarios', [PerfilController::class, 'buscar'])
@@ -64,6 +66,7 @@ Route::post('/register/proveedor', [RegistroProveedorController::class, 'guardar
     ->name('registro.proveedor.guardar');
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/perfil', [PerfilController::class, 'mostrar'])
         ->name('perfil');
 
@@ -72,6 +75,7 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/perfil', [PerfilController::class, 'actualizar'])
         ->name('perfil.actualizar');
+
 });
 
 Route::post('/notificaciones/{id}/leer', [NotificacionController::class, 'marcarLeida'])
@@ -119,11 +123,3 @@ Route::get('/newpassword', [RecuperacionController::class, 'mostrarNuevaPassword
 
 Route::post('/newpassword', [RecuperacionController::class, 'cambiarPassword'])
     ->name('recuperacion.cambiar');
-
-Route::get('/registerprof', function () {
-    return view('registerprof');
-});
-
-Route::get('/registerprov', function () {
-    return view('registerprov');
-});

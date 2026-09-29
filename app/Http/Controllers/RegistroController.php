@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Rol;
 use App\Models\Usuario;
+use App\Notifications\BienvenidoArquiservi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Notifications\BienvenidoArquiServi;
 
 class RegistroController extends Controller
 {
@@ -19,36 +19,52 @@ class RegistroController extends Controller
     {
         $datos = $request->validate(
             [
-                'nombre' => 'required|string|max:100',
-                'apellido_paterno' => 'required|string|max:100',
-                'apellido_materno' => 'nullable|string|max:100',
-                'correo' => 'required|email|max:150|unique:usuarios,correo',
-                'telefono' => 'nullable|string|max:20',
-                'password' => 'required|string|min:8|confirmed',
-                'rol' => 'required|in:usuario,profesional,proveedor',
+                'nombre' => ['required', 'string', 'max:100'],
+                'apellido_paterno' => ['required', 'string', 'max:100'],
+                'apellido_materno' => ['required', 'string', 'max:100'],
+                'correo' => ['required', 'email', 'max:150', 'unique:usuarios,correo'],
+                'telefono' => ['required', 'string', 'max:20'],
+                'rol' => ['required', 'in:usuario,profesional,proveedor'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
             ],
             [
-                'correo.unique' => ' ⚠ El correo electrónico ya está registrado. ⚠ ',
-                'password.confirmed' => ' ⚠ La confirmación de la contraseña no coincide. ⚠ ',
-                'correo.email' => ' ⚠ El correo electrónico no es válido. ⚠ ',
-                'password.min' => ' ⚠ La contraseña debe tener al menos 8 caracteres. ⚠ ',
+                'nombre.required' => 'El nombre es obligatorio.',
+                'apellido_paterno.required' => 'El apellido paterno es obligatorio.',
+                'apellido_materno.required' => 'El apellido materno es obligatorio.',
+                'correo.required' => 'El correo electrónico es obligatorio.',
+                'correo.email' => 'El correo electrónico no es válido.',
+                'correo.unique' => 'Este correo electrónico ya está registrado.',
+                'telefono.required' => 'El número de teléfono es obligatorio.',
+                'rol.required' => 'Debes seleccionar un rol.',
+                'rol.in' => 'El rol seleccionado no es válido.',
+                'password.required' => 'La contraseña es obligatoria.',
+                'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+                'password.confirmed' => 'Las contraseñas no coinciden.',
             ]
         );
 
-        $rol = Rol::where('nombre', $datos['rol'])->firstOrFail();
+        $rol = Rol::where('nombre', $datos['rol'])->first();
+
+        if (!$rol) {
+            return back()
+                ->withErrors([
+                    'rol' => 'El rol seleccionado no existe.'
+                ])
+                ->withInput();
+        }
 
         $usuario = Usuario::create([
             'rol_id' => $rol->id,
             'nombre' => $datos['nombre'],
             'apellido_paterno' => $datos['apellido_paterno'],
-            'apellido_materno' => $datos['apellido_materno'] ?? null,
+            'apellido_materno' => $datos['apellido_materno'],
             'correo' => $datos['correo'],
-            'telefono' => $datos['telefono'] ?? null,
+            'telefono' => $datos['telefono'],
             'password' => Hash::make($datos['password']),
             'estado' => 'activo',
         ]);
 
-        $usuario->notify(new BienvenidoArquiServi());
+        $usuario->notify(new BienvenidoArquiservi());
 
         if ($datos['rol'] === 'profesional') {
             session([
@@ -68,6 +84,6 @@ class RegistroController extends Controller
 
         return redirect()
             ->route('login')
-            ->with('success', 'Usuario registrado exitosamente.');
+            ->with('success', 'Tu cuenta se creó correctamente.');
     }
 }
