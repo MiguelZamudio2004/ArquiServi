@@ -354,6 +354,69 @@ body {
     text-align: center;
 }
 
+.menu-superior {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: -48px;
+}
+
+.menu-lista {
+    display: flex;
+    gap: 25px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 6px 15px;
+    transition: all 0.6s cubic-bezier(0.2, 0.74, 0.18, 1);
+    align-items: center;
+}
+
+.menu-lista li {
+    list-style: none;
+}
+
+.menu-lista a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: all 0.4s ease;
+}
+
+.icono {
+    font-size: clamp(16px, 2.5vw, 22px);
+    transition: transform 0.3s ease;
+    line-height: 1;
+}
+
+.texto {
+    font-size: clamp(12px, 2vw, 16px);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Efecto hover: se expande y muestra texto */
+.menu-lista:hover {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.menu-lista:hover .texto {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.menu-lista:hover .icono {
+    transform: scale(1.1);
+}
+
 /* CONTENIDO DEL PERFIL */
 .perfil {
     width: 90%;

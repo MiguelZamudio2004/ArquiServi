@@ -12,6 +12,7 @@
 
     <script src="{{ asset('js/notification.js') }}" defer></script>
     <script src="{{ asset('js/perfil.js') }}" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -20,6 +21,35 @@
     <a href="{{ route('menu') }}" class="logo-link">
         <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
     </a>
+
+    <nav class="menu-superior">
+        <ul class="menu-lista">
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-house icono"></i>
+                    <span class="texto">Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-folder-open icono"></i>
+                    <span class="texto">Catálogo</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-envelope icono"></i>
+                    <span class="texto">Solicitudes</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-user icono"></i>
+                    <span class="texto">Perfil</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
     @auth
     <div class="acciones-usuario">
