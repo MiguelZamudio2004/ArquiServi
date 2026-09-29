@@ -332,18 +332,17 @@
 
         @guest
 
-            <label class="etiqueta">
-                Inicia sesión para ver detalles de tu cuenta
-            </label>
+    <label class="etiqueta">
+        Inicia sesión para ver detalles de tu cuenta
+    </label>
 
-            <a
-                href="{{ route('login') }}"
-                class="btn"
-            >
-                Iniciar sesión
-            </a>
+    <button class="btn">
+        <a href="{{ route('login') }}">
+            Iniciar sesión
+        </a>
+    </button>
 
-        @endguest
+@endguest
 
     </section>
 
