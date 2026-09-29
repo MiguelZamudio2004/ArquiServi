@@ -45,7 +45,7 @@
 
             @auth
 
-                @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional']))
+                @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
                             <i class="fa-solid fa-envelope icono"></i>
@@ -93,20 +93,16 @@
                     id="btnNotificaciones"
                     aria-label="Notificaciones"
                 >
-
                     <i class="fa-solid fa-bell campana-icono"></i>
 
                     @if(auth()->user()->unreadNotifications->count() > 0)
-
                         <span
                             class="contador-notificaciones"
                             id="contadorNotificaciones"
                         >
                             {{ auth()->user()->unreadNotifications->count() }}
                         </span>
-
                     @endif
-
                 </button>
 
                 <div
@@ -120,14 +116,7 @@
 
                     <div class="notificaciones-lista">
 
-                        @forelse(
-                            auth()->user()
-                                ->notifications()
-                                ->latest()
-                                ->take(10)
-                                ->get()
-                            as $notificacion
-                        )
+                        @forelse(auth()->user()->notifications()->latest()->take(10)->get() as $notificacion)
 
                             <button
                                 type="button"
@@ -232,7 +221,7 @@
                         Mi Perfil
                     </a>
 
-                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional']))
+                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
 
                         <a
                             href="{{ route('solicitudes.mias') }}"
@@ -258,7 +247,6 @@
                         action="{{ route('logout') }}"
                         method="POST"
                     >
-
                         @csrf
 
                         <button
@@ -267,7 +255,6 @@
                         >
                             Cerrar sesión
                         </button>
-
                     </form>
 
                 </div>
@@ -285,7 +272,6 @@
 </h2>
 
 <h2 class="bienvenida">
-
     <span style="--i:1">A</span>
     <span style="--i:2">R</span>
     <span style="--i:3">Q</span>
@@ -296,7 +282,6 @@
     <span style="--i:8">R</span>
     <span style="--i:9">V</span>
     <span style="--i:10">I</span>
-
 </h2>
 
 @auth
@@ -316,11 +301,9 @@
         </label>
 
         <select class="form-control">
-
             <option disabled selected>
                 Selecciona tu servicio requerido
             </option>
-
         </select>
 
         <a
@@ -332,17 +315,17 @@
 
         @guest
 
-    <label class="etiqueta">
-        Inicia sesión para ver detalles de tu cuenta
-    </label>
+            <label class="etiqueta">
+                Inicia sesión para ver detalles de tu cuenta
+            </label>
 
-    <button class="btn">
-        <a href="{{ route('login') }}">
-            Iniciar sesión
-        </a>
-    </button>
+            <button class="btn">
+                <a href="{{ route('login') }}">
+                    Iniciar sesión
+                </a>
+            </button>
 
-@endguest
+        @endguest
 
     </section>
 
@@ -361,7 +344,6 @@
 <section class="info-arquiservi">
 
     <div class="bloque">
-
         <div class="bloque-contenido">
 
             <div class="bloque-texto">
@@ -386,11 +368,9 @@
             </div>
 
         </div>
-
     </div>
 
     <div class="bloque alterno">
-
         <div class="bloque-contenido">
 
             <div class="bloque-imagen">
@@ -415,11 +395,9 @@
             </div>
 
         </div>
-
     </div>
 
     <div class="bloque">
-
         <div class="bloque-contenido">
 
             <div class="bloque-texto">
@@ -444,11 +422,9 @@
             </div>
 
         </div>
-
     </div>
 
     <div class="bloque alterno">
-
         <div class="bloque-contenido">
 
             <div class="bloque-imagen">
@@ -473,11 +449,9 @@
             </div>
 
         </div>
-
     </div>
 
     <div class="bloque">
-
         <div class="bloque-contenido">
 
             <div class="bloque-texto">
@@ -487,35 +461,13 @@
                 </h3>
 
                 <ul class="lista">
-
-                    <li>
-                        Simplificar la búsqueda de profesionales éticos mediante portafolios visuales y reseñas verificadas y calificadas.
-                    </li>
-
-                    <li>
-                        Reducir el tiempo de investigación técnica para identificar despachos de arquitectura, directores responsables de obra y trámites ante instancias gubernamentales.
-                    </li>
-
-                    <li>
-                        Ser un canal impulsador para proveedores de la construcción y servicios relacionados.
-                    </li>
-
-                    <li>
-                        Facilitar a los profesionales herramientas y mecanismo de gestión comercial y visibilidad de servicios a prestar.
-                    </li>
-
-                    <li>
-                        Conectar mediante suscripciones y registros de visibilidad para profesionales, prestadores de servicios y materiales en negociación directa.
-                    </li>
-
-                    <li>
-                        Generar una base de datos de materiales calificados por criterios técnicos, de alta calidad, sustentabilidad y aplicación.
-                    </li>
-
-                    <li>
-                        Fomentar la profesionalización e inclusión digital de pequeñas empresas y técnicos de la construcción.
-                    </li>
-
+                    <li>Simplificar la búsqueda de profesionales éticos mediante portafolios visuales y reseñas verificadas y calificadas.</li>
+                    <li>Reducir el tiempo de investigación técnica para identificar despachos de arquitectura, directores responsables de obra y trámites ante instancias gubernamentales.</li>
+                    <li>Ser un canal impulsador para proveedores de la construcción y servicios relacionados.</li>
+                    <li>Facilitar a los profesionales herramientas y mecanismo de gestión comercial y visibilidad de servicios a prestar.</li>
+                    <li>Conectar mediante suscripciones y registros de visibilidad para profesionales, prestadores de servicios y materiales en negociación directa.</li>
+                    <li>Generar una base de datos de materiales calificados por criterios técnicos, de alta calidad, sustentabilidad y aplicación.</li>
+                    <li>Fomentar la profesionalización e inclusión digital de pequeñas empresas y técnicos de la construcción.</li>
                 </ul>
 
             </div>
@@ -530,11 +482,9 @@
             </div>
 
         </div>
-
     </div>
 
     <div class="bloque alterno">
-
         <div class="bloque-contenido">
 
             <div class="bloque-imagen">
@@ -553,37 +503,19 @@
                 </h3>
 
                 <ul class="lista">
-
-                    <li>
-                        Transparencia: Promovemos relaciones directas, claras y honestas entre clientes, profesionales y proveedores.
-                    </li>
-
-                    <li>
-                        Colaboración: Creemos en la fuerza de la comunidad para potenciar el crecimiento técnico y comercial del sector.
-                    </li>
-
-                    <li>
-                        Calidad y Excelencia: Incentivamos el trabajo bien hecho a través de portafolios verificables y evaluaciones de experiencias reales.
-                    </li>
-
-                    <li>
-                        Innovación: Digitalizamos procesos tradicionales de búsqueda, contacto y selección en la industria de la edificación.
-                    </li>
-
-                    <li>
-                        Inclusión Sectorial: Brindamos las mismas oportunidades de visibilidad tanto a grandes empresas de servicios como a profesionales e independientes.
-                    </li>
-
+                    <li>Transparencia: Promovemos relaciones directas, claras y honestas entre clientes, profesionales y proveedores.</li>
+                    <li>Colaboración: Creemos en la fuerza de la comunidad para potenciar el crecimiento técnico y comercial del sector.</li>
+                    <li>Calidad y Excelencia: Incentivamos el trabajo bien hecho a través de portafolios verificables y evaluaciones de experiencias reales.</li>
+                    <li>Innovación: Digitalizamos procesos tradicionales de búsqueda, contacto y selección en la industria de la edificación.</li>
+                    <li>Inclusión Sectorial: Brindamos las mismas oportunidades de visibilidad tanto a grandes empresas de servicios como a profesionales e independientes.</li>
                 </ul>
 
             </div>
 
         </div>
-
     </div>
 
     <div class="bloque">
-
         <div class="bloque-contenido">
 
             <div class="bloque-texto">
@@ -597,19 +529,9 @@
                 </h4>
 
                 <ul class="lista">
-
-                    <li>
-                        Todo en un solo lugar: Encuentra desde el arquitecto para tu proyecto hasta el proveedor del material y servicios de reparación y remodelación que necesitas.
-                    </li>
-
-                    <li>
-                        Decisiones informadas: Explora portafolios visuales, catálogos actualizados y opiniones de otros usuarios.
-                    </li>
-
-                    <li>
-                        Contacto directo: Negocia, cotiza y acuerda sin intermediarios ni comisiones ocultas.
-                    </li>
-
+                    <li>Todo en un solo lugar: Encuentra desde el arquitecto para tu proyecto hasta el proveedor del material y servicios de reparación y remodelación que necesitas.</li>
+                    <li>Decisiones informadas: Explora portafolios visuales, catálogos actualizados y opiniones de otros usuarios.</li>
+                    <li>Contacto directo: Negocia, cotiza y acuerda sin intermediarios ni comisiones ocultas.</li>
                 </ul>
 
                 <h4 class="subapartado">
@@ -617,19 +539,9 @@
                 </h4>
 
                 <ul class="lista">
-
-                    <li>
-                        Vitrina profesional: Exhibe tu portafolio, especialidad y zona de cobertura ante clientes potenciales.
-                    </li>
-
-                    <li>
-                        Reputación digital: Construye credibilidad en el sector a través de valoraciones y experiencias reales.
-                    </li>
-
-                    <li>
-                        Red de alianzas: Localiza proveedores de materiales cerca de tus zonas de obra.
-                    </li>
-
+                    <li>Vitrina profesional: Exhibe tu portafolio, especialidad y zona de cobertura ante clientes potenciales.</li>
+                    <li>Reputación digital: Construye credibilidad en el sector a través de valoraciones y experiencias reales.</li>
+                    <li>Red de alianzas: Localiza proveedores de materiales cerca de tus zonas de obra.</li>
                 </ul>
 
                 <h4 class="subapartado">
@@ -637,19 +549,9 @@
                 </h4>
 
                 <ul class="lista">
-
-                    <li>
-                        Catálogo activo: Publica tus insumos y productos para que sean vistos por profesionales en etapa de especificación.
-                    </li>
-
-                    <li>
-                        Alcance local y regional: Posiciona tu negocio en las zonas de trabajo donde entregas material.
-                    </li>
-
-                    <li>
-                        Crecimiento B2B y B2C: Impacta tanto al cliente final como a los contratistas y despachos de arquitectura.
-                    </li>
-
+                    <li>Catálogo activo: Publica tus insumos y productos para que sean vistos por profesionales en etapa de especificación.</li>
+                    <li>Alcance local y regional: Posiciona tu negocio en las zonas de trabajo donde entregas material.</li>
+                    <li>Crecimiento B2B y B2C: Impacta tanto al cliente final como a los contratistas y despachos de arquitectura.</li>
                 </ul>
 
             </div>
@@ -664,17 +566,12 @@
             </div>
 
         </div>
-
     </div>
 
 </section>
 
 <footer class="pie">
-
-    <p>
-        © 2026 ArquiServi. Todos los derechos reservados.
-    </p>
-
+    <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
 </footer>
 
 </body>

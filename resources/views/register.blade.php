@@ -159,7 +159,7 @@
 
             <span
                 class="eye"
-                id="eyePassword"
+                id="eye"
             >
                 👁
             </span>
@@ -197,7 +197,7 @@
 
             <span
                 class="eye"
-                id="eyeConfirmPassword"
+                id="eye"
             >
                 👁
             </span>

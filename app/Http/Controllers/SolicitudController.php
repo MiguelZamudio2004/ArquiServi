@@ -20,7 +20,7 @@ class SolicitudController extends Controller
         abort_if(
             !in_array(
                 $solicitante->rol->nombre,
-                ['usuario', 'profesional']
+                ['usuario', 'profesional', 'proveedor']
             ),
             403
         );
@@ -44,9 +44,7 @@ class SolicitudController extends Controller
             404
         );
 
-        if (
-            $destinatario->rol->nombre === 'profesional'
-        ) {
+        if ($destinatario->rol->nombre === 'profesional') {
             abort_if(
                 !$destinatario->profesional ||
                 $destinatario->profesional->servicios->isEmpty(),
@@ -54,9 +52,7 @@ class SolicitudController extends Controller
             );
         }
 
-        if (
-            $destinatario->rol->nombre === 'proveedor'
-        ) {
+        if ($destinatario->rol->nombre === 'proveedor') {
             abort_if(
                 !$destinatario->proveedor ||
                 $destinatario->proveedor->materiales->isEmpty(),
@@ -79,7 +75,7 @@ class SolicitudController extends Controller
         abort_if(
             !in_array(
                 $solicitante->rol->nombre,
-                ['usuario', 'profesional']
+                ['usuario', 'profesional', 'proveedor']
             ),
             403
         );
@@ -116,10 +112,7 @@ class SolicitudController extends Controller
             $datos['destinatario_id']
         );
 
-        if (
-            $destinatario->id ===
-            $solicitante->id
-        ) {
+        if ($destinatario->id === $solicitante->id) {
             return back()
                 ->withErrors([
                     'destinatario_id' => 'No puedes enviarte una solicitud a ti mismo.'
@@ -143,15 +136,8 @@ class SolicitudController extends Controller
         $servicioId = null;
         $materialId = null;
 
-        if (
-            $destinatario->rol->nombre ===
-            'profesional'
-        ) {
-            if (
-                empty(
-                    $datos['servicio_id']
-                )
-            ) {
+        if ($destinatario->rol->nombre === 'profesional') {
+            if (empty($datos['servicio_id'])) {
                 return back()
                     ->withErrors([
                         'servicio_id' => 'Selecciona un servicio.'
@@ -159,9 +145,7 @@ class SolicitudController extends Controller
                     ->withInput();
             }
 
-            if (
-                !$destinatario->profesional
-            ) {
+            if (!$destinatario->profesional) {
                 return back()
                     ->withErrors([
                         'destinatario_id' => 'El perfil profesional no está disponible.'
@@ -169,15 +153,14 @@ class SolicitudController extends Controller
                     ->withInput();
             }
 
-            $ofreceServicio =
-                $destinatario
-                    ->profesional
-                    ->servicios()
-                    ->where(
-                        'servicios.id',
-                        $datos['servicio_id']
-                    )
-                    ->exists();
+            $ofreceServicio = $destinatario
+                ->profesional
+                ->servicios()
+                ->where(
+                    'servicios.id',
+                    $datos['servicio_id']
+                )
+                ->exists();
 
             if (!$ofreceServicio) {
                 return back()
@@ -187,19 +170,11 @@ class SolicitudController extends Controller
                     ->withInput();
             }
 
-            $servicioId =
-                $datos['servicio_id'];
+            $servicioId = $datos['servicio_id'];
         }
 
-        if (
-            $destinatario->rol->nombre ===
-            'proveedor'
-        ) {
-            if (
-                empty(
-                    $datos['material_id']
-                )
-            ) {
+        if ($destinatario->rol->nombre === 'proveedor') {
+            if (empty($datos['material_id'])) {
                 return back()
                     ->withErrors([
                         'material_id' => 'Selecciona un material o producto.'
@@ -207,9 +182,7 @@ class SolicitudController extends Controller
                     ->withInput();
             }
 
-            if (
-                !$destinatario->proveedor
-            ) {
+            if (!$destinatario->proveedor) {
                 return back()
                     ->withErrors([
                         'destinatario_id' => 'El perfil del proveedor no está disponible.'
@@ -217,19 +190,18 @@ class SolicitudController extends Controller
                     ->withInput();
             }
 
-            $ofreceMaterial =
-                $destinatario
-                    ->proveedor
-                    ->materiales()
-                    ->where(
-                        'materiales.id',
-                        $datos['material_id']
-                    )
-                    ->wherePivot(
-                        'disponible',
-                        true
-                    )
-                    ->exists();
+            $ofreceMaterial = $destinatario
+                ->proveedor
+                ->materiales()
+                ->where(
+                    'materiales.id',
+                    $datos['material_id']
+                )
+                ->wherePivot(
+                    'disponible',
+                    true
+                )
+                ->exists();
 
             if (!$ofreceMaterial) {
                 return back()
@@ -239,28 +211,16 @@ class SolicitudController extends Controller
                     ->withInput();
             }
 
-            $materialId =
-                $datos['material_id'];
+            $materialId = $datos['material_id'];
         }
 
         $solicitud = Solicitud::create([
-            'solicitante_id' =>
-                $solicitante->id,
-
-            'destinatario_id' =>
-                $destinatario->id,
-
-            'servicio_id' =>
-                $servicioId,
-
-            'material_id' =>
-                $materialId,
-
-            'descripcion' =>
-                $datos['descripcion'],
-
-            'estado' =>
-                'pendiente'
+            'solicitante_id' => $solicitante->id,
+            'destinatario_id' => $destinatario->id,
+            'servicio_id' => $servicioId,
+            'material_id' => $materialId,
+            'descripcion' => $datos['descripcion'],
+            'estado' => 'pendiente'
         ]);
 
         $solicitud->load(
@@ -277,9 +237,7 @@ class SolicitudController extends Controller
         );
 
         return redirect()
-            ->route(
-                'solicitudes.mias'
-            )
+            ->route('solicitudes.mias')
             ->with(
                 'exito',
                 'Solicitud enviada correctamente.'
@@ -295,19 +253,18 @@ class SolicitudController extends Controller
         abort_if(
             !in_array(
                 $usuario->rol->nombre,
-                ['usuario', 'profesional']
+                ['usuario', 'profesional', 'proveedor']
             ),
             403
         );
 
-        $solicitudes =
-            Solicitud::with(
-                'solicitante.rol',
-                'destinatario.rol',
-                'servicio',
-                'material',
-                'calificaciones'
-            )
+        $solicitudes = Solicitud::with(
+            'solicitante.rol',
+            'destinatario.rol',
+            'servicio',
+            'material',
+            'calificaciones'
+        )
             ->where(
                 'solicitante_id',
                 $usuario->id
@@ -335,14 +292,13 @@ class SolicitudController extends Controller
             403
         );
 
-        $solicitudes =
-            Solicitud::with(
-                'solicitante.rol',
-                'destinatario.rol',
-                'servicio',
-                'material',
-                'calificaciones'
-            )
+        $solicitudes = Solicitud::with(
+            'solicitante.rol',
+            'destinatario.rol',
+            'servicio',
+            'material',
+            'calificaciones'
+        )
             ->where(
                 'destinatario_id',
                 $usuario->id
@@ -356,9 +312,8 @@ class SolicitudController extends Controller
         );
     }
 
-    public function mostrar(
-        Solicitud $solicitud
-    ) {
+    public function mostrar(Solicitud $solicitud)
+    {
         $usuario = auth()->user();
 
         $esSolicitante =
@@ -393,14 +348,12 @@ class SolicitudController extends Controller
         );
     }
 
-    public function calificar(
-        Solicitud $solicitud
-    ) {
+    public function calificar(Solicitud $solicitud)
+    {
         $usuario = auth()->user();
 
         abort_if(
-            $solicitud->estado !==
-            'terminada',
+            $solicitud->estado !== 'terminada',
             403
         );
 
@@ -425,11 +378,10 @@ class SolicitudController extends Controller
             403
         );
 
-        $yaCalifico =
-            Calificacion::where(
-                'solicitud_id',
-                $solicitud->id
-            )
+        $yaCalifico = Calificacion::where(
+            'solicitud_id',
+            $solicitud->id
+        )
             ->where(
                 'evaluador_id',
                 $usuario->id
@@ -443,8 +395,7 @@ class SolicitudController extends Controller
         );
 
         if ($esSolicitante) {
-            $evaluado =
-                $solicitud->destinatario;
+            $evaluado = $solicitud->destinatario;
 
             $tipo =
                 $solicitud
@@ -454,11 +405,9 @@ class SolicitudController extends Controller
                     ? 'proveedor'
                     : 'profesional';
         } else {
-            $evaluado =
-                $solicitud->solicitante;
+            $evaluado = $solicitud->solicitante;
 
-            $tipo =
-                'cliente';
+            $tipo = 'cliente';
         }
 
         return view(
@@ -477,13 +426,9 @@ class SolicitudController extends Controller
     ) {
         $usuario = $request->user();
 
-        if (
-            $solicitud->estado !==
-            'terminada'
-        ) {
+        if ($solicitud->estado !== 'terminada') {
             return response()->json([
-                'message' =>
-                    'Solo puedes calificar solicitudes terminadas.'
+                'message' => 'Solo puedes calificar solicitudes terminadas.'
             ], 403);
         }
 
@@ -505,16 +450,14 @@ class SolicitudController extends Controller
             !$esDestinatario
         ) {
             return response()->json([
-                'message' =>
-                    'No tienes permiso para realizar esta calificación.'
+                'message' => 'No tienes permiso para realizar esta calificación.'
             ], 403);
         }
 
-        $yaCalifico =
-            Calificacion::where(
-                'solicitud_id',
-                $solicitud->id
-            )
+        $yaCalifico = Calificacion::where(
+            'solicitud_id',
+            $solicitud->id
+        )
             ->where(
                 'evaluador_id',
                 $usuario->id
@@ -523,21 +466,18 @@ class SolicitudController extends Controller
 
         if ($yaCalifico) {
             return response()->json([
-                'message' =>
-                    'Ya calificaste esta solicitud.'
+                'message' => 'Ya calificaste esta solicitud.'
             ], 409);
         }
 
         if ($esSolicitante) {
-            $evaluado =
-                $solicitud->destinatario;
+            $evaluado = $solicitud->destinatario;
 
             if (
                 $evaluado->rol->nombre ===
                 'proveedor'
             ) {
-                $tipo =
-                    'proveedor';
+                $tipo = 'proveedor';
 
                 $criteriosEsperados = [
                     'calidad_materiales',
@@ -547,8 +487,7 @@ class SolicitudController extends Controller
                     'cumplimiento'
                 ];
             } else {
-                $tipo =
-                    'profesional';
+                $tipo = 'profesional';
 
                 $criteriosEsperados = [
                     'calidad_trabajo',
@@ -559,11 +498,9 @@ class SolicitudController extends Controller
                 ];
             }
         } else {
-            $evaluado =
-                $solicitud->solicitante;
+            $evaluado = $solicitud->solicitante;
 
-            $tipo =
-                'cliente';
+            $tipo = 'cliente';
 
             $criteriosEsperados = [
                 'claridad_requerimientos',
@@ -579,7 +516,6 @@ class SolicitudController extends Controller
                 'required',
                 'array'
             ],
-
             'criterios.*' => [
                 'required',
                 'numeric',
@@ -588,8 +524,7 @@ class SolicitudController extends Controller
                     $value,
                     $fail
                 ) {
-                    $valor =
-                        (float) $value;
+                    $valor = (float) $value;
 
                     if (
                         $valor < 0.5 ||
@@ -602,8 +537,7 @@ class SolicitudController extends Controller
                         return;
                     }
 
-                    $doble =
-                        $valor * 2;
+                    $doble = $valor * 2;
 
                     if (
                         abs(
@@ -617,7 +551,6 @@ class SolicitudController extends Controller
                     }
                 }
             ],
-
             'comentario' => [
                 'nullable',
                 'string',
@@ -625,36 +558,27 @@ class SolicitudController extends Controller
             ]
         ]);
 
-        $criterios =
-            $datos['criterios'];
+        $criterios = $datos['criterios'];
 
-        $clavesRecibidas =
-            array_keys(
-                $criterios
-            );
-
-        sort(
-            $clavesRecibidas
+        $clavesRecibidas = array_keys(
+            $criterios
         );
 
-        sort(
-            $criteriosEsperados
-        );
+        sort($clavesRecibidas);
+        sort($criteriosEsperados);
 
         if (
             $clavesRecibidas !==
             $criteriosEsperados
         ) {
             return response()->json([
-                'message' =>
-                    'Los aspectos enviados no corresponden al tipo de evaluación.'
+                'message' => 'Los aspectos enviados no corresponden al tipo de evaluación.'
             ], 422);
         }
 
-        $criterios =
-            collect(
-                $criterios
-            )
+        $criterios = collect(
+            $criterios
+        )
             ->map(
                 function ($valor) {
                     return (float) $valor;
@@ -662,52 +586,30 @@ class SolicitudController extends Controller
             )
             ->all();
 
-        $promedio =
-            round(
-                array_sum(
-                    $criterios
-                ) /
-                count(
-                    $criterios
-                ),
-                1
-            );
+        $promedio = round(
+            array_sum($criterios) /
+            count($criterios),
+            1
+        );
 
         Calificacion::create([
-            'solicitud_id' =>
-                $solicitud->id,
-
-            'evaluador_id' =>
-                $usuario->id,
-
-            'evaluado_id' =>
-                $evaluado->id,
-
-            'tipo_evaluado' =>
-                $tipo,
-
-            'criterios' =>
-                $criterios,
-
-            'promedio' =>
-                $promedio,
-
-            'comentario' =>
-                $datos['comentario'] ?? null
+            'solicitud_id' => $solicitud->id,
+            'evaluador_id' => $usuario->id,
+            'evaluado_id' => $evaluado->id,
+            'tipo_evaluado' => $tipo,
+            'criterios' => $criterios,
+            'promedio' => $promedio,
+            'comentario' => $datos['comentario'] ?? null
         ]);
 
         return response()->json([
-            'message' =>
-                'Calificación publicada correctamente.',
-
-            'promedio' =>
-                $promedio
+            'message' => 'Calificación publicada correctamente.',
+            'promedio' => $promedio
         ]);
     }
 
-    public function aceptar(
-        Solicitud $solicitud
-    ) {
+    public function aceptar(Solicitud $solicitud)
+    {
         $usuario = auth()->user();
 
         abort_if(
@@ -722,14 +624,12 @@ class SolicitudController extends Controller
         ) {
             return back()
                 ->withErrors([
-                    'estado' =>
-                        'Esta solicitud ya fue respondida.'
+                    'estado' => 'Esta solicitud ya fue respondida.'
                 ]);
         }
 
         $solicitud->update([
-            'estado' =>
-                'aceptada'
+            'estado' => 'aceptada'
         ]);
 
         $solicitud->load(
@@ -754,9 +654,8 @@ class SolicitudController extends Controller
             );
     }
 
-    public function rechazar(
-        Solicitud $solicitud
-    ) {
+    public function rechazar(Solicitud $solicitud)
+    {
         $usuario = auth()->user();
 
         abort_if(
@@ -771,14 +670,12 @@ class SolicitudController extends Controller
         ) {
             return back()
                 ->withErrors([
-                    'estado' =>
-                        'Esta solicitud ya fue respondida.'
+                    'estado' => 'Esta solicitud ya fue respondida.'
                 ]);
         }
 
         $solicitud->update([
-            'estado' =>
-                'rechazada'
+            'estado' => 'rechazada'
         ]);
 
         $solicitud->load(
@@ -803,9 +700,8 @@ class SolicitudController extends Controller
             );
     }
 
-    public function cancelar(
-        Solicitud $solicitud
-    ) {
+    public function cancelar(Solicitud $solicitud)
+    {
         $usuario = auth()->user();
 
         abort_if(
@@ -820,14 +716,12 @@ class SolicitudController extends Controller
         ) {
             return back()
                 ->withErrors([
-                    'estado' =>
-                        'Solo puedes cancelar solicitudes pendientes.'
+                    'estado' => 'Solo puedes cancelar solicitudes pendientes.'
                 ]);
         }
 
         $solicitud->update([
-            'estado' =>
-                'cancelada'
+            'estado' => 'cancelada'
         ]);
 
         return back()
@@ -837,9 +731,8 @@ class SolicitudController extends Controller
             );
     }
 
-    public function terminar(
-        Solicitud $solicitud
-    ) {
+    public function terminar(Solicitud $solicitud)
+    {
         $usuario = auth()->user();
 
         abort_if(
@@ -854,14 +747,12 @@ class SolicitudController extends Controller
         ) {
             return back()
                 ->withErrors([
-                    'estado' =>
-                        'Solo puedes terminar una solicitud aceptada.'
+                    'estado' => 'Solo puedes terminar una solicitud aceptada.'
                 ]);
         }
 
         $solicitud->update([
-            'estado' =>
-                'terminada'
+            'estado' => 'terminada'
         ]);
 
         return back()

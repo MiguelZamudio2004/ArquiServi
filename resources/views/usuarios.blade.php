@@ -48,7 +48,7 @@
 
             @auth
 
-                @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional']))
+                @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
                             <i class="fa-solid fa-envelope icono"></i>
@@ -182,12 +182,16 @@
                     <span class="perfil-avatar">
 
                         @if(auth()->user()->foto_perfil)
+
                             <img
                                 src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
                                 alt="Foto de perfil"
                             >
+
                         @else
+
                             {{ strtoupper(substr(auth()->user()->nombre, 0, 1)) }}
+
                         @endif
 
                     </span>
@@ -227,22 +231,26 @@
                         Mi Perfil
                     </a>
 
-                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional']))
+                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
+
                         <a
                             href="{{ route('solicitudes.mias') }}"
                             class="perfil-opcion"
                         >
                             Mis solicitudes
                         </a>
+
                     @endif
 
                     @if(in_array(auth()->user()->rol->nombre, ['profesional', 'proveedor']))
+
                         <a
                             href="{{ route('solicitudes.recibidas') }}"
                             class="perfil-opcion"
                         >
                             Solicitudes recibidas
                         </a>
+
                     @endif
 
                     <form

@@ -48,7 +48,7 @@
 
             @auth
 
-                @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional']))
+                @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
                             <i class="fa-solid fa-envelope icono"></i>
@@ -119,14 +119,7 @@
 
                     <div class="notificaciones-lista">
 
-                        @forelse(
-                            auth()->user()
-                                ->notifications()
-                                ->latest()
-                                ->take(10)
-                                ->get()
-                            as $notificacion
-                        )
+                        @forelse(auth()->user()->notifications()->latest()->take(10)->get() as $notificacion)
 
                             <button
                                 type="button"
@@ -182,12 +175,16 @@
                     <div class="perfil-avatar">
 
                         @if(auth()->user()->foto_perfil)
+
                             <img
                                 src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
                                 alt="Foto de perfil"
                             >
+
                         @else
+
                             {{ strtoupper(substr(auth()->user()->nombre, 0, 1)) }}
+
                         @endif
 
                     </div>
@@ -224,25 +221,29 @@
                         href="{{ route('perfil') }}"
                         class="perfil-opcion"
                     >
-                        Mi perfil
+                        Mi Perfil
                     </a>
 
-                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional']))
+                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
+
                         <a
                             href="{{ route('solicitudes.mias') }}"
                             class="perfil-opcion"
                         >
                             Mis solicitudes
                         </a>
+
                     @endif
 
                     @if(in_array(auth()->user()->rol->nombre, ['profesional', 'proveedor']))
+
                         <a
                             href="{{ route('solicitudes.recibidas') }}"
                             class="perfil-opcion"
                         >
                             Solicitudes recibidas
                         </a>
+
                     @endif
 
                     <form
@@ -395,9 +396,7 @@
 
         <div class="dato">
 
-            <span>
-                Ubicación
-            </span>
+            <span>Ubicación</span>
 
             <strong>
                 {{ $usuario->ubicacion ?? 'No especificada' }}
@@ -407,9 +406,7 @@
 
         <div class="dato">
 
-            <span>
-                Tipo de cuenta
-            </span>
+            <span>Tipo de cuenta</span>
 
             <strong>
                 {{ ucfirst($usuario->rol->nombre) }}
@@ -425,9 +422,7 @@
 
             <div class="seccion-titulo">
 
-                <h2>
-                    Datos de contacto
-                </h2>
+                <h2>Datos de contacto</h2>
 
                 <span class="contacto-disponible">
                     Disponible
@@ -451,9 +446,7 @@
 
                     @else
 
-                        <strong>
-                            No especificado
-                        </strong>
+                        <strong>No especificado</strong>
 
                     @endif
 
@@ -473,9 +466,7 @@
 
                     @else
 
-                        <strong>
-                            No especificado
-                        </strong>
+                        <strong>No especificado</strong>
 
                     @endif
 
@@ -613,10 +604,7 @@
                 Servicios que ofrece
             </h2>
 
-            @if(
-                $usuario->profesional &&
-                $usuario->profesional->servicios->isNotEmpty()
-            )
+            @if($usuario->profesional && $usuario->profesional->servicios->isNotEmpty())
 
                 <div class="servicios-lista">
 
@@ -670,10 +658,7 @@
                 Materiales o productos
             </h2>
 
-            @if(
-                $usuario->proveedor &&
-                $usuario->proveedor->materiales->isNotEmpty()
-            )
+            @if($usuario->proveedor && $usuario->proveedor->materiales->isNotEmpty())
 
                 <div class="servicios-lista">
 
@@ -705,7 +690,7 @@
 
             @if(
                 auth()->id() !== $usuario->id &&
-                in_array(auth()->user()->rol->nombre, ['usuario', 'profesional'])
+                in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor'])
             )
 
                 @if(

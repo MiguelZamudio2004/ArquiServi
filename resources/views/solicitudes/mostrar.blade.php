@@ -1,42 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Solicitud - ArquiServi</title>
+    <title>Detalle de solicitud - ArquiServi</title>
 
     <link rel="stylesheet" href="{{ asset('css/solicitudes.css') }}">
     <link rel="stylesheet" href="{{ asset('css/calificacion.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+
+    <script src="{{ asset('js/reseña.js') }}" defer></script>
 </head>
+
 <body>
 
 <header class="encabezado">
 
     <a href="{{ route('menu') }}">
-
         <img
             src="{{ asset('encabezado2.png') }}"
             class="logo"
             alt="ArquiServi"
         >
-
     </a>
 
 </header>
 
 @php
-    $concepto =
-        $solicitud->servicio?->nombre
-        ?? $solicitud->material?->nombre
-        ?? 'Sin especificar';
+    $otraPersona = $esSolicitante
+        ? $solicitud->destinatario
+        : $solicitud->solicitante;
+
+    $telefonoWhatsapp = $otraPersona->telefonoWhatsapp();
+
+    $yaCalifico = $solicitud
+        ->calificaciones
+        ->contains('evaluador_id', auth()->id());
+
+    if ($esSolicitante) {
+        if ($solicitud->destinatario->rol->nombre === 'proveedor') {
+            $textoCalificar = 'Calificar proveedor';
+        } else {
+            $textoCalificar = 'Calificar profesional';
+        }
+    } else {
+        $textoCalificar = 'Calificar cliente';
+    }
 @endphp
 
 <main class="solicitudes-contenedor">
 
     <h1>
-        Solicitud
+        Detalle de solicitud
     </h1>
 
     @if(session('exito'))
@@ -65,51 +83,75 @@
 
     <section class="detalle-solicitud">
 
-        @if($esSolicitante)
+        <div class="detalle-item">
 
-            <div class="detalle-item">
+            <span>
+                Solicitante
+            </span>
 
-                <span>
-                    {{ $solicitud->destinatario->rol->nombre === 'proveedor' ? 'Proveedor' : 'Profesional' }}
-                </span>
+            <strong>
+                {{ $solicitud->solicitante->nombre }}
+                {{ $solicitud->solicitante->apellido_paterno }}
+            </strong>
 
-                <strong>
-                    {{ $solicitud->destinatario->nombre }}
-                    {{ $solicitud->destinatario->apellido_paterno }}
-                </strong>
-
-            </div>
-
-        @endif
-
-        @if($esDestinatario)
-
-            <div class="detalle-item">
-
-                <span>
-                    Solicitante
-                </span>
-
-                <strong>
-                    {{ $solicitud->solicitante->nombre }}
-                    {{ $solicitud->solicitante->apellido_paterno }}
-                </strong>
-
-            </div>
-
-        @endif
+        </div>
 
         <div class="detalle-item">
 
             <span>
-                {{ $solicitud->material_id ? 'Material / Producto' : 'Servicio' }}
+                Destinatario
             </span>
 
             <strong>
-                {{ $concepto }}
+                {{ $solicitud->destinatario->nombre }}
+                {{ $solicitud->destinatario->apellido_paterno }}
             </strong>
 
         </div>
+
+        <div class="detalle-item">
+
+            <span>
+                Tipo de destinatario
+            </span>
+
+            <strong>
+                {{ ucfirst($solicitud->destinatario->rol->nombre) }}
+            </strong>
+
+        </div>
+
+        @if($solicitud->servicio)
+
+            <div class="detalle-item">
+
+                <span>
+                    Servicio
+                </span>
+
+                <strong>
+                    {{ $solicitud->servicio->nombre }}
+                </strong>
+
+            </div>
+
+        @endif
+
+        @if($solicitud->material)
+
+            <div class="detalle-item">
+
+                <span>
+                    Material o producto
+                </span>
+
+                <strong>
+                    {{ $solicitud->material->nombre }}
+                </strong>
+
+            </div>
+
+        @endif
 
         <div class="detalle-item">
 
@@ -118,11 +160,9 @@
             </span>
 
             <strong>
-
                 <span class="estado estado-{{ $solicitud->estado }}">
                     {{ ucfirst($solicitud->estado) }}
                 </span>
-
             </strong>
 
         </div>
@@ -134,7 +174,7 @@
             </span>
 
             <strong>
-                {{ $solicitud->created_at->format('d/m/Y') }}
+                {{ $solicitud->created_at->format('d/m/Y H:i') }}
             </strong>
 
         </div>
@@ -151,160 +191,32 @@
 
         </div>
 
-        @if($solicitud->estado === 'pendiente')
-
-            <div class="acciones">
-
-                @if($esSolicitante)
-
-                    <form
-                        action="{{ route('solicitudes.cancelar', $solicitud) }}"
-                        method="POST"
-                    >
-
-                        @csrf
-                        @method('PATCH')
-
-                        <button
-                            type="submit"
-                            class="btn-cancelar"
-                        >
-                            Cancelar solicitud
-                        </button>
-
-                    </form>
-
-                @endif
-
-                @if($esDestinatario)
-
-                    <form
-                        action="{{ route('solicitudes.rechazar', $solicitud) }}"
-                        method="POST"
-                    >
-
-                        @csrf
-                        @method('PATCH')
-
-                        <button
-                            type="submit"
-                            class="btn-rechazar"
-                        >
-                            Rechazar
-                        </button>
-
-                    </form>
-
-                    <form
-                        action="{{ route('solicitudes.aceptar', $solicitud) }}"
-                        method="POST"
-                    >
-
-                        @csrf
-                        @method('PATCH')
-
-                        <button
-                            type="submit"
-                            class="btn-aceptar"
-                        >
-                            Aceptar
-                        </button>
-
-                    </form>
-
-                @endif
-
-            </div>
-
-        @endif
-
         @if(
-            in_array(
-                $solicitud->estado,
-                ['aceptada', 'terminada']
-            )
+            in_array($solicitud->estado, ['aceptada', 'terminada']) &&
+            $telefonoWhatsapp
         )
 
             <div class="contacto-whatsapp">
 
-                @if(
-                    $esSolicitante &&
-                    $solicitud->destinatario->telefono
-                )
-
-                    @php
-                        $telefono =
-                            $solicitud
-                                ->destinatario
-                                ->telefonoWhatsapp();
-
-                        $mensaje =
-                            "Hola {$solicitud->destinatario->nombre}, soy {$solicitud->solicitante->nombre}. "
-                            . "Te contacto desde ArquiServi respecto a mi solicitud de \"{$concepto}\". "
-                            . "Me gustaría continuar con los detalles.";
-
-                        $whatsappUrl =
-                            'https://wa.me/'
-                            . $telefono
-                            . '?text='
-                            . urlencode($mensaje);
-                    @endphp
-
-                    <a
-                        href="{{ $whatsappUrl }}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="btn-whatsapp"
-                    >
-                        Contactar por WhatsApp
-                    </a>
-
-                @endif
-
-                @if(
-                    $esDestinatario &&
-                    $solicitud->solicitante->telefono
-                )
-
-                    @php
-                        $telefono =
-                            $solicitud
-                                ->solicitante
-                                ->telefonoWhatsapp();
-
-                        $mensaje =
-                            "Hola {$solicitud->solicitante->nombre}, soy {$solicitud->destinatario->nombre}. "
-                            . "Te contacto desde ArquiServi respecto a tu solicitud de \"{$concepto}\". "
-                            . "Podemos continuar con los detalles.";
-
-                        $whatsappUrl =
-                            'https://wa.me/'
-                            . $telefono
-                            . '?text='
-                            . urlencode($mensaje);
-                    @endphp
-
-                    <a
-                        href="{{ $whatsappUrl }}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="btn-whatsapp"
-                    >
-                        Contactar por WhatsApp
-                    </a>
-
-                @endif
+                <a
+                    href="https://wa.me/{{ $telefonoWhatsapp }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-whatsapp"
+                >
+                    Contactar por WhatsApp
+                </a>
 
             </div>
 
         @endif
 
         @if(
-            $solicitud->estado === 'aceptada' &&
-            $esDestinatario
+            $esDestinatario &&
+            $solicitud->estado === 'aceptada'
         )
 
-            <div class="acciones acciones-trabajo">
+            <div class="acciones-trabajo">
 
                 <form
                     action="{{ route('solicitudes.terminar', $solicitud) }}"
@@ -318,7 +230,7 @@
                         type="submit"
                         class="btn-terminar"
                     >
-                        Terminar solicitud
+                        Terminar trabajo
                     </button>
 
                 </form>
@@ -327,60 +239,59 @@
 
         @endif
 
-        @if(
-            $solicitud->estado === 'terminada' &&
-            !$solicitud->calificaciones->contains(
-                'evaluador_id',
-                auth()->id()
-            )
-        )
+        @if($solicitud->estado === 'terminada')
 
-            <div class="acciones acciones-calificacion">
+            <div class="acciones-calificacion">
 
-                <button
-                    type="button"
-                    class="btn-calificar btn-abrir-calificacion"
-                    data-url="{{ route('solicitudes.calificar', $solicitud) }}"
-                >
+                @if(!$yaCalifico)
 
-                    @if($esSolicitante)
+                    <button
+                        type="button"
+                        class="btn-calificar btn-abrir-calificacion"
+                        data-url="{{ route('solicitudes.calificar', $solicitud) }}"
+                    >
+                        {{ $textoCalificar }}
+                    </button>
 
-                        Calificar
-                        {{ $solicitud->destinatario->rol->nombre === 'proveedor' ? 'proveedor' : 'profesional' }}
+                @else
 
-                    @else
+                    <button
+                        type="button"
+                        class="btn-calificar"
+                        disabled
+                    >
+                        Ya calificaste
+                    </button>
 
-                        Calificar solicitante
-
-                    @endif
-
-                </button>
+                @endif
 
             </div>
 
         @endif
 
-        <div class="volver">
-
-            @if($esSolicitante)
-
-                <a href="{{ route('solicitudes.mias') }}">
-                    ← Volver a mis solicitudes
-                </a>
-
-            @else
-
-                <a href="{{ route('solicitudes.recibidas') }}">
-                    ← Volver a solicitudes recibidas
-                </a>
-
-            @endif
-
-        </div>
-
     </section>
 
+    <div class="volver">
+
+        @if($esSolicitante)
+
+            <a href="{{ route('solicitudes.mias') }}">
+                Volver a mis solicitudes
+            </a>
+
+        @else
+
+            <a href="{{ route('solicitudes.recibidas') }}">
+                Volver a solicitudes recibidas
+            </a>
+
+        @endif
+
+    </div>
+
 </main>
+
+<div id="modalCalificacionContenedor"></div>
 
 <footer class="pie">
 
@@ -390,9 +301,6 @@
 
 </footer>
 
-<div id="modalCalificacionContenedor"></div>
-
-<script src="{{ asset('js/reseña.js') }}"></script>
-
 </body>
+
 </html>

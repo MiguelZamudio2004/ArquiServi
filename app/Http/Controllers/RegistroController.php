@@ -84,6 +84,9 @@ class RegistroController extends Controller
 
         return redirect()
             ->route('login')
-            ->with('success', 'Tu cuenta se creó correctamente.');
+            ->with(
+                'success',
+                'Tu cuenta se creó correctamente.'
+            );
     }
 }

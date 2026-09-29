@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +10,11 @@
     <link rel="stylesheet" href="{{ asset('css/solicitudes.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
 </head>
+
 <body>
 
 <header class="encabezado">
+
     <a href="{{ route('menu') }}">
         <img
             src="{{ asset('encabezado2.png') }}"
@@ -19,6 +22,7 @@
             alt="ArquiServi"
         >
     </a>
+
 </header>
 
 <main class="solicitudes-contenedor">
@@ -43,7 +47,7 @@
 
     @endif
 
-    <section class="solicitud-formulario">
+    <section class="solicitud-form">
 
         <div class="solicitud-destinatario">
 
@@ -165,14 +169,14 @@
 
                 <a
                     href="{{ route('perfil.publico', $destinatario) }}"
-                    class="btn-volver"
+                    class="btn-secundario"
                 >
                     Cancelar
                 </a>
 
                 <button
                     type="submit"
-                    class="btn-enviar"
+                    class="btn-principal"
                 >
                     Enviar solicitud
                 </button>
@@ -186,10 +190,13 @@
 </main>
 
 <footer class="pie">
+
     <p>
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
+
 </footer>
 
 </body>
+
 </html>
