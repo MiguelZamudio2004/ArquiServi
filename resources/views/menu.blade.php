@@ -103,6 +103,14 @@
 
                 <a href="{{ route('perfil') }}" class="perfil-opcion">Mi Perfil </a>
 
+                @if(auth()->user()->rol->nombre === 'usuario')
+    <a href="{{ route('solicitudes.mias') }}" class="perfil-opcion">Mis solicitudes</a>
+@endif
+
+@if(auth()->user()->rol->nombre === 'profesional')
+    <a href="{{ route('solicitudes.recibidas') }}" class="perfil-opcion">Solicitudes recibidas</a>
+@endif
+
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="perfil-opcion cerrar-sesion">Cerrar sesión</button>

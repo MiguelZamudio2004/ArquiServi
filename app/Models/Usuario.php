@@ -56,4 +56,38 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(CodigoRecuperacion::class, 'usuario_id');
     }
+
+    public function solicitudes() {
+        return $this->hasMany(Solicitud::class,'usuario_id');
+    }
+
+    public function telefonoWhatsapp()
+{
+    if (!$this->telefono) return null;
+
+    $telefono = preg_replace('/\D/', '', $this->telefono);
+
+    if (strlen($telefono) === 10) {
+        $telefono = '52' . $telefono;
+    }
+
+    return $telefono;
+}
+
+public function calificacionesRealizadas()
+{
+    return $this->hasMany(
+        Calificacion::class,
+        'evaluador_id'
+    );
+}
+
+public function calificacionesRecibidas()
+{
+    return $this->hasMany(
+        Calificacion::class,
+        'evaluado_id'
+    );
+}
+
 }

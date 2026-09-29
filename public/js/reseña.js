@@ -1,90 +1,768 @@
-// Definimos los criterios según el rol
-const criteriosPorRol = {
-    profesional: ["Calidad de trabajo", "Comunicación", "Profesionalismo"],
-    cliente: ["Claridad en requerimientos", "Trato", "Cumplimiento de pagos"],
-    proveedor: ["Calidad del material", "Tiempos de entrega", "Comunicación"]
+const criteriosPorTipo = {
+    profesional: [
+        {
+            clave: 'calidad_trabajo',
+            nombre: 'Calidad del trabajo'
+        },
+        {
+            clave: 'puntualidad',
+            nombre: 'Puntualidad'
+        },
+        {
+            clave: 'comunicacion',
+            nombre: 'Comunicación'
+        },
+        {
+            clave: 'profesionalismo',
+            nombre: 'Profesionalismo'
+        },
+        {
+            clave: 'cumplimiento',
+            nombre: 'Cumplimiento de lo acordado'
+        }
+    ],
+
+    cliente: [
+        {
+            clave: 'claridad_requerimientos',
+            nombre: 'Claridad en los requerimientos'
+        },
+        {
+            clave: 'comunicacion',
+            nombre: 'Comunicación'
+        },
+        {
+            clave: 'trato',
+            nombre: 'Trato'
+        },
+        {
+            clave: 'responsabilidad',
+            nombre: 'Responsabilidad'
+        },
+        {
+            clave: 'cumplimiento',
+            nombre: 'Cumplimiento de lo acordado'
+        }
+    ],
+
+    proveedor: [
+        {
+            clave: 'calidad_materiales',
+            nombre: 'Calidad de los materiales'
+        },
+        {
+            clave: 'cumplimiento_entrega',
+            nombre: 'Cumplimiento en la entrega'
+        },
+        {
+            clave: 'comunicacion',
+            nombre: 'Comunicación'
+        },
+        {
+            clave: 'atencion',
+            nombre: 'Atención'
+        },
+        {
+            clave: 'cumplimiento',
+            nombre: 'Cumplimiento de lo acordado'
+        }
+    ]
 };
 
-// Objeto para almacenar las calificaciones
 let calificaciones = {};
-let rolActual = "profesional"; // Cambia dinámicamente según el usuario logueado
+let botonCalificacionActivo = null;
 
-// Función para cargar criterios en el modal
-function cargarCriterios(rol) {
-    const modalContent = document.querySelector('.modal-content');
+document.addEventListener('click', async function(event) {
+    const boton =
+        event.target.closest(
+            '.btn-abrir-calificacion'
+        );
 
-  // Elimina criterios previos si ya se cargaron
-    document.querySelectorAll('.criterio').forEach(el => el.remove());
+    if (!boton) {
+        return;
+    }
 
-  // Genera dinámicamente los criterios
-    criteriosPorRol[rol].forEach(criterio => {
-    const div = document.createElement('div');
-    div.classList.add('criterio');
-    div.innerHTML = `
-        <label>${criterio}</label>
-        <div class="estrellas" data-criterio="${criterio}">
-            <span class="estrella" data-value="1">&#9733;</span>
-            <span class="estrella" data-value="2">&#9733;</span>
-            <span class="estrella" data-value="3">&#9733;</span>
-            <span class="estrella" data-value="4">&#9733;</span>
-            <span class="estrella" data-value="5">&#9733;</span>
-        </div>
-    `;
-    modalContent.insertBefore(div, document.getElementById('comentario'));
-    });
+    const url =
+        boton.dataset.url;
 
-  // Reinicia calificaciones
-    calificaciones = {};
-    criteriosPorRol[rol].forEach(c => calificaciones[c] = 0);
+    if (!url) {
+        return;
+    }
 
-    activarEstrellas();
-}
+    botonCalificacionActivo =
+        boton;
 
-// Función para activar interacción con estrellas
-function activarEstrellas() {
-    document.querySelectorAll('.estrellas').forEach(estrellasDiv => {
-        const criterio = estrellasDiv.getAttribute('data-criterio');
-        const estrellas = estrellasDiv.querySelectorAll('.estrella');
+    try {
+        const respuesta =
+            await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'text/html',
+                    'X-Requested-With':
+                        'XMLHttpRequest'
+                }
+            });
 
-    estrellas.forEach(estrella => {
-        estrella.addEventListener('click', () => {
-        // Resetear todas las estrellas
-        estrellas.forEach(e => e.classList.remove('active'));
+        if (!respuesta.ok) {
+            const mensaje =
+                await respuesta.text();
 
-        // Activar hasta la estrella seleccionada
-        const valor = estrella.getAttribute('data-value');
-        for (let i = 0; i < valor; i++) {
-            estrellas[i].classList.add('active');
+            throw new Error(
+                mensaje ||
+                'No se pudo abrir la calificación.'
+            );
         }
 
-        // Guardar la calificación
-        calificaciones[criterio] = valor;
-        console.log(calificaciones);
-        });
-    });
+        const html =
+            await respuesta.text();
+
+        const contenedor =
+            document.getElementById(
+                'modalCalificacionContenedor'
+            );
+
+        if (!contenedor) {
+            return;
+        }
+
+        contenedor.innerHTML =
+            html;
+
+        document.body.classList.add(
+            'modal-abierto'
+        );
+
+        inicializarCalificacion();
+
+    } catch (error) {
+        alert(
+            'No fue posible abrir la ventana de calificación.'
+        );
+    }
+});
+
+function inicializarCalificacion() {
+    const modal =
+        document.getElementById(
+            'modalCalificacion'
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    const criteriosContainer =
+        document.getElementById(
+            'criteriosContainer'
+        );
+
+    const comentario =
+        document.getElementById(
+            'comentario'
+        );
+
+    const contadorCaracteres =
+        document.getElementById(
+            'contadorCaracteres'
+        );
+
+    const botonCancelar =
+        document.getElementById(
+            'cancelarCalificacion'
+        );
+
+    const botonPublicar =
+        document.getElementById(
+            'publicarCalificacion'
+        );
+
+    const mensajeError =
+        document.getElementById(
+            'mensajeError'
+        );
+
+    const subtitulo =
+        document.getElementById(
+            'subtitulo'
+        );
+
+    const tipoPersona =
+        document.getElementById(
+            'tipoPersona'
+        );
+
+    const submitUrl =
+        modal.dataset.submitUrl;
+
+    const csrf =
+        modal.dataset.csrf;
+
+    let tipoEvaluado =
+        modal.dataset.tipo ||
+        'profesional';
+
+    const tiposPermitidos = [
+        'profesional',
+        'cliente',
+        'proveedor'
+    ];
+
+    if (
+        !tiposPermitidos.includes(
+            tipoEvaluado
+        )
+    ) {
+        tipoEvaluado =
+            'profesional';
+    }
+
+    calificaciones = {};
+
+    configurarInterfaz(
+        tipoEvaluado,
+        subtitulo,
+        tipoPersona
+    );
+
+    cargarCriterios(
+        tipoEvaluado,
+        criteriosContainer
+    );
+
+    activarEstrellas(
+        mensajeError
+    );
+
+    if (
+        comentario &&
+        contadorCaracteres
+    ) {
+        comentario.addEventListener(
+            'input',
+            function() {
+                contadorCaracteres.textContent =
+                    comentario.value.length;
+            }
+        );
+    }
+
+    if (botonCancelar) {
+        botonCancelar.addEventListener(
+            'click',
+            function() {
+                cerrarCalificacion();
+            }
+        );
+    }
+
+    if (botonPublicar) {
+        botonPublicar.addEventListener(
+            'click',
+            async function() {
+                if (
+                    !validarCalificacion(
+                        mensajeError
+                    )
+                ) {
+                    return;
+                }
+
+                botonPublicar.disabled =
+                    true;
+
+                botonPublicar.textContent =
+                    'Publicando...';
+
+                try {
+                    const respuesta =
+                        await fetch(
+                            submitUrl,
+                            {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type':
+                                        'application/json',
+
+                                    'Accept':
+                                        'application/json',
+
+                                    'X-CSRF-TOKEN':
+                                        csrf,
+
+                                    'X-Requested-With':
+                                        'XMLHttpRequest'
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        criterios:
+                                            calificaciones,
+
+                                        comentario:
+                                            comentario
+                                                .value
+                                                .trim()
+                                    })
+                            }
+                        );
+
+                    const datos =
+                        await respuesta.json();
+
+                    if (!respuesta.ok) {
+                        let mensaje =
+                            datos.message ||
+                            'No fue posible guardar la calificación.';
+
+                        if (datos.errors) {
+                            const errores =
+                                Object.values(
+                                    datos.errors
+                                ).flat();
+
+                            if (
+                                errores.length > 0
+                            ) {
+                                mensaje =
+                                    errores[0];
+                            }
+                        }
+
+                        throw new Error(
+                            mensaje
+                        );
+                    }
+
+                    cerrarCalificacion();
+
+                    if (
+                        botonCalificacionActivo
+                    ) {
+                        botonCalificacionActivo
+                            .classList
+                            .remove(
+                                'btn-abrir-calificacion'
+                            );
+
+                        botonCalificacionActivo
+                            .classList
+                            .add(
+                                'btn-calificado'
+                            );
+
+                        botonCalificacionActivo
+                            .textContent =
+                            'Calificado';
+
+                        botonCalificacionActivo
+                            .disabled =
+                            true;
+                    }
+
+                } catch (error) {
+                    mostrarError(
+                        mensajeError,
+                        error.message
+                    );
+
+                    botonPublicar.disabled =
+                        false;
+
+                    botonPublicar.textContent =
+                        'Publicar';
+                }
+            }
+        );
+    }
+
+    modal.addEventListener(
+        'click',
+        function(event) {
+            if (
+                event.target === modal
+            ) {
+                cerrarCalificacion();
+            }
+        }
+    );
+}
+
+function configurarInterfaz(
+    tipoEvaluado,
+    subtitulo,
+    tipoPersona
+) {
+    const titulos = {
+        profesional:
+            'Califica al profesional',
+
+        cliente:
+            'Califica al cliente',
+
+        proveedor:
+            'Califica al proveedor'
+    };
+
+    const tipos = {
+        profesional:
+            'Profesional',
+
+        cliente:
+            'Cliente',
+
+        proveedor:
+            'Proveedor'
+    };
+
+    if (subtitulo) {
+        subtitulo.textContent =
+            titulos[tipoEvaluado];
+    }
+
+    if (tipoPersona) {
+        tipoPersona.textContent =
+            tipos[tipoEvaluado];
+    }
+}
+
+function cargarCriterios(
+    tipoEvaluado,
+    criteriosContainer
+) {
+    if (!criteriosContainer) {
+        return;
+    }
+
+    criteriosContainer.innerHTML =
+        '';
+
+    criteriosPorTipo[
+        tipoEvaluado
+    ].forEach(criterio => {
+
+        calificaciones[
+            criterio.clave
+        ] = 0;
+
+        const contenedor =
+            document.createElement(
+                'div'
+            );
+
+        contenedor.classList.add(
+            'criterio'
+        );
+
+        const label =
+            document.createElement(
+                'label'
+            );
+
+        label.textContent =
+            criterio.nombre;
+
+        const estrellas =
+            document.createElement(
+                'div'
+            );
+
+        estrellas.classList.add(
+            'estrellas'
+        );
+
+        estrellas.dataset.criterio =
+            criterio.clave;
+
+        for (
+            let valor = 1;
+            valor <= 5;
+            valor++
+        ) {
+            const estrella =
+                document.createElement(
+                    'button'
+                );
+
+            estrella.type =
+                'button';
+
+            estrella.classList.add(
+                'estrella'
+            );
+
+            estrella.dataset.value =
+                valor;
+
+            estrella.setAttribute(
+                'aria-label',
+                `${valor} estrellas`
+            );
+
+            estrella.textContent =
+                '★';
+
+            estrella.style.setProperty(
+                '--relleno',
+                '0%'
+            );
+
+            estrellas.appendChild(
+                estrella
+            );
+        }
+
+        contenedor.appendChild(
+            label
+        );
+
+        contenedor.appendChild(
+            estrellas
+        );
+
+        criteriosContainer
+            .appendChild(
+                contenedor
+            );
     });
 }
 
-// Botón cancelar
-document.getElementById('cancelar').addEventListener('click', () => {
-    document.getElementById('comentario').value = "";
-    document.querySelectorAll('.estrella').forEach(e => e.classList.remove('active'));
-    console.log("Calificación cancelada");
-});
+function activarEstrellas(
+    mensajeError
+) {
+    document
+        .querySelectorAll(
+            '#modalCalificacion .estrellas'
+        )
+        .forEach(estrellasDiv => {
 
-// Botón publicar
-document.getElementById('publicar').addEventListener('click', () => {
-    const comentario = document.getElementById('comentario').value;
-    const datos = {
-        rol: rolActual,
-        ...calificaciones,
-        comentario: comentario
-    };
-    console.log("Datos enviados:", datos);
+            const criterio =
+                estrellasDiv
+                    .dataset
+                    .criterio;
 
-  // Aquí podrías hacer un fetch/axios POST al backend Laravel
-  // fetch('/calificacion', { method: 'POST', body: JSON.stringify(datos) })
-});
+            if (!criterio) {
+                return;
+            }
 
-// Inicializar con el rol actual
-cargarCriterios(rolActual);
+            const estrellas =
+                estrellasDiv
+                    .querySelectorAll(
+                        '.estrella'
+                    );
+
+            estrellas.forEach(
+                estrella => {
+
+                    estrella
+                        .addEventListener(
+                            'mousemove',
+                            function(event) {
+                                const valor =
+                                    obtenerValorEstrella(
+                                        estrella,
+                                        event
+                                    );
+
+                                actualizarEstrellas(
+                                    estrellas,
+                                    valor
+                                );
+                            }
+                        );
+
+                    estrella
+                        .addEventListener(
+                            'click',
+                            function(event) {
+                                const valor =
+                                    obtenerValorEstrella(
+                                        estrella,
+                                        event
+                                    );
+
+                                calificaciones[
+                                    criterio
+                                ] = valor;
+
+                                actualizarEstrellas(
+                                    estrellas,
+                                    valor
+                                );
+
+                                ocultarError(
+                                    mensajeError
+                                );
+                            }
+                        );
+                }
+            );
+
+            estrellasDiv
+                .addEventListener(
+                    'mouseleave',
+                    function() {
+                        actualizarEstrellas(
+                            estrellas,
+                            calificaciones[
+                                criterio
+                            ] || 0
+                        );
+                    }
+                );
+        });
+}
+
+function obtenerValorEstrella(
+    estrella,
+    event
+) {
+    const rect =
+        estrella
+            .getBoundingClientRect();
+
+    const posicion =
+        event.clientX -
+        rect.left;
+
+    const mitad =
+        rect.width / 2;
+
+    const valorBase =
+        Number(
+            estrella.dataset.value
+        );
+
+    if (posicion <= mitad) {
+        return valorBase - 0.5;
+    }
+
+    return valorBase;
+}
+
+function actualizarEstrellas(
+    estrellas,
+    valor
+) {
+    estrellas.forEach(
+        estrella => {
+
+            const valorEstrella =
+                Number(
+                    estrella.dataset.value
+                );
+
+            let relleno = 0;
+
+            if (
+                valor >=
+                valorEstrella
+            ) {
+                relleno = 100;
+
+            } else if (
+                valor >=
+                valorEstrella - 0.5
+            ) {
+                relleno = 50;
+            }
+
+            estrella.style
+                .setProperty(
+                    '--relleno',
+                    `${relleno}%`
+                );
+        }
+    );
+}
+
+function validarCalificacion(
+    mensajeError
+) {
+    const valores =
+        Object.values(
+            calificaciones
+        );
+
+    if (
+        valores.length === 0
+    ) {
+        mostrarError(
+            mensajeError,
+            'No hay aspectos disponibles para evaluar.'
+        );
+
+        return false;
+    }
+
+    const incompleta =
+        valores.some(
+            valor =>
+                valor === 0
+        );
+
+    if (incompleta) {
+        mostrarError(
+            mensajeError,
+            'Califica todos los aspectos antes de publicar.'
+        );
+
+        return false;
+    }
+
+    ocultarError(
+        mensajeError
+    );
+
+    return true;
+}
+
+function mostrarError(
+    elemento,
+    mensaje
+) {
+    if (!elemento) {
+        return;
+    }
+
+    elemento.textContent =
+        mensaje;
+
+    elemento.classList.add(
+        'activo'
+    );
+}
+
+function ocultarError(
+    elemento
+) {
+    if (!elemento) {
+        return;
+    }
+
+    elemento.textContent =
+        '';
+
+    elemento.classList.remove(
+        'activo'
+    );
+}
+
+function cerrarCalificacion() {
+    const contenedor =
+        document.getElementById(
+            'modalCalificacionContenedor'
+        );
+
+    if (contenedor) {
+        contenedor.innerHTML =
+            '';
+    }
+
+    document.body
+        .classList
+        .remove(
+            'modal-abierto'
+        );
+
+    calificaciones = {};
+}

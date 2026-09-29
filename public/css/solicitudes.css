@@ -1,0 +1,611 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #F9FAFB;
+    color: #333333;
+    font-family: Poppins, sans-serif;
+}
+
+/* ENCABEZADO */
+.encabezado {
+    width: 100%;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0C2D5A;
+}
+
+.logo {
+    width: 200px;
+    height: auto;
+    display: block;
+}
+
+/* CONTENEDOR */
+.solicitudes-contenedor {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    flex: 1;
+}
+
+.solicitudes-contenedor h1 {
+    margin: 0 0 25px;
+    color: #0C2D5A;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 28px;
+    text-align: center;
+}
+
+/* FORMULARIO */
+.solicitud-form {
+    width: 100%;
+    padding: 30px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.solicitud-form label {
+    display: block;
+    margin: 15px 0 6px;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.solicitud-form select,
+.solicitud-form textarea,
+.campo-fijo {
+    width: 100%;
+    padding: 11px 12px;
+    background-color: #FFFFFF;
+    color: #333333;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    outline: none;
+    font-family: Poppins, sans-serif;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.campo-fijo {
+    background-color: #F9FAFB;
+}
+
+.solicitud-form textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.solicitud-form select:focus,
+.solicitud-form textarea:focus {
+    border-color: #F47A20;
+    box-shadow: 0 0 0 3px rgba(244, 122, 32, 0.12);
+}
+
+/* MENSAJES */
+.mensaje-exito {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    background-color: #ECFDF5;
+    color: #15803D;
+    border: 1px solid #86EFAC;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.errores {
+    margin: 15px 0;
+    padding: 12px 15px;
+    background-color: #FEF2F2;
+    border: 1px solid #FCA5A5;
+    border-radius: 10px;
+}
+
+.errores p {
+    margin: 4px 0;
+    color: #DC2626;
+    font-size: 13px;
+}
+
+/* TABLA */
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.tabla-solicitudes {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-solicitudes th,
+.tabla-solicitudes td {
+    padding: 15px;
+    border-bottom: 1px solid #E5E7EB;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.tabla-solicitudes th {
+    background-color: #F9FAFB;
+    color: #0C2D5A;
+    font-weight: 600;
+}
+
+.tabla-solicitudes tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-solicitudes tbody tr {
+    transition: 0.2s;
+}
+
+.tabla-solicitudes tbody tr:hover {
+    background-color: #FAFAFA;
+}
+
+/* ESTADOS */
+.estado {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.estado-pendiente {
+    background-color: #FFF7ED;
+    color: #C2410C;
+}
+
+.estado-aceptada {
+    background-color: #ECFDF5;
+    color: #15803D;
+}
+
+.estado-rechazada {
+    background-color: #FEF2F2;
+    color: #DC2626;
+}
+
+.estado-cancelada {
+    background-color: #F3F4F6;
+    color: #6B7280;
+}
+
+.estado-terminada {
+    background-color: #EFF6FF;
+    color: #1D4ED8;
+}
+
+/* ACCIONES */
+.acciones {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.acciones form {
+    margin: 0;
+}
+
+.acciones-tabla {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.form-accion-tabla {
+    margin: 0;
+    display: inline-flex;
+}
+
+/* BOTONES GENERALES */
+.btn-principal,
+.btn-secundario,
+.btn-ver,
+.btn-aceptar,
+.btn-rechazar,
+.btn-cancelar,
+.btn-whatsapp,
+.btn-terminar,
+.btn-calificar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    font-family: Poppins, sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* PRINCIPAL */
+.btn-principal {
+    padding: 10px 18px;
+    color: #F47A20;
+    border: 1px solid #F47A20;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.btn-principal:hover {
+    background-color: #F47A20;
+    color: #FFFFFF;
+}
+
+/* SECUNDARIO */
+.btn-secundario {
+    padding: 10px 18px;
+    color: #555555;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.btn-secundario:hover {
+    background-color: #F3F4F6;
+    color: #333333;
+}
+
+/* VER */
+.btn-ver {
+    padding: 7px 13px;
+    color: #0C2D5A;
+    border: 1px solid #0C2D5A;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.btn-ver:hover {
+    background-color: #0C2D5A;
+    color: #FFFFFF;
+}
+
+/* ACEPTAR */
+.btn-aceptar {
+    padding: 10px 18px;
+    color: #15803D;
+    border: 1px solid #15803D;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.btn-aceptar:hover {
+    background-color: #15803D;
+    color: #FFFFFF;
+}
+
+/* RECHAZAR / CANCELAR */
+.btn-rechazar,
+.btn-cancelar {
+    padding: 10px 18px;
+    color: #DC2626;
+    border: 1px solid #DC2626;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.btn-rechazar:hover,
+.btn-cancelar:hover {
+    background-color: #DC2626;
+    color: #FFFFFF;
+}
+
+/* WHATSAPP */
+.btn-whatsapp {
+    padding: 7px 13px;
+    color: #16A34A;
+    border: 1px solid #16A34A;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.btn-whatsapp:hover {
+    background-color: #16A34A;
+    color: #FFFFFF;
+}
+
+/* TERMINAR */
+.btn-terminar {
+    padding: 7px 13px;
+    color: #0C2D5A;
+    border: 1px solid #0C2D5A;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.btn-terminar:hover {
+    background-color: #0C2D5A;
+    color: #FFFFFF;
+}
+
+/* CALIFICAR */
+.btn-calificar {
+    padding: 7px 13px;
+    color: #F47A20;
+    border: 1px solid #F47A20;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.btn-calificar:not(:disabled):hover {
+    background-color: #F47A20;
+    color: #FFFFFF;
+}
+
+.btn-calificar:disabled {
+    background-color: #FFFFFF;
+    color: #F47A20;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* CONTACTO WHATSAPP EN DETALLE */
+.contacto-whatsapp {
+    margin-top: 25px;
+    padding-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid #E5E7EB;
+}
+
+/* ACCIÓN TERMINAR */
+.acciones-trabajo {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #E5E7EB;
+}
+
+/* ACCIÓN CALIFICAR */
+.acciones-calificacion {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #E5E7EB;
+}
+
+/* DETALLE */
+.detalle-solicitud {
+    width: 100%;
+    padding: 30px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.detalle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 13px 0;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.detalle-item > span:first-child,
+.detalle-descripcion > span {
+    color: #6B7280;
+    font-size: 14px;
+}
+
+.detalle-item strong {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: right;
+}
+
+.detalle-descripcion {
+    padding-top: 18px;
+}
+
+.detalle-descripcion p {
+    margin: 8px 0 0;
+    color: #4B5563;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+}
+
+/* SIN SOLICITUDES */
+.sin-solicitudes {
+    padding: 35px 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.sin-solicitudes p {
+    margin: 0 0 12px;
+    color: #6B7280;
+    font-size: 14px;
+}
+
+.sin-solicitudes a,
+.volver a {
+    color: #F47A20;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.sin-solicitudes a:hover,
+.volver a:hover {
+    text-decoration: underline;
+}
+
+/* VOLVER */
+.volver {
+    margin-top: 25px;
+}
+
+/* FOOTER */
+.pie {
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 0;
+    background-color: #0C2D5A;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+}
+
+.pie p {
+    margin: 0;
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .encabezado {
+        min-height: 70px;
+    }
+
+    .logo {
+        width: 150px;
+    }
+
+    .solicitudes-contenedor {
+        width: 92%;
+        margin: 25px auto;
+    }
+
+    .solicitudes-contenedor h1 {
+        font-size: 24px;
+    }
+
+    .solicitud-form,
+    .detalle-solicitud {
+        padding: 22px 18px;
+    }
+
+    .detalle-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .detalle-item strong {
+        text-align: left;
+    }
+
+    .tabla-solicitudes {
+        min-width: 650px;
+    }
+}
+
+/* CELULAR */
+@media (max-width: 480px) {
+    .logo {
+        width: 135px;
+    }
+
+    .solicitudes-contenedor {
+        width: 94%;
+        margin: 20px auto;
+    }
+
+    .solicitudes-contenedor h1 {
+        font-size: 22px;
+    }
+
+    .solicitud-form,
+    .detalle-solicitud {
+        padding: 20px 15px;
+    }
+
+    .solicitud-form select,
+    .solicitud-form textarea,
+    .campo-fijo {
+        font-size: 14px;
+    }
+
+    .acciones {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .acciones form {
+        width: 100%;
+    }
+
+    .btn-principal,
+    .btn-secundario,
+    .btn-aceptar,
+    .btn-rechazar,
+    .btn-cancelar {
+        width: 100%;
+    }
+
+    .acciones-tabla {
+        min-width: 165px;
+    }
+
+    .form-accion-tabla {
+        width: auto;
+    }
+
+    .contacto-whatsapp {
+        justify-content: stretch;
+    }
+
+    .contacto-whatsapp .btn-whatsapp {
+        width: 100%;
+    }
+
+    .acciones-trabajo,
+    .acciones-calificacion {
+        align-items: stretch;
+    }
+
+    .acciones-trabajo form {
+        width: 100%;
+    }
+
+    .acciones-trabajo .btn-terminar,
+    .acciones-calificacion .btn-calificar {
+        width: 100%;
+    }
+
+    .tabla-solicitudes th,
+    .tabla-solicitudes td {
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+
+    .estado {
+        font-size: 11px;
+    }
+
+    .detalle-descripcion p {
+        font-size: 13px;
+    }
+}

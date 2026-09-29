@@ -16,4 +16,8 @@ class Servicio extends Model
     public function profesionales() {
         return $this->belongsToMany(Profesional::class, 'profesional_servicio')->withTimestamps();
     }
+
+    public function solicitudes() {
+        return $this->hasMany(Solicitud::class, 'servicio_id');
+    }
 }

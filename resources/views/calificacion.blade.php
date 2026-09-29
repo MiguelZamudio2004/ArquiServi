@@ -1,35 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calificación</title>
-    <link rel="stylesheet" href="{{ asset('css/calificacion.css') }}">
-    <script src="{{ asset('js/reseña.js')}}" defer></script>
-</head>
-<body>
-    <div class="modal" id="modalCalificacion">
-        <div class="modal-content">
-        <h2 id="subtitulo">Califica tu experiencia</h2>
-        <p class="parrafo">Comparte detalles sobre tu experiencia.</p>
+@php
+    $nombreEvaluado = trim(
+        ($evaluado->nombre ?? '') . ' ' .
+        ($evaluado->apellido_paterno ?? '') . ' ' .
+        ($evaluado->apellido_materno ?? '')
+    );
 
-        <!-- Sección de estrellas -->
-        <div class="estrellas">
-            <span class="estrella" data-value="1">&#9733;</span>
-            <span class="estrella" data-value="2">&#9733;</span>
-            <span class="estrella" data-value="3">&#9733;</span>
-            <span class="estrella" data-value="4">&#9733;</span>
-            <span class="estrella" data-value="5">&#9733;</span>
+    $fotoEvaluado = $evaluado->foto_perfil ?? null;
+
+    $inicialEvaluado = mb_strtoupper(
+        mb_substr($nombreEvaluado, 0, 1)
+    );
+@endphp
+
+<div
+    class="modal-calificacion"
+    id="modalCalificacion"
+    data-tipo="{{ $tipo }}"
+    data-submit-url="{{ route('solicitudes.calificar.guardar', $solicitud) }}"
+    data-csrf="{{ csrf_token() }}">
+
+    <div class="modal-calificacion-contenido">
+
+        <section class="persona-evaluada">
+
+            <div class="persona-foto">
+                @if($fotoEvaluado)
+                    <img
+                        src="{{ asset('storage/' . $fotoEvaluado) }}"
+                        alt="Foto de {{ $nombreEvaluado }}">
+                @else
+                    <span>{{ $inicialEvaluado }}</span>
+                @endif
+            </div>
+
+            <div class="persona-info">
+                <span class="evaluando-texto">
+                    Estás calificando a
+                </span>
+
+                <h3>{{ $nombreEvaluado }}</h3>
+
+                <span
+                    class="tipo-persona"
+                    id="tipoPersona">
+                    {{ ucfirst($tipo) }}
+                </span>
+            </div>
+
+        </section>
+
+        <div class="separador-calificacion"></div>
+
+        <div class="encabezado-calificacion">
+            <h2 id="subtitulo">
+                Califica tu experiencia
+            </h2>
+
+            <p class="parrafo-calificacion">
+                Evalúa cada aspecto según tu experiencia.
+            </p>
         </div>
 
-        <textarea id="comentario" placeholder="Escribe tu opinión..."></textarea>
+        <div class="separador-calificacion"></div>
 
-        <div class="acciones">
-            <button id="cancelar">Cancelar</button>
-            <button id="publicar">Publicar</button>
+        <section class="criterios-seccion">
+
+            <h3>Aspectos a evaluar</h3>
+
+            <div id="criteriosContainer"></div>
+
+        </section>
+
+        <div class="separador-calificacion"></div>
+
+        <section class="comentario-seccion">
+
+            <label for="comentario">
+                Cuéntanos tu experiencia
+            </label>
+
+            <textarea
+                id="comentario"
+                maxlength="500"
+                placeholder="Escribe tu opinión..."
+            ></textarea>
+
+            <div class="contador-comentario">
+                <span id="contadorCaracteres">0</span>/500
+            </div>
+
+        </section>
+
+        <div
+            id="mensajeError"
+            class="mensaje-error">
         </div>
+
+        <div class="acciones-modal">
+
+            <button
+                type="button"
+                id="cancelarCalificacion">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                id="publicarCalificacion">
+                Publicar
+            </button>
+
         </div>
+
     </div>
 
-</body>
-</html>
+</div>
