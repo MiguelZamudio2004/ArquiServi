@@ -1054,4 +1054,200 @@ body {
     .btn-editar {
         max-width: 100%;
     }
+
+    @media (max-width: 768px) {
+    .encabezado {
+        min-height: auto;
+        padding: 8px 10px;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        align-items: center;
+        row-gap: 8px;
+    }
+
+    .logo-link {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+    }
+
+    .logo {
+        width: 125px;
+    }
+
+    .acciones-usuario {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        gap: 5px;
+    }
+
+    .menu-superior {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .menu-lista {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 6px 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 0;
+        overflow: hidden;
+    }
+
+    .menu-lista li {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .menu-lista a {
+        width: 100%;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .texto {
+        display: none;
+    }
+
+    .icono {
+        font-size: 18px;
+    }
+
+    .menu-lista:hover {
+        padding: 6px 4px;
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .menu-lista:hover .texto {
+        display: none;
+    }
+
+    .menu-lista:hover .icono {
+        transform: none;
+    }
+
+    .perfil-nombre,
+    .perfil-flecha {
+        display: none;
+    }
+
+    .perfil-boton {
+        padding: 4px;
+    }
+
+    .perfil-avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    .campana {
+        padding: 5px;
+    }
+
+    .campana-icono {
+        font-size: 21px;
+    }
+
+    .contador-notificaciones {
+        min-width: 16px;
+        height: 16px;
+        font-size: 9px;
+    }
+
+    .notificaciones-dropdown {
+        position: fixed;
+        top: 105px;
+        left: 10px;
+        right: 10px;
+        width: auto;
+        max-height: 420px;
+    }
+
+    .perfil-dropdown {
+        width: min(250px, calc(100vw - 20px));
+    }
+
+    .perfil-publico {
+        width: 92%;
+        margin: 25px auto;
+    }
+
+    .perfil-datos,
+    .contacto-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .perfil-foto {
+        width: 105px;
+        height: 105px;
+        font-size: 36px;
+    }
+
+    .perfil-cabecera h1 {
+        font-size: 23px;
+    }
+}
+
+@media (max-width: 480px) {
+    .encabezado {
+        padding: 7px 6px;
+        row-gap: 6px;
+    }
+
+    .logo {
+        width: 110px;
+    }
+
+    .acciones-usuario {
+        gap: 2px;
+    }
+
+    .menu-lista {
+        padding: 5px 2px;
+        gap: 0;
+    }
+
+    .menu-lista:hover {
+        padding: 5px 2px;
+    }
+
+    .icono {
+        font-size: 17px;
+    }
+
+    .perfil-avatar {
+        width: 31px;
+        height: 31px;
+        font-size: 13px;
+    }
+
+    .campana {
+        padding: 4px;
+    }
+
+    .campana-icono {
+        font-size: 19px;
+    }
+
+    .notificaciones-dropdown {
+        top: 100px;
+        left: 6px;
+        right: 6px;
+    }
+}
 }
