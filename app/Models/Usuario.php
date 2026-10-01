@@ -23,6 +23,7 @@ class Usuario extends Authenticatable
         'ubicacion',
         'descripcion',
         'foto_perfil',
+        'portafolio_fotos',
         'estado',
         'email_verified_at'
     ];
@@ -33,7 +34,8 @@ class Usuario extends Authenticatable
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime'
+        'email_verified_at' => 'datetime',
+        'portafolio_fotos' => 'array'
     ];
 
     public function rol()

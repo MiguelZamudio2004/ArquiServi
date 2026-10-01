@@ -2,7 +2,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     width: 100%;
     min-height: 100%;
     margin: 0;
@@ -293,6 +294,26 @@ body {
     box-shadow: 0 0 5px rgba(30, 64, 175, 0.25);
 }
 
+.preview-portafolio {
+    width: 100%;
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.preview-portafolio img {
+    width: 100%;
+    height: 180px;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    background-color: #FFFFFF;
+    border: 2px solid #F47A20;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
 .materiales {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -333,7 +354,6 @@ body {
     border-color: #F47A20;
     background-color: #FFF7F0;
 }
-
 
 .descripcion {
     min-height: 130px;
@@ -418,7 +438,6 @@ body {
     text-align: center;
 }
 
-/* CELULAR */
 @media (max-width: 768px) {
     .encabezado {
         min-height: 70px;
@@ -479,6 +498,15 @@ body {
         height: 100px;
         font-size: 36px;
     }
+
+    .preview-portafolio {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .preview-portafolio img {
+        height: 160px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -512,6 +540,15 @@ body {
 
     .editar-perfil form {
         padding: 20px 15px;
+    }
+
+    .preview-portafolio {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .preview-portafolio img {
+        height: 220px;
     }
 
     .acciones {
