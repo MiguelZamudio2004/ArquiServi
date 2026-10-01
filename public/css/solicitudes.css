@@ -1,18 +1,15 @@
 * {
     box-sizing: border-box;
 }
-
 html,
 body {
     width: 100%;
     min-height: 100%;
     margin: 0;
 }
-
 html {
     overflow-x: hidden;
 }
-
 body {
     min-height: 100vh;
     display: flex;
@@ -22,16 +19,13 @@ body {
     font-family: Poppins, sans-serif;
     overflow-x: hidden;
 }
-
 body.modal-abierto {
     overflow: hidden;
 }
-
 main {
     flex: 1;
     width: 100%;
 }
-
 .encabezado {
     width: 100%;
     min-height: 80px;
@@ -43,7 +37,6 @@ main {
     position: relative;
     z-index: 1000;
 }
-
 .logo-link {
     grid-column: 1;
     grid-row: 1;
@@ -52,14 +45,54 @@ main {
     align-items: center;
     text-decoration: none;
 }
-
 .logo {
     width: 200px;
     height: auto;
     display: block;
     margin: 0;
 }
-
+.acciones-usuario {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.perfil-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.perfil-header:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.perfil-avatar-header {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F47A20;
+    color: #FFFFFF;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.perfil-avatar-header img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+.perfil-avatar-header i {
+    color: #FFFFFF;
+    font-size: 20px;
+}
 .menu-superior {
     grid-column: 2;
     grid-row: 1;
@@ -70,7 +103,6 @@ main {
     align-items: center;
     margin: 0;
 }
-
 .menu-lista {
     display: flex;
     gap: 25px;
@@ -84,12 +116,12 @@ main {
     align-items: center;
     margin: 0;
 }
-
 .menu-lista li {
     list-style: none;
 }
-
-.menu-lista a {
+.menu-lista a,
+.logout-menu-boton,
+.campana-menu {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -99,209 +131,61 @@ main {
     font-weight: 500;
     transition: all 0.4s ease;
 }
-
 .icono {
-    font-size: clamp(16px, 2.5vw, 22px);
+    font-size: clamp(20px, 2.5vw, 25px);
     transition: transform 0.3s ease;
     line-height: 1;
 }
-
 .texto {
     font-size: clamp(12px, 2vw, 16px);
     opacity: 0;
     transform: translateY(-10px);
-    transition:
-        opacity 0.4s ease,
-        transform 0.4s ease;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
-
 .menu-lista:hover {
     padding: 10px 20px;
     background: rgba(255, 255, 255, 0.25);
 }
-
 .menu-lista:hover .texto {
     opacity: 1;
     transform: translateY(0);
 }
-
 .menu-lista:hover .icono {
     transform: scale(1.1);
 }
-
-.acciones-usuario {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.logout-menu-form {
+    margin: 0;
+    padding: 0;
 }
-
-.perfil-container,
-.notificaciones-container {
-    position: relative;
-}
-
-.perfil-boton {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
+.logout-menu-boton {
+    padding: 0;
     background: none;
     border: none;
-    border-radius: 10px;
-    color: #FFFFFF;
-    font-family: Poppins, sans-serif;
     cursor: pointer;
-    transition: 0.2s;
 }
-
-.perfil-boton:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.perfil-avatar {
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #F47A20;
-    color: #FFFFFF;
-    border-radius: 50%;
-    font-family: Poppins, sans-serif;
-    font-weight: 600;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-
-.perfil-avatar img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-}
-
-.perfil-nombre {
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.perfil-flecha {
-    color: #FFFFFF;
-    font-size: 9px;
-}
-
-.perfil-dropdown {
-    display: none;
-    position: absolute;
-    top: 48px;
-    right: 0;
-    width: 250px;
-    background-color: #FFFFFF;
-    border: 1px solid #D1D5DB;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    z-index: 1200;
-}
-
-.perfil-dropdown.activo,
-.perfil-dropdown.mostrar {
-    display: block;
-}
-
-.perfil-info {
-    padding: 15px 18px;
-    background-color: #0C2D5A;
-    font-family: Poppins, sans-serif;
-}
-
-.perfil-info strong {
-    display: block;
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.perfil-info span {
-    display: block;
-    margin-top: 4px;
-    color: #D1D5DB;
-    font-size: 12px;
-    overflow-wrap: break-word;
-}
-
-.perfil-opcion {
-    width: 100%;
-    display: block;
-    padding: 13px 18px;
-    background-color: #FFFFFF;
-    color: #333333;
-    border: none;
-    border-bottom: 1px solid #E5E7EB;
-    font-family: Poppins, sans-serif;
-    font-size: 14px;
-    text-align: left;
-    text-decoration: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.perfil-opcion:hover {
-    background-color: #FFF7ED;
-    color: #F47A20;
-}
-
-.perfil-dropdown form {
-    margin: 0;
-}
-
-.cerrar-sesion {
-    color: #DC2626;
-    border-bottom: none;
-}
-
-.cerrar-sesion:hover {
-    background-color: #FEF2F2;
-    color: #DC2626;
-}
-
 .notificaciones-container {
+    position: relative;
     z-index: 1100;
 }
-
-.campana {
+.campana-menu {
+    position: relative;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.campana-icono-menu {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
-    background: none;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
 }
-
-.campana:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.campana-icono {
-    color: #FFFFFF;
-    font-size: 22px;
-}
-
 .contador-notificaciones {
     position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 18px;
-    height: 18px;
+    top: -8px;
+    right: -10px;
+    min-width: 17px;
+    height: 17px;
     padding: 2px;
     display: flex;
     align-items: center;
@@ -310,15 +194,15 @@ main {
     color: #FFFFFF;
     border-radius: 50%;
     font-family: Poppins, sans-serif;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 700;
 }
-
 .notificaciones-dropdown {
     display: none;
     position: absolute;
-    top: 45px;
-    right: 0;
+    top: calc(100% + 15px);
+    right: 50%;
+    transform: translateX(50%);
     width: 350px;
     max-height: 430px;
     background-color: #FFFFFF;
@@ -328,29 +212,24 @@ main {
     overflow: hidden;
     z-index: 1200;
 }
-
 .notificaciones-dropdown.activo,
 .notificaciones-dropdown.mostrar {
     display: block;
 }
-
 .notificaciones-header {
     padding: 15px 18px;
     background-color: #0C2D5A;
 }
-
 .notificaciones-header h3 {
     margin: 0;
     color: #FFFFFF;
     font-family: 'Libre Baskerville', serif;
     font-size: 18px;
 }
-
 .notificaciones-lista {
     max-height: 360px;
     overflow-y: auto;
 }
-
 .notificacion {
     position: relative;
     width: 100%;
@@ -364,26 +243,21 @@ main {
     cursor: pointer;
     transition: 0.2s;
 }
-
 .notificacion.no-leida {
     background-color: #FFF7ED;
     border-left: 4px solid #F47A20;
 }
-
 .notificacion.leida {
     background-color: #FFFFFF;
     border-left: 4px solid transparent;
 }
-
 .notificacion:hover {
     background-color: #F9FAFB;
 }
-
 .notificacion-contenido {
     flex: 1;
     min-width: 0;
 }
-
 .notificacion-titulo {
     display: block;
     color: #333333;
@@ -391,7 +265,6 @@ main {
     font-size: 14px;
     font-weight: 600;
 }
-
 .notificacion-mensaje {
     margin: 5px 0;
     color: #6B7280;
@@ -400,13 +273,11 @@ main {
     line-height: 1.4;
     overflow-wrap: break-word;
 }
-
 .notificacion-fecha {
     color: #9CA3AF;
     font-family: Poppins, sans-serif;
     font-size: 11px;
 }
-
 .indicador-no-leida {
     width: 8px;
     height: 8px;
@@ -415,7 +286,6 @@ main {
     border-radius: 50%;
     flex-shrink: 0;
 }
-
 .sin-notificaciones {
     padding: 30px 20px;
     color: #6B7280;
@@ -423,22 +293,19 @@ main {
     font-size: 14px;
     text-align: center;
 }
-
 .solicitudes-contenedor {
     width: 90%;
     max-width: 900px;
     margin: 40px auto;
     flex: 1;
 }
-
 .solicitudes-contenedor h1 {
     margin: 0 0 25px;
     color: #0C2D5A;
-    font-family: 'Libre Baskerville', serif;
+    font-family: "Libre Baskerville", serif;
     font-size: 28px;
     text-align: center;
 }
-
 .solicitud-form {
     width: 100%;
     padding: 30px;
@@ -447,7 +314,6 @@ main {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
-
 .solicitud-destinatario {
     margin-bottom: 22px;
     padding: 14px 16px;
@@ -459,27 +325,22 @@ main {
     border: 1px solid #E5E7EB;
     border-radius: 10px;
 }
-
 .solicitud-destinatario span {
     color: #6B7280;
     font-size: 13px;
 }
-
 .solicitud-destinatario strong {
     color: #0C2D5A;
     font-size: 14px;
     font-weight: 600;
     text-align: right;
 }
-
 .campo {
     margin-top: 15px;
 }
-
 .campo:first-child {
     margin-top: 0;
 }
-
 .solicitud-form label {
     display: block;
     margin: 15px 0 6px;
@@ -487,11 +348,9 @@ main {
     font-size: 14px;
     font-weight: 500;
 }
-
 .campo label {
     margin-top: 0;
 }
-
 .solicitud-form select,
 .solicitud-form textarea,
 .campo-fijo {
@@ -506,23 +365,19 @@ main {
     font-size: 15px;
     transition: 0.2s;
 }
-
 .campo-fijo {
     background-color: #F9FAFB;
 }
-
 .solicitud-form textarea {
     min-height: 140px;
     line-height: 1.5;
     resize: vertical;
 }
-
 .solicitud-form select:focus,
 .solicitud-form textarea:focus {
     border-color: #F47A20;
     box-shadow: 0 0 0 3px rgba(244, 122, 32, 0.12);
 }
-
 .mensaje-exito {
     margin-bottom: 20px;
     padding: 12px 15px;
@@ -532,7 +387,6 @@ main {
     border-radius: 10px;
     font-size: 14px;
 }
-
 .errores {
     margin: 15px 0;
     padding: 12px 15px;
@@ -540,13 +394,11 @@ main {
     border: 1px solid #FCA5A5;
     border-radius: 10px;
 }
-
 .errores p {
     margin: 4px 0;
     color: #DC2626;
     font-size: 13px;
 }
-
 .tabla-contenedor {
     width: 100%;
     background-color: #FFFFFF;
@@ -555,12 +407,10 @@ main {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     overflow: hidden;
 }
-
 .tabla-solicitudes {
     width: 100%;
     border-collapse: collapse;
 }
-
 .tabla-solicitudes th,
 .tabla-solicitudes td {
     padding: 15px;
@@ -570,25 +420,20 @@ main {
     vertical-align: middle;
     font-size: 14px;
 }
-
 .tabla-solicitudes th {
     background-color: #F9FAFB;
     color: #0C2D5A;
     font-weight: 600;
 }
-
 .tabla-solicitudes tr:last-child td {
     border-bottom: none;
 }
-
 .tabla-solicitudes tbody tr {
     transition: 0.2s;
 }
-
 .tabla-solicitudes tbody tr:hover {
     background-color: #FAFAFA;
 }
-
 .estado {
     display: inline-block;
     padding: 5px 10px;
@@ -597,32 +442,26 @@ main {
     font-weight: 600;
     white-space: nowrap;
 }
-
 .estado-pendiente {
     background-color: #FFF7ED;
     color: #C2410C;
 }
-
 .estado-aceptada {
     background-color: #ECFDF5;
     color: #15803D;
 }
-
 .estado-rechazada {
     background-color: #FEF2F2;
     color: #DC2626;
 }
-
 .estado-cancelada {
     background-color: #F3F4F6;
     color: #6B7280;
 }
-
 .estado-terminada {
     background-color: #EFF6FF;
     color: #1D4ED8;
 }
-
 .acciones {
     margin-top: 25px;
     display: flex;
@@ -631,23 +470,19 @@ main {
     gap: 10px;
     flex-wrap: wrap;
 }
-
 .acciones form {
     margin: 0;
 }
-
 .acciones-tabla {
     display: flex;
     align-items: center;
     gap: 7px;
     flex-wrap: wrap;
 }
-
 .form-accion-tabla {
     margin: 0;
     display: inline-flex;
 }
-
 .btn-principal,
 .btn-secundario,
 .btn-ver,
@@ -670,97 +505,80 @@ main {
     cursor: pointer;
     transition: 0.3s;
 }
-
 .btn-principal {
     padding: 9px 16px;
     color: #F47A20;
     border: 1px solid #F47A20;
 }
-
 .btn-principal:hover {
     background-color: #F47A20;
     color: #FFFFFF;
 }
-
 .btn-secundario {
     padding: 9px 16px;
     color: #555555;
     border: 1px solid #D1D5DB;
 }
-
 .btn-secundario:hover {
     background-color: #F3F4F6;
     color: #333333;
 }
-
 .btn-ver {
     padding: 7px 13px;
     color: #0C2D5A;
     border: 1px solid #0C2D5A;
 }
-
 .btn-ver:hover {
     background-color: #0C2D5A;
     color: #FFFFFF;
 }
-
 .btn-aceptar {
     padding: 7px 13px;
     color: #15803D;
     border: 1px solid #15803D;
 }
-
 .btn-aceptar:hover {
     background-color: #15803D;
     color: #FFFFFF;
 }
-
 .btn-rechazar,
 .btn-cancelar {
     padding: 7px 13px;
     color: #DC2626;
     border: 1px solid #DC2626;
 }
-
 .btn-rechazar:hover,
 .btn-cancelar:hover {
     background-color: #DC2626;
     color: #FFFFFF;
 }
-
 .btn-whatsapp {
     padding: 7px 13px;
     color: #16A34A;
     border: 1px solid #16A34A;
 }
-
 .btn-whatsapp:hover {
     background-color: #16A34A;
     color: #FFFFFF;
 }
-
 .btn-terminar {
     padding: 7px 13px;
     color: #0C2D5A;
     border: 1px solid #0C2D5A;
 }
-
 .btn-terminar:hover {
     background-color: #0C2D5A;
     color: #FFFFFF;
 }
-
 .btn-calificar {
     padding: 7px 13px;
     color: #F47A20;
     border: 1px solid #F47A20;
 }
-
 .btn-calificar:not(:disabled):hover {
     background-color: #F47A20;
     color: #FFFFFF;
 }
-
 .btn-calificar:disabled,
 .btn-calificado {
     background-color: #FFFFFF;
@@ -768,7 +586,6 @@ main {
     opacity: 0.6;
     cursor: not-allowed;
 }
-
 .detalle-solicitud {
     width: 100%;
     padding: 30px;
@@ -777,7 +594,6 @@ main {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
-
 .detalle-item {
     display: flex;
     justify-content: space-between;
@@ -786,24 +602,20 @@ main {
     padding: 13px 0;
     border-bottom: 1px solid #E5E7EB;
 }
-
 .detalle-item > span:first-child,
 .detalle-descripcion > span {
     color: #6B7280;
     font-size: 14px;
 }
-
 .detalle-item strong {
     color: #333333;
     font-size: 14px;
     font-weight: 500;
     text-align: right;
 }
-
 .detalle-descripcion {
     padding-top: 18px;
 }
-
 .detalle-descripcion p {
     margin: 8px 0 0;
     color: #4B5563;
@@ -811,7 +623,6 @@ main {
     line-height: 1.6;
     overflow-wrap: break-word;
 }
-
 .contacto-whatsapp,
 .acciones-trabajo,
 .acciones-calificacion {
@@ -823,11 +634,9 @@ main {
     gap: 10px;
     border-top: 1px solid #E5E7EB;
 }
-
 .acciones-trabajo form {
     margin: 0;
 }
-
 .sin-solicitudes {
     padding: 35px 20px;
     background-color: #FFFFFF;
@@ -835,29 +644,24 @@ main {
     border-radius: 12px;
     text-align: center;
 }
-
 .sin-solicitudes p {
     margin: 0 0 12px;
     color: #6B7280;
     font-size: 14px;
 }
-
 .sin-solicitudes a,
 .volver a {
     color: #F47A20;
     font-size: 14px;
     text-decoration: none;
 }
-
 .sin-solicitudes a:hover,
 .volver a:hover {
     text-decoration: underline;
 }
-
 .volver {
     margin-top: 25px;
 }
-
 .pie {
     width: 100%;
     margin-top: auto;
@@ -865,249 +669,192 @@ main {
     background-color: #0C2D5A;
     color: #FFFFFF;
     text-align: center;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-size: 14px;
 }
-
 .pie p {
     margin: 0;
 }
-
 @media (max-width: 1100px) {
     .solicitudes-contenedor {
         width: 92%;
     }
 }
-
 @media (max-width: 900px) {
     .solicitudes-contenedor {
         width: 92%;
     }
 }
-
 @media (max-width: 768px) {
     .encabezado {
-        min-height: 70px;
-        padding: 0 12px;
-        grid-template-columns: auto 1fr auto;
-    }
-
-    .logo {
-        width: 150px;
-    }
-
-    .menu-superior {
-        grid-column: 2;
-        grid-row: 1;
-        min-width: 0;
-    }
-
-    .menu-lista {
-        gap: 12px;
-        padding: 7px 10px;
-    }
-
-    .menu-lista:hover {
-        padding: 7px 10px;
-        background: rgba(255, 255, 255, 0.15);
-    }
-
-    .texto {
-        display: none;
-    }
-
-    .menu-lista:hover .texto {
-        display: none;
-    }
-
-    .icono {
-        font-size: 18px;
-    }
-
-    .menu-lista:hover .icono {
-        transform: none;
-    }
-
-    .acciones-usuario {
-        gap: 6px;
-    }
-
-    .perfil-nombre,
-    .perfil-flecha {
-        display: none;
-    }
-
-    .perfil-boton {
-        padding: 4px;
-    }
-
-    .perfil-avatar {
-        width: 34px;
-        height: 34px;
-        font-size: 14px;
-    }
-
-    .campana {
-        padding: 5px;
-    }
-
-    .campana-icono {
-        font-size: 23px;
-    }
-
-    .notificaciones-dropdown {
-        position: fixed;
-        top: 70px;
-        left: 10px;
-        right: 10px;
-        width: auto;
-        max-height: 420px;
-    }
-
-    .perfil-dropdown {
-        width: min(250px, calc(100vw - 20px));
-    }
-
-    .solicitudes-contenedor {
-        width: 92%;
-        margin: 25px auto;
-    }
-
-    .solicitudes-contenedor h1 {
-        font-size: 24px;
-    }
-
-    .solicitud-form,
-    .detalle-solicitud {
-        padding: 22px 18px;
-    }
-
-    .detalle-item {
-        gap: 12px;
-    }
-}
-
-@media (max-width: 600px) {
-    .encabezado {
         min-height: auto;
-        padding: 8px 7px;
+        padding: 8px 10px;
         grid-template-columns: 1fr auto;
         grid-template-rows: auto auto;
-        column-gap: 7px;
-        row-gap: 6px;
+        align-items: center;
+        row-gap: 8px;
     }
-
-    .logo-link {
+    .logo-link,
+    .logo {
         grid-column: 1;
         grid-row: 1;
         justify-self: start;
     }
-
     .logo {
-        width: 150px;
+        width: 125px;
     }
-
     .acciones-usuario {
         grid-column: 2;
         grid-row: 1;
         justify-self: end;
-        gap: 6px;
+        gap: 5px;
     }
-
+    .perfil-header {
+        padding: 4px;
+    }
+    .perfil-avatar-header {
+        width: 38px;
+        height: 38px;
+    }
+    .perfil-avatar-header i {
+        font-size: 18px;
+    }
     .menu-superior {
         grid-column: 1 / -1;
         grid-row: 2;
         width: 100%;
+        max-width: 100%;
         min-width: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        overflow: visible;
     }
-
     .menu-lista {
         width: 100%;
-        gap: 0;
-        padding: 7px 10px;
+        max-width: 100%;
+        margin: 0;
+        padding: 7px 4px;
+        display: flex;
+        align-items: center;
         justify-content: space-around;
+        gap: 0;
+        overflow: visible;
     }
-
-    .menu-lista:hover {
-        padding: 7px 10px;
-    }
-
     .menu-lista li {
-        min-width: 0;
         flex: 1 1 0;
+        min-width: 0;
     }
-
-    .menu-lista a {
+    .menu-lista a,
+    .logout-menu-boton,
+    .campana-menu {
         width: 100%;
+        min-width: 0;
+        display: flex;
+        align-items: center;
         justify-content: center;
     }
-
-    .icono {
-        font-size: 16px;
+    .logout-menu-form {
+        width: 100%;
     }
-
+    .texto {
+        display: none;
+    }
+    .icono {
+        font-size: 21px;
+    }
+    .menu-lista:hover {
+        padding: 7px 4px;
+        background: rgba(255, 255, 255, 0.15);
+    }
+    .menu-lista:hover .texto {
+        display: none;
+    }
+    .menu-lista:hover .icono {
+        transform: none;
+    }
+    .contador-notificaciones {
+        top: -7px;
+        right: -9px;
+        min-width: 16px;
+        height: 16px;
+        font-size: 9px;
+    }
+    .notificaciones-dropdown {
+        position: fixed;
+        top: 105px;
+        left: 10px;
+        right: 10px;
+        width: auto;
+        max-height: 420px;
+        transform: none;
+    }
+    .solicitudes-contenedor {
+        width: 92%;
+        margin: 25px auto;
+    }
+    .solicitudes-contenedor h1 {
+        font-size: 24px;
+    }
+    .solicitud-form,
+    .detalle-solicitud {
+        padding: 22px 18px;
+    }
+    .detalle-item {
+        gap: 12px;
+    }
+}
+@media (max-width: 600px) {
     .solicitudes-contenedor {
         width: calc(100% - 20px);
         margin: 18px auto;
     }
-
     .solicitudes-contenedor h1 {
         margin-bottom: 15px;
         font-size: 21px;
     }
-
     .solicitud-form,
     .detalle-solicitud {
         padding: 16px 14px;
         border-radius: 12px;
     }
-
     .solicitud-destinatario {
         margin-bottom: 15px;
         padding: 11px 12px;
         gap: 10px;
     }
-
     .solicitud-destinatario span {
         font-size: 11px;
     }
-
     .solicitud-destinatario strong {
         font-size: 12px;
     }
-
     .campo {
         margin-top: 12px;
     }
-
     .solicitud-form label {
         margin: 0 0 5px;
         font-size: 12px;
     }
-
     .solicitud-form select,
     .solicitud-form textarea,
     .campo-fijo {
         padding: 9px 10px;
         font-size: 14px;
     }
-
     .solicitud-form textarea {
         min-height: 105px;
     }
-
     .acciones {
         margin-top: 16px;
         gap: 7px;
     }
-
     .btn-principal,
     .btn-secundario {
         width: auto;
         padding: 8px 12px;
         font-size: 12px;
     }
-
     .tabla-contenedor {
         background-color: transparent;
         border: none;
@@ -1115,76 +862,112 @@ main {
         box-shadow: none;
         overflow: visible;
     }
-
-    .tabla-solicitudes {
-        width: 100%;
-        min-width: 0;
+    .tabla-solicitudes,
+    .tabla-solicitudes tbody {
         display: block;
+        width: 100%;
     }
-
     .tabla-solicitudes thead {
         display: none;
     }
-
     .tabla-solicitudes tbody {
-        width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 9px;
+        gap: 12px;
     }
-
     .tabla-solicitudes tr {
         width: 100%;
-        display: block;
-        padding: 10px 12px;
+        padding: 15px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "persona estado"
+            "tipo estado"
+            "concepto concepto"
+            "acciones acciones";
+        column-gap: 12px;
         background-color: #FFFFFF;
         border: 1px solid #E5E7EB;
-        border-radius: 11px;
-        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.04);
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
-
     .tabla-solicitudes tbody tr:hover {
         background-color: #FFFFFF;
     }
-
     .tabla-solicitudes td {
-        width: 100%;
-        min-width: 0;
-        padding: 6px 0;
-        display: grid;
-        grid-template-columns: minmax(90px, 110px) minmax(0, 1fr);
-        align-items: center;
-        gap: 8px;
-        border-bottom: 1px solid #F3F4F6;
-        font-size: 12px;
-        text-align: right;
-        overflow-wrap: anywhere;
-    }
-
-    .tabla-solicitudes td[data-label]::before {
-        content: attr(data-label);
-        color: #6B7280;
-        font-size: 10px;
-        font-weight: 600;
-        text-align: left;
-    }
-
-    .tabla-solicitudes td:last-child {
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-
-    .acciones-tabla {
-        margin-left: auto;
-        justify-content: flex-end;
-        gap: 4px;
-    }
-
-    .form-accion-tabla {
         width: auto;
         min-width: 0;
+        padding: 0;
+        display: block;
+        border: none;
+        text-align: left;
+        overflow-wrap: anywhere;
     }
-
+    .tabla-solicitudes td:nth-child(1) {
+        grid-area: persona;
+        padding-right: 8px;
+        color: #0C2D5A;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+    .tabla-solicitudes td:nth-child(2) {
+        grid-area: tipo;
+        margin-top: 3px;
+        color: #6B7280;
+        font-size: 11px;
+    }
+    .tabla-solicitudes td:nth-child(3) {
+        grid-area: concepto;
+        margin-top: 14px;
+        padding: 11px 12px;
+        background-color: #F9FAFB;
+        border-radius: 8px;
+        color: #333333;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+    .tabla-solicitudes td:nth-child(3)::before {
+        content: "Servicio / Material";
+        display: block;
+        margin-bottom: 3px;
+        color: #9CA3AF;
+        font-size: 9px;
+        font-weight: 600;
+    }
+    .tabla-solicitudes td:nth-child(4) {
+        grid-area: estado;
+        justify-self: end;
+        align-self: start;
+    }
+    .tabla-solicitudes td:nth-child(5) {
+        grid-area: acciones;
+        margin-top: 13px;
+        padding-top: 12px;
+        border-top: 1px solid #E5E7EB;
+    }
+    .acciones-tabla {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .acciones-tabla .btn-ver {
+        margin-right: auto;
+    }
+    .acciones-tabla form {
+        width: auto;
+        margin: 0;
+        display: inline-flex;
+    }
+    .acciones-tabla a,
+    .acciones-tabla button {
+        width: auto;
+        min-width: 0;
+        flex: 0 0 auto;
+    }
     .btn-ver,
     .btn-aceptar,
     .btn-rechazar,
@@ -1192,12 +975,11 @@ main {
     .btn-whatsapp,
     .btn-terminar,
     .btn-calificar {
-        width: auto;
-        min-width: 0;
-        padding: 6px 9px;
+        min-height: 34px;
+        padding: 6px 11px;
         font-size: 10px;
+        white-space: nowrap;
     }
-
     .contacto-whatsapp,
     .acciones-trabajo,
     .acciones-calificacion {
@@ -1205,208 +987,214 @@ main {
         padding-top: 13px;
         gap: 7px;
     }
-
     .contacto-whatsapp .btn-whatsapp,
     .acciones-trabajo .btn-terminar,
+    .acciones-trabajo .btn-aceptar,
+    .acciones-trabajo .btn-rechazar,
     .acciones-calificacion .btn-calificar {
         width: auto;
     }
-
     .detalle-item {
         padding: 8px 0;
         gap: 10px;
     }
-
     .detalle-item > span:first-child {
         flex-shrink: 0;
         font-size: 11px;
     }
-
     .detalle-item strong {
         font-size: 12px;
         overflow-wrap: anywhere;
     }
-
     .detalle-descripcion {
         padding-top: 12px;
     }
-
     .detalle-descripcion > span {
         font-size: 11px;
     }
-
     .detalle-descripcion p {
         margin-top: 5px;
         font-size: 12px;
     }
-
     .estado {
         padding: 4px 7px;
         font-size: 9px;
     }
-
     .mensaje-exito {
         margin-bottom: 14px;
         padding: 9px 11px;
         font-size: 12px;
     }
-
     .errores {
         margin: 0 0 14px;
         padding: 9px 11px;
     }
-
     .errores p {
         font-size: 11px;
     }
-
     .sin-solicitudes {
         padding: 24px 14px;
     }
-
     .sin-solicitudes p {
         font-size: 12px;
     }
-
-    .notificaciones-dropdown {
-        top: 105px;
-        left: 7px;
-        right: 7px;
-        max-height: calc(100dvh - 115px);
-    }
-
-    .perfil-dropdown {
-        position: fixed;
-        top: 105px;
-        right: 7px;
-        width: min(250px, calc(100vw - 14px));
-    }
 }
-
 @media (max-width: 480px) {
     .encabezado {
-        padding: 7px 5px;
+        padding: 7px 6px;
+        row-gap: 6px;
     }
-
     .logo {
-        width: 145px;
+        width: 110px;
     }
-
-    .campana {
-        padding: 6px;
+    .acciones-usuario {
+        gap: 2px;
     }
-
-    .campana-icono {
-        font-size: 22px;
+    .perfil-header {
+        padding: 3px;
     }
-
-    .perfil-avatar {
-        width: 34px;
-        height: 34px;
-        font-size: 14px;
+    .perfil-avatar-header {
+        width: 35px;
+        height: 35px;
     }
-
-    .menu-lista {
-        padding: 6px 7px;
-    }
-
-    .menu-lista:hover {
-        padding: 6px 7px;
-    }
-
-    .icono {
+    .perfil-avatar-header i {
         font-size: 16px;
     }
-
+    .menu-lista {
+        padding: 6px 2px;
+        gap: 0;
+    }
+    .menu-lista:hover {
+        padding: 6px 2px;
+    }
+    .icono {
+        font-size: 20px;
+    }
+    .contador-notificaciones {
+        top: -6px;
+        right: -8px;
+        min-width: 15px;
+        height: 15px;
+        font-size: 8px;
+    }
+    .notificaciones-dropdown {
+        top: 100px;
+        left: 6px;
+        right: 6px;
+    }
     .solicitudes-contenedor {
         width: calc(100% - 14px);
         margin: 15px auto;
     }
-
     .solicitudes-contenedor h1 {
         font-size: 20px;
     }
-
     .solicitud-form,
     .detalle-solicitud {
         padding: 14px 11px;
     }
-
     .solicitud-destinatario {
         padding: 10px;
     }
-
     .acciones {
         margin-top: 14px;
     }
-
+    .tabla-solicitudes tr {
+        padding: 13px;
+    }
+    .tabla-solicitudes td:nth-child(1) {
+        font-size: 13px;
+    }
+    .tabla-solicitudes td:nth-child(2) {
+        font-size: 10px;
+    }
+    .tabla-solicitudes td:nth-child(3) {
+        margin-top: 12px;
+        padding: 10px;
+    }
+    .tabla-solicitudes td:nth-child(5) {
+        margin-top: 11px;
+        padding-top: 10px;
+    }
+    .acciones-tabla {
+        gap: 5px;
+    }
+    .acciones-tabla .btn-ver {
+        margin-right: auto;
+    }
+    .btn-ver,
+    .btn-aceptar,
+    .btn-rechazar,
+    .btn-cancelar,
+    .btn-whatsapp,
+    .btn-terminar,
+    .btn-calificar {
+        min-height: 32px;
+        padding: 6px 9px;
+        font-size: 10px;
+    }
     .notificacion {
         padding: 12px 15px;
     }
-
     .notificacion-titulo {
         font-size: 13px;
     }
-
     .notificacion-mensaje {
         font-size: 12px;
     }
-
     .pie {
         font-size: 12px;
     }
 }
-
 @media (max-width: 380px) {
-    .logo {
-        width: 135px;
-    }
-
-    .menu-lista {
-        padding: 6px 5px;
-    }
-
-    .menu-lista:hover {
-        padding: 6px 5px;
-    }
-
-    .icono {
-        font-size: 16px;
-    }
-
     .solicitudes-contenedor {
         width: calc(100% - 10px);
     }
-
     .solicitud-form,
     .detalle-solicitud {
         padding: 13px 9px;
     }
-
     .solicitud-destinatario {
         flex-direction: column;
         align-items: flex-start;
         gap: 3px;
     }
-
     .solicitud-destinatario strong {
         text-align: left;
     }
-
     .tabla-solicitudes tr {
-        padding: 9px 10px;
+        padding: 11px;
     }
-
-    .tabla-solicitudes td {
-        grid-template-columns: 82px minmax(0, 1fr);
-        gap: 6px;
+    .tabla-solicitudes td:nth-child(1) {
+        padding-right: 4px;
+        font-size: 12px;
+    }
+    .tabla-solicitudes td:nth-child(2) {
+        font-size: 10px;
+    }
+    .tabla-solicitudes td:nth-child(3) {
+        padding: 9px;
         font-size: 11px;
     }
-
-    .tabla-solicitudes td[data-label]::before {
-        font-size: 9px;
+    .tabla-solicitudes td:nth-child(3)::before {
+        font-size: 8px;
     }
-
+    .estado {
+        padding: 4px 6px;
+        font-size: 8px;
+    }
+    .acciones-tabla {
+        justify-content: flex-end;
+        gap: 4px;
+    }
+    .acciones-tabla .btn-ver {
+        margin-right: auto;
+    }
+    .acciones-tabla form,
+    .acciones-tabla a,
+    .acciones-tabla button {
+        width: auto;
+    }
     .btn-principal,
     .btn-secundario,
     .btn-ver,
@@ -1416,7 +1204,8 @@ main {
     .btn-whatsapp,
     .btn-terminar,
     .btn-calificar {
-        padding: 5px 8px;
-        font-size: 10px;
+        min-height: 30px;
+        padding: 5px 7px;
+        font-size: 9px;
     }
 }

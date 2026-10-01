@@ -13,13 +13,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <script src="{{ asset('js/notification.js') }}" defer></script>
-    <script src="{{ asset('js/perfil.js') }}" defer></script>
 </head>
 
 <body>
 
 <header class="encabezado">
-
     <img
         src="{{ asset('encabezado2.png') }}"
         class="logo"
@@ -28,7 +26,6 @@
 
     <nav class="menu-superior">
         <ul class="menu-lista">
-
             <li>
                 <a href="{{ route('menu') }}">
                     <i class="fa-solid fa-house icono"></i>
@@ -44,7 +41,6 @@
             </li>
 
             @auth
-
                 @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
@@ -63,208 +59,115 @@
                     </li>
                 @endif
 
-                <li>
-                    <a href="{{ route('perfil') }}">
-                        <i class="fa-solid fa-user icono"></i>
-                        <span class="texto">Perfil</span>
-                    </a>
+                <li class="notificaciones-container">
+                    <input
+                        type="hidden"
+                        id="csrf-notificaciones"
+                        value="{{ csrf_token() }}"
+                    >
+
+                    <button
+                        type="button"
+                        class="campana-menu"
+                        id="btnNotificaciones"
+                        aria-label="Notificaciones"
+                    >
+                        <span class="campana-icono-menu">
+                            <i class="fa-solid fa-bell icono"></i>
+
+                            @if(auth()->user()->unreadNotifications->count() > 0)
+                                <span
+                                    class="contador-notificaciones"
+                                    id="contadorNotificaciones"
+                                >
+                                    {{ auth()->user()->unreadNotifications->count() }}
+                                </span>
+                            @endif
+                        </span>
+
+                        <span class="texto">Notificaciones</span>
+                    </button>
+
+                    <div
+                        class="notificaciones-dropdown"
+                        id="notificacionesDropdown"
+                    >
+                        <div class="notificaciones-header">
+                            <h3>Notificaciones</h3>
+                        </div>
+
+                        <div class="notificaciones-lista">
+                            @forelse(auth()->user()->notifications()->latest()->take(10)->get() as $notificacion)
+                                <button
+                                    type="button"
+                                    class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
+                                    data-url="{{ route('notificaciones.leer', $notificacion->id) }}"
+                                >
+                                    <div class="notificacion-contenido">
+                                        <strong class="notificacion-titulo">
+                                            {{ $notificacion->data['titulo'] ?? 'Notificación' }}
+                                        </strong>
+
+                                        <p class="notificacion-mensaje">
+                                            {{ $notificacion->data['mensaje'] ?? '' }}
+                                        </p>
+
+                                        <small class="notificacion-fecha">
+                                            {{ $notificacion->created_at->diffForHumans() }}
+                                        </small>
+                                    </div>
+
+                                    @if(!$notificacion->read_at)
+                                        <span class="indicador-no-leida"></span>
+                                    @endif
+                                </button>
+                            @empty
+                                <div class="sin-notificaciones">
+                                    No tienes notificaciones.
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
                 </li>
 
-            @endauth
-
-        </ul>
-    </nav>
-
-    @auth
-
-        <div class="acciones-usuario">
-
-            <div class="notificaciones-container">
-
-                <input
-                    type="hidden"
-                    id="csrf-notificaciones"
-                    value="{{ csrf_token() }}"
-                >
-
-                <button
-                    type="button"
-                    class="campana"
-                    id="btnNotificaciones"
-                    aria-label="Notificaciones"
-                >
-                    <i class="fa-solid fa-bell campana-icono"></i>
-
-                    @if(auth()->user()->unreadNotifications->count() > 0)
-                        <span
-                            class="contador-notificaciones"
-                            id="contadorNotificaciones"
-                        >
-                            {{ auth()->user()->unreadNotifications->count() }}
-                        </span>
-                    @endif
-                </button>
-
-                <div
-                    class="notificaciones-dropdown"
-                    id="notificacionesDropdown"
-                >
-
-                    <div class="notificaciones-header">
-                        <h3>Notificaciones</h3>
-                    </div>
-
-                    <div class="notificaciones-lista">
-
-                        @forelse(auth()->user()->notifications()->latest()->take(10)->get() as $notificacion)
-
-                            <button
-                                type="button"
-                                class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
-                                data-url="{{ route('notificaciones.leer', $notificacion->id) }}"
-                            >
-
-                                <div class="notificacion-contenido">
-
-                                    <strong class="notificacion-titulo">
-                                        {{ $notificacion->data['titulo'] ?? 'Notificación' }}
-                                    </strong>
-
-                                    <p class="notificacion-mensaje">
-                                        {{ $notificacion->data['mensaje'] ?? '' }}
-                                    </p>
-
-                                    <small class="notificacion-fecha">
-                                        {{ $notificacion->created_at->diffForHumans() }}
-                                    </small>
-
-                                </div>
-
-                                @if(!$notificacion->read_at)
-                                    <span class="indicador-no-leida"></span>
-                                @endif
-
-                            </button>
-
-                        @empty
-
-                            <div class="sin-notificaciones">
-                                No tienes notificaciones.
-                            </div>
-
-                        @endforelse
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="perfil-container">
-
-                <button
-                    type="button"
-                    class="perfil-boton"
-                    id="btnPerfil"
-                    aria-label="Abrir menú de perfil"
-                >
-
-                    <div class="perfil-avatar">
-
-                        @if(auth()->user()->foto_perfil)
-
-                            <img
-                                src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
-                                alt="Foto de perfil"
-                            >
-
-                        @else
-
-                            {{ strtoupper(substr(auth()->user()->nombre, 0, 1)) }}
-
-                        @endif
-
-                    </div>
-
-                    <span class="perfil-nombre">
-                        {{ auth()->user()->nombre }}
-                    </span>
-
-                    <span class="perfil-flecha">
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </span>
-
-                </button>
-
-                <div
-                    class="perfil-dropdown"
-                    id="perfilDropdown"
-                >
-
-                    <div class="perfil-info">
-
-                        <strong>
-                            {{ auth()->user()->nombre }}
-                            {{ auth()->user()->apellido_paterno }}
-                        </strong>
-
-                        <span>
-                            {{ auth()->user()->correo }}
-                        </span>
-
-                    </div>
-
-                    <a
-                        href="{{ route('perfil') }}"
-                        class="perfil-opcion"
-                    >
-                        Mi Perfil
-                    </a>
-
-                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
-
-                        <a
-                            href="{{ route('solicitudes.mias') }}"
-                            class="perfil-opcion"
-                        >
-                            Mis solicitudes
-                        </a>
-
-                    @endif
-
-                    @if(in_array(auth()->user()->rol->nombre, ['profesional', 'proveedor']))
-
-                        <a
-                            href="{{ route('solicitudes.recibidas') }}"
-                            class="perfil-opcion"
-                        >
-                            Solicitudes recibidas
-                        </a>
-
-                    @endif
-
-                    <form
-                        action="{{ route('logout') }}"
-                        method="POST"
-                    >
+                <li>
+                    <form action="{{ route('logout') }}" method="POST" class="logout-menu-form">
                         @csrf
 
                         <button
                             type="submit"
-                            class="perfil-opcion cerrar-sesion"
+                            class="logout-menu-boton"
+                            aria-label="Cerrar sesión"
                         >
-                            Cerrar sesión
+                            <i class="fa-solid fa-right-from-bracket icono"></i>
+                            <span class="texto">Cerrar sesión</span>
                         </button>
                     </form>
+                </li>
+            @endauth
+        </ul>
+    </nav>
 
-                </div>
-
-            </div>
-
+    @auth
+        <div class="acciones-usuario">
+            <a
+                href="{{ route('perfil') }}"
+                class="perfil-header"
+                aria-label="Mi perfil"
+            >
+                <span class="perfil-avatar-header">
+                    @if(auth()->user()->foto_perfil)
+                        <img
+                            src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
+                            alt="Foto de perfil"
+                        >
+                    @else
+                        <i class="fa-solid fa-user"></i>
+                    @endif
+                </span>
+            </a>
         </div>
-
     @endauth
-
 </header>
 
 <h2 class="bienvenida">
@@ -285,17 +188,13 @@
 </h2>
 
 @auth
-
     <h2 class="bienvenida">
         {{ auth()->user()->nombre }}
     </h2>
-
 @endauth
 
 <section class="contenedor-principal">
-
     <section class="contenedor-form">
-
         <label class="etiqueta">
             ¿Qué servicio necesitas hoy?
         </label>
@@ -314,7 +213,6 @@
         </a>
 
         @guest
-
             <label class="etiqueta">
                 Inicia sesión para ver detalles de tu cuenta
             </label>
@@ -324,30 +222,22 @@
                     Iniciar sesión
                 </a>
             </button>
-
         @endguest
-
     </section>
 
     <section class="contenedor-imagen">
-
         <img
             src="{{ asset('menu.png') }}"
             alt="Imagen de bienvenida"
             class="imagen-bienvenida"
         >
-
     </section>
-
 </section>
 
 <section class="info-arquiservi">
-
     <div class="bloque">
         <div class="bloque-contenido">
-
             <div class="bloque-texto">
-
                 <h3 class="subtitulo">
                     ¿Qué es ArquiServi?
                 </h3>
@@ -355,35 +245,27 @@
                 <p class="parrafo">
                     ArquiServi es la plataforma digital que concentra y conecta el entorno de la arquitectura, construcción, remodelación y servicios relacionados. Es el medio de encuentro donde usuarios con profesionales de la industria de la construcción, arquitectura e ingeniería, proveedores de materiales e insumos y servicios relacionados conectan de manera directa, eficiente y transparente.
                 </p>
-
             </div>
 
             <div class="bloque-imagen">
-
                 <img
                     src="{{ asset('images/Que es.png') }}"
                     alt="¿Qué es ArquiServi?"
                 >
-
             </div>
-
         </div>
     </div>
 
     <div class="bloque alterno">
         <div class="bloque-contenido">
-
             <div class="bloque-imagen">
-
                 <img
                     src="{{ asset('images/Finalidad.png') }}"
                     alt="Finalidad de ArquiServi"
                 >
-
             </div>
 
             <div class="bloque-texto">
-
                 <h3 class="subtitulo">
                     Finalidad
                 </h3>
@@ -391,17 +273,13 @@
                 <p class="parrafo">
                     Está enfocada en el contacto rápido entre particulares que necesitan obras/remodelaciones y profesionales o contratistas, materiales y servicios relacionados al sector. Nuestra finalidad es democratizar y simplificar la gestión de proyectos e insumos de construcción y diseño, facilitando la visibilidad de talento profesional, y contacto directo entre las partes sin intermediarios.
                 </p>
-
             </div>
-
         </div>
     </div>
 
     <div class="bloque">
         <div class="bloque-contenido">
-
             <div class="bloque-texto">
-
                 <h3 class="subtitulo">
                     Misión
                 </h3>
@@ -409,35 +287,27 @@
                 <p class="parrafo">
                     Conectar e integrar a las personas a crear el hogar en el que desean vivir, facilitándolo de forma confiable y mejor la experiencia en el diseño técnico de construcción y servicios relacionados en el hogar, enlazando a profesionales, prestadores de servicios relacionados, mano de obra calificada, brindando soluciones en espacios habitables a través de una plataforma digital intuitiva.
                 </p>
-
             </div>
 
             <div class="bloque-imagen">
-
                 <img
                     src="{{ asset('images/Mision.png') }}"
                     alt="Misión de ArquiServi"
                 >
-
             </div>
-
         </div>
     </div>
 
     <div class="bloque alterno">
         <div class="bloque-contenido">
-
             <div class="bloque-imagen">
-
                 <img
                     src="{{ asset('images/Vision.png') }}"
                     alt="Visión de ArquiServi"
                 >
-
             </div>
 
             <div class="bloque-texto">
-
                 <h3 class="subtitulo">
                     Visión
                 </h3>
@@ -445,17 +315,13 @@
                 <p class="parrafo">
                     Ser el directorio global y digital de referencia en el sector para que tu vida sea sencilla, siendo imprescindible para integrar y atender las necesidades de nuestros usuarios, con calidad, confianza, rapidez y servicio profesional en la contratación de servicios, optimizando la cadena de valor.
                 </p>
-
             </div>
-
         </div>
     </div>
 
     <div class="bloque">
         <div class="bloque-contenido">
-
             <div class="bloque-texto">
-
                 <h3 class="subtitulo">
                     Objetivos
                 </h3>
@@ -469,35 +335,27 @@
                     <li>Generar una base de datos de materiales calificados por criterios técnicos, de alta calidad, sustentabilidad y aplicación.</li>
                     <li>Fomentar la profesionalización e inclusión digital de pequeñas empresas y técnicos de la construcción.</li>
                 </ul>
-
             </div>
 
             <div class="bloque-imagen">
-
                 <img
                     src="{{ asset('images/Objetivos.png') }}"
                     alt="Objetivos de ArquiServi"
                 >
-
             </div>
-
         </div>
     </div>
 
     <div class="bloque alterno">
         <div class="bloque-contenido">
-
             <div class="bloque-imagen">
-
                 <img
                     src="{{ asset('images/Valores.png') }}"
                     alt="Valores de ArquiServi"
                 >
-
             </div>
 
             <div class="bloque-texto">
-
                 <h3 class="subtitulo">
                     Valores
                 </h3>
@@ -509,17 +367,13 @@
                     <li>Innovación: Digitalizamos procesos tradicionales de búsqueda, contacto y selección en la industria de la edificación.</li>
                     <li>Inclusión Sectorial: Brindamos las mismas oportunidades de visibilidad tanto a grandes empresas de servicios como a profesionales e independientes.</li>
                 </ul>
-
             </div>
-
         </div>
     </div>
 
     <div class="bloque">
         <div class="bloque-contenido">
-
             <div class="bloque-texto">
-
                 <h3 class="subtitulo">
                     ¿Por qué elegirnos?
                 </h3>
@@ -553,21 +407,16 @@
                     <li>Alcance local y regional: Posiciona tu negocio en las zonas de trabajo donde entregas material.</li>
                     <li>Crecimiento B2B y B2C: Impacta tanto al cliente final como a los contratistas y despachos de arquitectura.</li>
                 </ul>
-
             </div>
 
             <div class="bloque-imagen">
-
                 <img
                     src="{{ asset('images/Porque elegirnos.png') }}"
                     alt="¿Por qué elegirnos?"
                 >
-
             </div>
-
         </div>
     </div>
-
 </section>
 
 <footer class="pie">
@@ -575,5 +424,4 @@
 </footer>
 
 </body>
-
 </html>

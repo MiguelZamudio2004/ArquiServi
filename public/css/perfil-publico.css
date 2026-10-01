@@ -45,9 +45,58 @@ body {
     display: block;
 }
 
+.acciones-usuario {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.perfil-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.perfil-header:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.perfil-avatar-header {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F47A20;
+    color: #FFFFFF;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.perfil-avatar-header img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.perfil-avatar-header i {
+    color: #FFFFFF;
+    font-size: 20px;
+}
+
 .menu-superior {
     grid-column: 2;
     grid-row: 1;
+    position: relative;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -56,38 +105,40 @@ body {
 }
 
 .menu-lista {
-    margin: 0;
-    padding: 6px 15px;
     display: flex;
-    align-items: center;
     gap: 25px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 6px 15px;
     transition: all 0.6s cubic-bezier(0.2, 0.74, 0.18, 1);
+    align-items: center;
+    margin: 0;
 }
 
 .menu-lista li {
     list-style: none;
 }
 
-.menu-lista a {
+.menu-lista a,
+.logout-menu-boton,
+.campana-menu {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    text-decoration: none;
     color: #FFFFFF;
     font-family: Poppins, sans-serif;
     font-weight: 500;
-    text-decoration: none;
     transition: all 0.4s ease;
 }
 
 .icono {
-    font-size: clamp(16px, 2.5vw, 22px);
-    line-height: 1;
+    font-size: clamp(20px, 2.5vw, 25px);
     transition: transform 0.3s ease;
+    line-height: 1;
 }
 
 .texto {
@@ -111,169 +162,44 @@ body {
     transform: scale(1.1);
 }
 
-.acciones-usuario {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.logout-menu-form {
+    margin: 0;
+    padding: 0;
 }
 
-.perfil-container,
+.logout-menu-boton {
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 .notificaciones-container {
     position: relative;
+    z-index: 1100;
 }
 
-.perfil-boton {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
+.campana-menu {
+    position: relative;
+    padding: 0;
     background: none;
     border: none;
-    border-radius: 10px;
-    color: #FFFFFF;
-    font-family: Poppins, sans-serif;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.perfil-boton:hover,
-.campana:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.perfil-avatar {
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #F47A20;
-    color: #FFFFFF;
-    border-radius: 50%;
-    font-weight: 600;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-
-.perfil-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.perfil-nombre {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.perfil-flecha {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 9px;
-}
-
-.perfil-dropdown {
-    display: none;
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    width: 250px;
-    background-color: #FFFFFF;
-    border: 1px solid #D1D5DB;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    z-index: 1200;
-}
-
-.perfil-dropdown.activo {
-    display: block;
-}
-
-.perfil-info {
-    padding: 15px 18px;
-    background-color: #0C2D5A;
-}
-
-.perfil-info strong {
-    display: block;
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.perfil-info span {
-    display: block;
-    margin-top: 4px;
-    color: #D1D5DB;
-    font-size: 12px;
-    overflow-wrap: break-word;
-}
-
-.perfil-opcion {
-    width: 100%;
-    display: block;
-    padding: 13px 18px;
-    background-color: #FFFFFF;
-    color: #333333;
-    border: none;
-    border-bottom: 1px solid #E5E7EB;
-    font-family: Poppins, sans-serif;
-    font-size: 14px;
-    text-align: left;
-    text-decoration: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.perfil-opcion:hover {
-    background-color: #FFF7ED;
-    color: #F47A20;
-}
-
-.perfil-dropdown form {
-    margin: 0;
-}
-
-.cerrar-sesion {
-    color: #DC2626;
-    border-bottom: none;
-}
-
-.cerrar-sesion:hover {
-    background-color: #FEF2F2;
-    color: #DC2626;
-}
-
-.campana {
+.campana-icono-menu {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
-    background: none;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.campana-icono {
-    color: #FFFFFF;
-    font-size: 22px;
 }
 
 .contador-notificaciones {
     position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 18px;
-    height: 18px;
+    top: -8px;
+    right: -10px;
+    min-width: 17px;
+    height: 17px;
     padding: 2px;
     display: flex;
     align-items: center;
@@ -281,15 +207,17 @@ body {
     background-color: #F47A20;
     color: #FFFFFF;
     border-radius: 50%;
-    font-size: 11px;
+    font-family: Poppins, sans-serif;
+    font-size: 9px;
     font-weight: 700;
 }
 
 .notificaciones-dropdown {
     display: none;
     position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
+    top: calc(100% + 15px);
+    right: 50%;
+    transform: translateX(50%);
     width: 350px;
     max-height: 430px;
     background-color: #FFFFFF;
@@ -300,7 +228,8 @@ body {
     z-index: 1200;
 }
 
-.notificaciones-dropdown.activo {
+.notificaciones-dropdown.activo,
+.notificaciones-dropdown.mostrar {
     display: block;
 }
 
@@ -785,57 +714,88 @@ body {
     margin: 0;
 }
 
-@media (max-width: 1100px) {
-    .encabezado {
-        padding: 0 15px;
-    }
-
-    .logo {
-        width: 170px;
-    }
-
-    .menu-lista {
-        gap: 17px;
-        padding: 6px 12px;
-    }
-
-    .menu-lista:hover {
-        padding: 9px 15px;
-    }
-}
-
-@media (max-width: 900px) {
-    .logo {
-        width: 150px;
-    }
-
-    .menu-lista {
-        gap: 13px;
-    }
-
-    .perfil-nombre {
-        display: none;
-    }
-}
-
 @media (max-width: 768px) {
     .encabezado {
-        min-height: 70px;
-        padding: 0 10px;
-        grid-template-columns: auto 1fr auto;
+        min-height: auto;
+        padding: 8px 10px;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        align-items: center;
+        row-gap: 8px;
+    }
+
+    .logo-link,
+    .logo {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
     }
 
     .logo {
         width: 125px;
     }
 
-    .menu-lista {
-        gap: 12px;
-        padding: 7px 10px;
+    .acciones-usuario {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        gap: 5px;
     }
 
-    .menu-lista:hover {
-        padding: 7px 10px;
+    .perfil-header {
+        padding: 4px;
+    }
+
+    .perfil-avatar-header {
+        width: 38px;
+        height: 38px;
+    }
+
+    .perfil-avatar-header i {
+        font-size: 18px;
+    }
+
+    .menu-superior {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        overflow: visible;
+    }
+
+    .menu-lista {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 7px 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 0;
+        overflow: visible;
+    }
+
+    .menu-lista li {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .menu-lista a,
+    .logout-menu-boton,
+    .campana-menu {
+        width: 100%;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logout-menu-form {
+        width: 100%;
     }
 
     .texto {
@@ -843,47 +803,38 @@ body {
     }
 
     .icono {
-        font-size: 18px;
+        font-size: 21px;
     }
 
-    .acciones-usuario {
-        gap: 5px;
+    .menu-lista:hover {
+        padding: 7px 4px;
+        background: rgba(255, 255, 255, 0.15);
     }
 
-    .perfil-nombre,
-    .perfil-flecha {
+    .menu-lista:hover .texto {
         display: none;
     }
 
-    .perfil-boton {
-        padding: 4px;
+    .menu-lista:hover .icono {
+        transform: none;
     }
 
-    .perfil-avatar {
-        width: 34px;
-        height: 34px;
-        font-size: 14px;
-    }
-
-    .campana {
-        padding: 5px;
-    }
-
-    .campana-icono {
-        font-size: 21px;
+    .contador-notificaciones {
+        top: -7px;
+        right: -9px;
+        min-width: 16px;
+        height: 16px;
+        font-size: 9px;
     }
 
     .notificaciones-dropdown {
         position: fixed;
-        top: 70px;
+        top: 105px;
         left: 10px;
         right: 10px;
         width: auto;
         max-height: 420px;
-    }
-
-    .perfil-dropdown {
-        width: min(250px, calc(100vw - 20px));
+        transform: none;
     }
 
     .perfil-publico {
@@ -907,83 +858,58 @@ body {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
     .encabezado {
-        min-height: 65px;
-        padding: 0 7px;
+        padding: 7px 6px;
+        row-gap: 6px;
     }
 
     .logo {
-        width: 105px;
-    }
-
-    .menu-lista {
-        gap: 9px;
-        padding: 6px 8px;
-    }
-
-    .menu-lista:hover {
-        padding: 6px 8px;
-    }
-
-    .icono {
-        font-size: 16px;
+        width: 110px;
     }
 
     .acciones-usuario {
         gap: 2px;
     }
 
-    .perfil-avatar {
-        width: 31px;
-        height: 31px;
-        font-size: 13px;
-    }
-
-    .campana-icono {
-        font-size: 19px;
-    }
-
-    .contador-notificaciones {
-        min-width: 16px;
-        height: 16px;
-        font-size: 9px;
-    }
-}
-
-@media (max-width: 480px) {
-    .encabezado {
-        padding: 0 5px;
-    }
-
-    .logo {
-        width: 90px;
-    }
-
-    .menu-lista {
-        gap: 7px;
-        padding: 6px 7px;
-    }
-
-    .menu-lista:hover {
-        padding: 6px 7px;
-    }
-
-    .icono {
-        font-size: 15px;
-    }
-
-    .campana {
+    .perfil-header {
         padding: 3px;
     }
 
-    .campana-icono {
-        font-size: 17px;
+    .perfil-avatar-header {
+        width: 35px;
+        height: 35px;
     }
 
-    .perfil-avatar {
-        width: 29px;
-        height: 29px;
+    .perfil-avatar-header i {
+        font-size: 16px;
+    }
+
+    .menu-lista {
+        padding: 6px 2px;
+        gap: 0;
+    }
+
+    .menu-lista:hover {
+        padding: 6px 2px;
+    }
+
+    .icono {
+        font-size: 20px;
+    }
+
+    .contador-notificaciones {
+        top: -6px;
+        right: -8px;
+        min-width: 15px;
+        height: 15px;
+        font-size: 8px;
+    }
+
+    .notificaciones-dropdown {
+        top: 100px;
+        left: 6px;
+        right: 6px;
     }
 
     .notificacion {
@@ -1054,200 +980,4 @@ body {
     .btn-editar {
         max-width: 100%;
     }
-
-    @media (max-width: 768px) {
-    .encabezado {
-        min-height: auto;
-        padding: 8px 10px;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: auto auto;
-        align-items: center;
-        row-gap: 8px;
-    }
-
-    .logo-link {
-        grid-column: 1;
-        grid-row: 1;
-        justify-self: start;
-    }
-
-    .logo {
-        width: 125px;
-    }
-
-    .acciones-usuario {
-        grid-column: 2;
-        grid-row: 1;
-        justify-self: end;
-        gap: 5px;
-    }
-
-    .menu-superior {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    .menu-lista {
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        padding: 6px 4px;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        gap: 0;
-        overflow: hidden;
-    }
-
-    .menu-lista li {
-        flex: 1 1 0;
-        min-width: 0;
-    }
-
-    .menu-lista a {
-        width: 100%;
-        min-width: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .texto {
-        display: none;
-    }
-
-    .icono {
-        font-size: 18px;
-    }
-
-    .menu-lista:hover {
-        padding: 6px 4px;
-        background: rgba(255, 255, 255, 0.15);
-    }
-
-    .menu-lista:hover .texto {
-        display: none;
-    }
-
-    .menu-lista:hover .icono {
-        transform: none;
-    }
-
-    .perfil-nombre,
-    .perfil-flecha {
-        display: none;
-    }
-
-    .perfil-boton {
-        padding: 4px;
-    }
-
-    .perfil-avatar {
-        width: 34px;
-        height: 34px;
-        font-size: 14px;
-    }
-
-    .campana {
-        padding: 5px;
-    }
-
-    .campana-icono {
-        font-size: 21px;
-    }
-
-    .contador-notificaciones {
-        min-width: 16px;
-        height: 16px;
-        font-size: 9px;
-    }
-
-    .notificaciones-dropdown {
-        position: fixed;
-        top: 105px;
-        left: 10px;
-        right: 10px;
-        width: auto;
-        max-height: 420px;
-    }
-
-    .perfil-dropdown {
-        width: min(250px, calc(100vw - 20px));
-    }
-
-    .perfil-publico {
-        width: 92%;
-        margin: 25px auto;
-    }
-
-    .perfil-datos,
-    .contacto-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .perfil-foto {
-        width: 105px;
-        height: 105px;
-        font-size: 36px;
-    }
-
-    .perfil-cabecera h1 {
-        font-size: 23px;
-    }
-}
-
-@media (max-width: 480px) {
-    .encabezado {
-        padding: 7px 6px;
-        row-gap: 6px;
-    }
-
-    .logo {
-        width: 110px;
-    }
-
-    .acciones-usuario {
-        gap: 2px;
-    }
-
-    .menu-lista {
-        padding: 5px 2px;
-        gap: 0;
-    }
-
-    .menu-lista:hover {
-        padding: 5px 2px;
-    }
-
-    .icono {
-        font-size: 17px;
-    }
-
-    .perfil-avatar {
-        width: 31px;
-        height: 31px;
-        font-size: 13px;
-    }
-
-    .campana {
-        padding: 4px;
-    }
-
-    .campana-icono {
-        font-size: 19px;
-    }
-
-    .notificaciones-dropdown {
-        top: 100px;
-        left: 6px;
-        right: 6px;
-    }
-}
 }

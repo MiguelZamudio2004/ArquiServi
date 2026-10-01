@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>Detalle de solicitud - ArquiServi</title>
 
     <link rel="stylesheet" href="{{ asset('css/solicitudes.css') }}">
@@ -21,18 +19,12 @@
 <body>
 
 <header class="encabezado">
-
     <a href="{{ route('menu') }}" class="logo-link">
-        <img
-            src="{{ asset('encabezado2.png') }}"
-            class="logo"
-            alt="ArquiServi"
-        >
+        <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
     </a>
 
     <nav class="menu-superior">
         <ul class="menu-lista">
-
             <li>
                 <a href="{{ route('menu') }}">
                     <i class="fa-solid fa-house icono"></i>
@@ -48,7 +40,6 @@
             </li>
 
             @auth
-
                 @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
@@ -67,187 +58,115 @@
                     </li>
                 @endif
 
-                <li>
-                    <a href="{{ route('perfil') }}">
-                        <i class="fa-solid fa-user icono"></i>
-                        <span class="texto">Perfil</span>
-                    </a>
+                <li class="notificaciones-container">
+                    <input type="hidden" id="csrf-notificaciones" value="{{ csrf_token() }}">
+
+                    <button
+                        type="button"
+                        class="campana-menu"
+                        id="btnNotificaciones"
+                        aria-label="Notificaciones"
+                    >
+                        <span class="campana-icono-menu">
+                            <i class="fa-solid fa-bell icono"></i>
+
+                            @if(auth()->user()->unreadNotifications->count() > 0)
+                                <span
+                                    class="contador-notificaciones"
+                                    id="contadorNotificaciones"
+                                >
+                                    {{ auth()->user()->unreadNotifications->count() }}
+                                </span>
+                            @endif
+                        </span>
+
+                        <span class="texto">Notificaciones</span>
+                    </button>
+
+                    <div
+                        class="notificaciones-dropdown"
+                        id="notificacionesDropdown"
+                    >
+                        <div class="notificaciones-header">
+                            <h3>Notificaciones</h3>
+                        </div>
+
+                        <div class="notificaciones-lista">
+                            @forelse(auth()->user()->notifications()->latest()->take(10)->get() as $notificacion)
+                                <button
+                                    type="button"
+                                    class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
+                                    data-url="{{ route('notificaciones.leer', $notificacion->id) }}"
+                                >
+                                    <div class="notificacion-contenido">
+                                        <strong class="notificacion-titulo">
+                                            {{ $notificacion->data['titulo'] ?? 'Notificación' }}
+                                        </strong>
+
+                                        <p class="notificacion-mensaje">
+                                            {{ $notificacion->data['mensaje'] ?? '' }}
+                                        </p>
+
+                                        <small class="notificacion-fecha">
+                                            {{ $notificacion->created_at->diffForHumans() }}
+                                        </small>
+                                    </div>
+
+                                    @if(!$notificacion->read_at)
+                                        <span class="indicador-no-leida"></span>
+                                    @endif
+                                </button>
+                            @empty
+                                <div class="sin-notificaciones">
+                                    No tienes notificaciones.
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
                 </li>
 
-            @endauth
-
-        </ul>
-    </nav>
-
-    @auth
-
-        <div class="acciones-usuario">
-
-            <div class="notificaciones-container">
-
-                <button
-                    type="button"
-                    class="campana"
-                    id="btnNotificaciones"
-                    aria-label="Notificaciones"
-                >
-                    <i class="fa-solid fa-bell campana-icono"></i>
-
-                    @if(auth()->user()->unreadNotifications->count() > 0)
-                        <span
-                            class="contador-notificaciones"
-                            id="contadorNotificaciones"
-                        >
-                            {{ auth()->user()->unreadNotifications->count() }}
-                        </span>
-                    @endif
-                </button>
-
-                <div
-                    class="notificaciones-dropdown"
-                    id="notificacionesDropdown"
-                >
-                    <div class="notificaciones-header">
-                        <h3>Notificaciones</h3>
-                    </div>
-
-                    <div class="notificaciones-lista">
-
-                        @forelse(auth()->user()->notifications as $notificacion)
-
-                            <button
-                                type="button"
-                                class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
-                                data-url="{{ route('notificaciones.leer', $notificacion->id) }}"
-                            >
-                                <div class="notificacion-contenido">
-
-                                    <strong class="notificacion-titulo">
-                                        {{ $notificacion->data['titulo'] ?? 'Notificación' }}
-                                    </strong>
-
-                                    <p class="notificacion-mensaje">
-                                        {{ $notificacion->data['mensaje'] ?? '' }}
-                                    </p>
-
-                                    <small class="notificacion-fecha">
-                                        {{ $notificacion->created_at->diffForHumans() }}
-                                    </small>
-
-                                </div>
-
-                                @if(!$notificacion->read_at)
-                                    <span class="indicador-no-leida"></span>
-                                @endif
-                            </button>
-
-                        @empty
-
-                            <div class="sin-notificaciones">
-                                No tienes notificaciones.
-                            </div>
-
-                        @endforelse
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="perfil-container">
-
-                <button
-                    type="button"
-                    class="perfil-boton"
-                    id="btnPerfil"
-                >
-                    <div class="perfil-avatar">
-
-                        @if(auth()->user()->foto_perfil)
-                            <img
-                                src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
-                                alt="Foto de perfil"
-                            >
-                        @else
-                            {{ strtoupper(substr(auth()->user()->nombre, 0, 1)) }}
-                        @endif
-
-                    </div>
-
-                    <span class="perfil-nombre">
-                        {{ auth()->user()->nombre }}
-                    </span>
-
-                    <span class="perfil-flecha">
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </span>
-
-                </button>
-
-                <div
-                    class="perfil-dropdown"
-                    id="perfilDropdown"
-                >
-                    <div class="perfil-info">
-
-                        <strong>
-                            {{ auth()->user()->nombre }}
-                            {{ auth()->user()->apellido_paterno }}
-                        </strong>
-
-                        <span>
-                            {{ auth()->user()->correo }}
-                        </span>
-
-                    </div>
-
-                    <a
-                        href="{{ route('perfil') }}"
-                        class="perfil-opcion"
-                    >
-                        Mi Perfil
-                    </a>
-
-                    @if(in_array(auth()->user()->rol->nombre, ['usuario', 'profesional', 'proveedor']))
-                        <a
-                            href="{{ route('solicitudes.mias') }}"
-                            class="perfil-opcion"
-                        >
-                            Mis solicitudes
-                        </a>
-                    @endif
-
-                    @if(in_array(auth()->user()->rol->nombre, ['profesional', 'proveedor']))
-                        <a
-                            href="{{ route('solicitudes.recibidas') }}"
-                            class="perfil-opcion"
-                        >
-                            Solicitudes recibidas
-                        </a>
-                    @endif
-
+                <li>
                     <form
                         action="{{ route('logout') }}"
                         method="POST"
+                        class="logout-menu-form"
                     >
                         @csrf
 
                         <button
                             type="submit"
-                            class="perfil-opcion cerrar-sesion"
+                            class="logout-menu-boton"
+                            aria-label="Cerrar sesión"
                         >
-                            Cerrar sesión
+                            <i class="fa-solid fa-right-from-bracket icono"></i>
+                            <span class="texto">Cerrar sesión</span>
                         </button>
                     </form>
+                </li>
+            @endauth
+        </ul>
+    </nav>
 
-                </div>
-
-            </div>
-
+    @auth
+        <div class="acciones-usuario">
+            <a
+                href="{{ route('perfil') }}"
+                class="perfil-header"
+                aria-label="Mi perfil"
+            >
+                <span class="perfil-avatar-header">
+                    @if(auth()->user()->foto_perfil)
+                        <img
+                            src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
+                            alt="Foto de perfil"
+                        >
+                    @else
+                        <i class="fa-solid fa-user"></i>
+                    @endif
+                </span>
+            </a>
         </div>
-
     @endauth
-
 </header>
 
 @php
@@ -274,219 +193,162 @@
 
 <main class="solicitudes-contenedor">
 
-    <h1>
-        Detalle de solicitud
-    </h1>
+    <h1>Detalle de solicitud</h1>
 
     @if(session('exito'))
-
         <div class="mensaje-exito">
             {{ session('exito') }}
         </div>
-
     @endif
 
     @if($errors->any())
-
         <div class="errores">
-
             @foreach($errors->all() as $error)
-
-                <p>
-                    {{ $error }}
-                </p>
-
+                <p>{{ $error }}</p>
             @endforeach
-
         </div>
-
     @endif
 
     <section class="detalle-solicitud">
 
         <div class="detalle-item">
-
-            <span>
-                Solicitante
-            </span>
-
+            <span>Solicitante</span>
             <strong>
                 {{ $solicitud->solicitante->nombre }}
                 {{ $solicitud->solicitante->apellido_paterno }}
             </strong>
-
         </div>
 
         <div class="detalle-item">
-
-            <span>
-                Destinatario
-            </span>
-
+            <span>Destinatario</span>
             <strong>
                 {{ $solicitud->destinatario->nombre }}
                 {{ $solicitud->destinatario->apellido_paterno }}
             </strong>
-
         </div>
 
         <div class="detalle-item">
-
-            <span>
-                Tipo de destinatario
-            </span>
-
+            <span>Tipo de destinatario</span>
             <strong>
                 {{ ucfirst($solicitud->destinatario->rol->nombre) }}
             </strong>
-
         </div>
 
         @if($solicitud->servicio)
-
             <div class="detalle-item">
-
-                <span>
-                    Servicio
-                </span>
-
-                <strong>
-                    {{ $solicitud->servicio->nombre }}
-                </strong>
-
+                <span>Servicio</span>
+                <strong>{{ $solicitud->servicio->nombre }}</strong>
             </div>
-
         @endif
 
         @if($solicitud->material)
-
             <div class="detalle-item">
-
-                <span>
-                    Material o producto
-                </span>
-
-                <strong>
-                    {{ $solicitud->material->nombre }}
-                </strong>
-
+                <span>Material o producto</span>
+                <strong>{{ $solicitud->material->nombre }}</strong>
             </div>
-
         @endif
 
         <div class="detalle-item">
-
-            <span>
-                Estado
-            </span>
-
+            <span>Estado</span>
             <strong>
                 <span class="estado estado-{{ $solicitud->estado }}">
                     {{ ucfirst($solicitud->estado) }}
                 </span>
             </strong>
-
         </div>
 
         <div class="detalle-item">
-
-            <span>
-                Fecha
-            </span>
-
+            <span>Fecha</span>
             <strong>
                 {{ $solicitud->created_at->format('d/m/Y H:i') }}
             </strong>
-
         </div>
 
         <div class="detalle-descripcion">
-
-            <span>
-                Descripción
-            </span>
-
-            <p>
-                {{ $solicitud->descripcion }}
-            </p>
-
+            <span>Descripción</span>
+            <p>{{ $solicitud->descripcion }}</p>
         </div>
 
+        {{-- ACEPTAR / RECHAZAR --}}
+        @if($esDestinatario && $solicitud->estado === 'pendiente')
+            <div class="acciones-trabajo">
+
+                <form action="{{ route('solicitudes.rechazar', $solicitud) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+
+                    <button type="submit" class="btn-rechazar">
+                        Rechazar
+                    </button>
+                </form>
+
+                <form action="{{ route('solicitudes.aceptar', $solicitud) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+
+                    <button type="submit" class="btn-aceptar">
+                        Aceptar
+                    </button>
+                </form>
+
+            </div>
+        @endif
+
+        {{-- WHATSAPP --}}
         @if(
             in_array($solicitud->estado, ['aceptada', 'terminada']) &&
             $telefonoWhatsapp
         )
-
             <div class="contacto-whatsapp">
-
-                <a
-                    href="https://wa.me/{{ $telefonoWhatsapp }}"
+                <a href="https://wa.me/{{ $telefonoWhatsapp }}"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="btn-whatsapp"
-                >
+                    class="btn-whatsapp">
+
                     Contactar por WhatsApp
+
                 </a>
-
             </div>
-
         @endif
 
+        {{-- TERMINAR TRABAJO --}}
         @if(
             $esDestinatario &&
             $solicitud->estado === 'aceptada'
         )
-
             <div class="acciones-trabajo">
 
-                <form
-                    action="{{ route('solicitudes.terminar', $solicitud) }}"
-                    method="POST"
-                >
+                <form action="{{ route('solicitudes.terminar', $solicitud) }}" method="POST">
                     @csrf
                     @method('PATCH')
 
-                    <button
-                        type="submit"
-                        class="btn-terminar"
-                    >
+                    <button type="submit" class="btn-terminar">
                         Terminar trabajo
                     </button>
-
                 </form>
 
             </div>
-
         @endif
 
+        {{-- CALIFICACIÓN --}}
         @if($solicitud->estado === 'terminada')
-
             <div class="acciones-calificacion">
 
                 @if(!$yaCalifico)
-
-                    <button
-                        type="button"
+                    <button type="button"
                         class="btn-calificar btn-abrir-calificacion"
-                        data-url="{{ route('solicitudes.calificar', $solicitud) }}"
-                    >
+                        data-url="{{ route('solicitudes.calificar', $solicitud) }}">
+
                         {{ $textoCalificar }}
+
                     </button>
-
                 @else
-
-                    <button
-                        type="button"
-                        class="btn-calificar"
-                        disabled
-                    >
+                    <button type="button" class="btn-calificar" disabled>
                         Ya calificaste
                     </button>
-
                 @endif
 
             </div>
-
         @endif
 
     </section>
@@ -494,17 +356,13 @@
     <div class="volver">
 
         @if($esSolicitante)
-
             <a href="{{ route('solicitudes.mias') }}">
                 Volver a mis solicitudes
             </a>
-
         @else
-
             <a href="{{ route('solicitudes.recibidas') }}">
                 Volver a solicitudes recibidas
             </a>
-
         @endif
 
     </div>
@@ -514,11 +372,7 @@
 <div id="modalCalificacionContenedor"></div>
 
 <footer class="pie">
-
-    <p>
-        © 2026 ArquiServi. Todos los derechos reservados.
-    </p>
-
+    <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
 </footer>
 
 </body>
