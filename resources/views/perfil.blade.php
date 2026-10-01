@@ -314,6 +314,23 @@
             </section>
         @endif
 
+        @if($usuario->portafolio_fotos && count($usuario->portafolio_fotos) > 0)
+            <section class="perfil-seccion">
+                <h2>Galería de portafolio</h2>
+                <div class="portafolio-fotos">
+                    @foreach($usuario->portafolio_fotos as $foto)
+                        <img src="{{ asset('storage/' . $foto) }}" alt="Trabajo realizado" class="foto-portafolio">
+                    @endforeach
+                </div>
+            </section>
+        @else
+            <section class="perfil-seccion">
+                <h2>Galería de portafolio</h2>
+                <p>Aún no has añadido fotos a tu portafolio.</p>
+            </section>
+        @endif
+
+
     @elseif($usuario->rol->nombre === 'proveedor')
         <section class="perfil-seccion">
             <h2>
@@ -350,6 +367,23 @@
                 </p>
             @endif
         </section>
+
+        @if($usuario->portafolio_fotos && count($usuario->portafolio_fotos) > 0)
+            <section class="perfil-seccion">
+                <h2>Galería de portafolio</h2>
+                <div class="portafolio-fotos">
+                    @foreach($usuario->portafolio_fotos as $foto)
+                        <img src="{{ asset('storage/' . $foto) }}" alt="Trabajo realizado" class="foto-portafolio">
+                    @endforeach
+                </div>
+            </section>
+        @else
+            <section class="perfil-seccion">
+                <h2>Galería de portafolio</h2>
+                <p>Aún no has añadido fotos a tu portafolio.</p>
+            </section>
+        @endif
+
     @endif
 
     <a
