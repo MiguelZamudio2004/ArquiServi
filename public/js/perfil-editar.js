@@ -40,3 +40,10 @@ if (descripcion && contadorDescripcion) {
         contadorDescripcion.textContent = this.value.length;
     });
 }
+
+function validarCantidadFotos(input) {
+    if (input.files.length > 3) {
+        alert("Solo puedes subir un máximo de 3 fotos.");
+        input.value = ""; // limpia la selección
+    }
+}

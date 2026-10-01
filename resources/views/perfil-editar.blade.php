@@ -110,6 +110,25 @@
                 <input class="form-control" type="url" name="portafolio_url" id="portafolio_url"
                     value="{{ old('portafolio_url', $usuario->profesional?->portafolio_url) }}">
 
+                <label class="etiqueta" for="portafolio_fotos">Fotos del portafolio (máx. 3):</label>
+                <input 
+                    class="form-control" 
+                    type="file" 
+                    name="portafolio_fotos[]" 
+                    id="portafolio_fotos" 
+                    accept="image/png,image/jpeg,image/webp" 
+                    multiple 
+                    onchange="validarCantidadFotos(this)" 
+                >
+
+                <div id="previewPortafolio" class="preview-portafolio">
+                    @if($usuario->portafolio_fotos)
+                        @foreach($usuario->portafolio_fotos as $foto)
+                            <img src="{{ asset('storage/' . $foto) }}" alt="Foto de portafolio">
+                        @endforeach
+                    @endif
+                </div>
+
                 <label class="etiqueta" for="zona_trabajo_profesional">Zona o ciudad donde trabaja:</label>
                 <input class="form-control" type="text" name="zona_trabajo_profesional" id="zona_trabajo_profesional"
                     value="{{ old('zona_trabajo_profesional', $usuario->profesional?->zona_trabajo) }}" required>
@@ -159,6 +178,25 @@
                             <span>{{ $material->nombre }}</span>
                         </label>
                     @endforeach
+                </div>
+
+                <label class="etiqueta" for="portafolio_fotos">Fotos del portafolio (máx. 3):</label>
+                <input 
+                    class="form-control" 
+                    type="file" 
+                    name="portafolio_fotos[]" 
+                    id="portafolio_fotos" 
+                    accept="image/png,image/jpeg,image/webp" 
+                    multiple 
+                    onchange="validarCantidadFotos(this)" 
+                >
+
+                <div id="previewPortafolio" class="preview-portafolio">
+                    @if($usuario->portafolio_fotos)
+                        @foreach($usuario->portafolio_fotos as $foto)
+                            <img src="{{ asset('storage/' . $foto) }}" alt="Foto de portafolio">
+                        @endforeach
+                    @endif
                 </div>
 
             @endif
