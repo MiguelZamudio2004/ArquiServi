@@ -1,80 +1,156 @@
-const btnNotificaciones = document.getElementById('btnNotificaciones');
-const dropdownNotificaciones = document.getElementById('notificacionesDropdown');
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+        const boton =
+            document.getElementById(
+                'btnNotificaciones'
+            );
 
-const csrfToken =
-    document.querySelector('meta[name="csrf-token"]')?.content ||
-    document.getElementById('csrf-notificaciones')?.value;
+        const dropdown =
+            document.getElementById(
+                'notificacionesDropdown'
+            );
 
-if (btnNotificaciones && dropdownNotificaciones) {
-    btnNotificaciones.addEventListener('click', function (event) {
-        event.stopPropagation();
+        const csrf =
+            document.getElementById(
+                'csrf-notificaciones'
+            );
 
-        dropdownNotificaciones.classList.toggle('activo');
-
-        const perfilDropdown = document.getElementById('perfilDropdown');
-
-        if (perfilDropdown) {
-            perfilDropdown.classList.remove('activo');
-        }
-    });
-
-    dropdownNotificaciones.addEventListener('click', function (event) {
-        event.stopPropagation();
-    });
-
-    document.addEventListener('click', function () {
-        dropdownNotificaciones.classList.remove('activo');
-    });
-}
-
-document.querySelectorAll('.notificacion').forEach(function (notificacion) {
-    notificacion.addEventListener('click', async function () {
-        if (!csrfToken || !this.dataset.url) {
+        if (!boton || !dropdown) {
             return;
         }
 
-        try {
-            const respuesta = await fetch(this.dataset.url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                },
-                credentials: 'same-origin'
-            });
+        boton.addEventListener(
+            'click',
+            function (event) {
+                event.stopPropagation();
 
-            if (!respuesta.ok) {
+                dropdown.classList.toggle(
+                    'activo'
+                );
+            }
+        );
+
+        dropdown.addEventListener(
+            'click',
+            function (event) {
+                event.stopPropagation();
+            }
+        );
+
+        document.addEventListener(
+            'click',
+            function () {
+                dropdown.classList.remove(
+                    'activo'
+                );
+            }
+        );
+
+        document
+            .querySelectorAll(
+                '.notificacion'
+            )
+            .forEach(
+                notificacion => {
+                    notificacion
+                        .addEventListener(
+                            'click',
+                            async function () {
+                                const url =
+                                    this.dataset.url;
+
+                                if (!url) {
+                                    return;
+                                }
+
+                                try {
+                                    const respuesta =
+                                        await fetch(
+                                            url,
+                                            {
+                                                method:
+                                                    'POST',
+
+                                                headers: {
+                                                    'X-CSRF-TOKEN':
+                                                        csrf
+                                                            ? csrf.value
+                                                            : '',
+
+                                                    'Accept':
+                                                        'application/json',
+                                                },
+                                            }
+                                        );
+
+                                    if (
+                                        !respuesta.ok
+                                    ) {
+                                        return;
+                                    }
+
+                                    const datos =
+                                        await respuesta
+                                            .json();
+
+                                    this.classList.remove(
+                                        'no-leida'
+                                    );
+
+                                    this.classList.add(
+                                        'leida'
+                                    );
+
+                                    const indicador =
+                                        this.querySelector(
+                                            '.indicador-no-leida'
+                                        );
+
+                                    if (indicador) {
+                                        indicador.remove();
+                                    }
+
+                                    actualizarContador(
+                                        datos.unread_count
+                                    );
+
+                                    if (
+                                        datos.redirect_url
+                                    ) {
+                                        window.location.href =
+                                            datos.redirect_url;
+                                    }
+                                } catch (error) {
+                                    console.error(
+                                        error
+                                    );
+                                }
+                            }
+                        );
+                }
+            );
+
+        function actualizarContador(
+            cantidad
+        ) {
+            const contador =
+                document.getElementById(
+                    'contadorNotificaciones'
+                );
+
+            if (cantidad <= 0) {
+                if (contador) {
+                    contador.remove();
+                }
+
                 return;
             }
 
-            const datos = await respuesta.json();
-
-            this.classList.remove('no-leida');
-            this.classList.add('leida');
-
-            const indicador = this.querySelector('.indicador-no-leida');
-
-            if (indicador) {
-                indicador.remove();
-            }
-
-            const contador = document.getElementById('contadorNotificaciones');
-
             if (contador) {
-                if (datos.no_leidas > 0) {
-                    contador.textContent = datos.no_leidas;
-                } else {
-                    contador.remove();
-                }
+                contador.textContent =
+                    cantidad;
             }
-
-            if (datos.redirect_url) {
-                window.location.href = datos.redirect_url;
-            }
-
-        } catch (error) {
-            return;
         }
-    });
-});
+    }
+);

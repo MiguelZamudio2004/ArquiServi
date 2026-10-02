@@ -8,16 +8,20 @@ use App\Models\Profesional;
 use App\Models\Profesion;
 use App\Models\Proveedor;
 use App\Models\Servicio;
+use App\Models\SolicitudAprobacionProfesional;
 use App\Models\Usuario;
 use App\Notifications\PerfilActualizado;
+use App\Services\PerfilNotificacionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PerfilController extends Controller
 {
-    public function mostrar(Request $request)
-    {
+    public function mostrar(
+        Request $request,
+        PerfilNotificacionService $perfilNotificacionService
+    ) {
         $usuario = $request->user()->load(
             'rol',
             'proveedor.materiales',
@@ -26,7 +30,14 @@ class PerfilController extends Controller
             'profesional.servicios'
         );
 
-        return view('perfil', compact('usuario'));
+        $perfilNotificacionService->sincronizar(
+            $usuario
+        );
+
+        return view(
+            'perfil',
+            compact('usuario')
+        );
     }
 
     public function editar(Request $request)
@@ -44,7 +55,10 @@ class PerfilController extends Controller
         $servicios = collect();
 
         if ($usuario->rol->nombre === 'profesional') {
-            $profesiones = Profesion::where('activo', true)
+            $profesiones = Profesion::where(
+                'activo',
+                true
+            )
                 ->with([
                     'especialidades' => function ($query) {
                         $query
@@ -55,13 +69,19 @@ class PerfilController extends Controller
                 ->orderBy('nombre')
                 ->get();
 
-            $servicios = Servicio::where('activo', true)
+            $servicios = Servicio::where(
+                'activo',
+                true
+            )
                 ->orderBy('nombre')
                 ->get();
         }
 
         if ($usuario->rol->nombre === 'proveedor') {
-            $materiales = Material::where('activo', true)
+            $materiales = Material::where(
+                'activo',
+                true
+            )
                 ->orderBy('nombre')
                 ->get();
         }
@@ -77,49 +97,243 @@ class PerfilController extends Controller
         );
     }
 
-    public function actualizar(Request $request)
-    {
-        $usuario = $request->user()->load('rol');
+    public function actualizar(
+        Request $request,
+        PerfilNotificacionService $perfilNotificacionService
+    ) {
+        $usuario = $request->user()->load(
+            'rol',
+            'profesional.especialidades'
+        );
 
         $reglas = [
-            'nombre' => 'required|string|max:100',
-            'apellido_paterno' => 'required|string|max:100',
-            'apellido_materno' => 'nullable|string|max:100',
-            'telefono' => 'nullable|string|max:20',
-            'ubicacion' => 'nullable|string|max:200',
-            'descripcion_usuario' => 'nullable|string|max:500',
-            'foto_perfil' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'nombre' => [
+                'required',
+                'string',
+                'max:100'
+            ],
+
+            'apellido_paterno' => [
+                'required',
+                'string',
+                'max:100'
+            ],
+
+            'apellido_materno' => [
+                'nullable',
+                'string',
+                'max:100'
+            ],
+
+            'telefono' => [
+                'nullable',
+                'string',
+                'max:20'
+            ],
+
+            'ubicacion' => [
+                'nullable',
+                'string',
+                'max:200'
+            ],
+
+            'descripcion_usuario' => [
+                'nullable',
+                'string',
+                'max:500'
+            ],
+
+            'foto_perfil' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048'
+            ],
         ];
 
         if ($usuario->rol->nombre === 'profesional') {
             $reglas += [
-                'profesion_id' => 'required|exists:profesiones,id',
-                'especialidad_id' => 'required|exists:especialidades,id',
-                'anios_experiencia' => 'required|integer|min:0|max:80',
-                'descripcion_profesional' => 'required|string|max:500',
-                'portafolio_url' => 'nullable|url|max:500',
-                'zona_trabajo_profesional' => 'required|string|max:200',
-                'servicios' => 'nullable|array',
-                'servicios.*' => 'integer|distinct|exists:servicios,id',
-                'portafolio_fotos' => 'nullable|array|max:3',
-                'portafolio_fotos.*' => 'image|mimes:jpg,jpeg,png,webp|max:10240',
+                'profesion_id' => [
+                    'required',
+                    'integer',
+                    'exists:profesiones,id'
+                ],
+
+                'especialidades' => [
+                    'required',
+                    'array',
+                    'min:1'
+                ],
+
+                'especialidades.*' => [
+                    'required',
+                    'integer',
+                    'distinct',
+                    'exists:especialidades,id'
+                ],
+
+                'anios_experiencia' => [
+                    'required',
+                    'integer',
+                    'min:0',
+                    'max:80'
+                ],
+
+                'descripcion_profesional' => [
+                    'required',
+                    'string',
+                    'max:500'
+                ],
+
+                'portafolio_url' => [
+                    'nullable',
+                    'url',
+                    'max:500'
+                ],
+
+                'zona_trabajo_profesional' => [
+                    'required',
+                    'string',
+                    'max:200'
+                ],
+
+                'servicios' => [
+                    'nullable',
+                    'array'
+                ],
+
+                'servicios.*' => [
+                    'integer',
+                    'distinct',
+                    'exists:servicios,id'
+                ],
+
+                'portafolio_fotos' => [
+                    'nullable',
+                    'array',
+                    'max:3'
+                ],
+
+                'portafolio_fotos.*' => [
+                    'image',
+                    'mimes:jpg,jpeg,png,webp',
+                    'max:10240'
+                ],
             ];
         }
 
         if ($usuario->rol->nombre === 'proveedor') {
             $reglas += [
-                'descripcion_proveedor' => 'nullable|string|max:500',
-                'zona_trabajo_proveedor' => 'required|string|max:200',
-                'materiales' => 'required|array|min:1',
-                'materiales.*' => 'integer|exists:materiales,id',
-                'portafolio_fotos' => 'nullable|array|max:3',
-                'portafolio_fotos.*' => 'image|mimes:jpg,jpeg,png,webp|max:10240',
+                'descripcion_proveedor' => [
+                    'nullable',
+                    'string',
+                    'max:500'
+                ],
+
+                'zona_trabajo_proveedor' => [
+                    'required',
+                    'string',
+                    'max:200'
+                ],
+
+                'materiales' => [
+                    'required',
+                    'array',
+                    'min:1'
+                ],
+
+                'materiales.*' => [
+                    'integer',
+                    'distinct',
+                    'exists:materiales,id'
+                ],
+
+                'portafolio_fotos' => [
+                    'nullable',
+                    'array',
+                    'max:3'
+                ],
+
+                'portafolio_fotos.*' => [
+                    'image',
+                    'mimes:jpg,jpeg,png,webp',
+                    'max:10240'
+                ],
             ];
         }
 
         $datos = $request->validate(
             $reglas,
             [
+                'profesion_id.required' =>
+                    'Debes seleccionar una profesión.',
+
+                'profesion_id.exists' =>
+                    'La profesión seleccionada no es válida.',
+
+                'especialidades.required' =>
+                    'Debes seleccionar al menos una especialidad.',
+
+                'especialidades.array' =>
+                    'Las especialidades seleccionadas no son válidas.',
+
+                'especialidades.min' =>
+                    'Debes seleccionar al menos una especialidad.',
+
+                'especialidades.*.exists' =>
+                    'Una de las especialidades seleccionadas no es válida.',
+
+                'especialidades.*.distinct' =>
+                    'No puedes seleccionar la misma especialidad más de una vez.',
+
+                'anios_experiencia.required' =>
+                    'Debes indicar tus años de experiencia.',
+
+                'anios_experiencia.integer' =>
+                    'Los años de experiencia deben ser un número entero.',
+
+                'anios_experiencia.min' =>
+                    'Los años de experiencia no pueden ser negativos.',
+
+                'anios_experiencia.max' =>
+                    'Los años de experiencia no pueden superar 80.',
+
+                'descripcion_profesional.required' =>
+                    'Debes agregar una descripción profesional.',
+
+                'descripcion_profesional.max' =>
+                    'La descripción profesional no puede superar los 500 caracteres.',
+
+                'portafolio_url.url' =>
+                    'El enlace del portafolio no es válido.',
+
+                'portafolio_url.max' =>
+                    'El enlace del portafolio es demasiado largo.',
+
+                'zona_trabajo_profesional.required' =>
+                    'Debes indicar tu zona de trabajo.',
+
+                'zona_trabajo_profesional.max' =>
+                    'La zona de trabajo no puede superar los 200 caracteres.',
+
+                'servicios.*.exists' =>
+                    'Uno de los servicios seleccionados no es válido.',
+
+                'servicios.*.distinct' =>
+                    'No puedes seleccionar el mismo servicio más de una vez.',
+
+                'materiales.required' =>
+                    'Debes seleccionar al menos un material o producto.',
+
+                'materiales.min' =>
+                    'Debes seleccionar al menos un material o producto.',
+
+                'materiales.*.exists' =>
+                    'Uno de los materiales seleccionados no es válido.',
+
+                'materiales.*.distinct' =>
+                    'No puedes seleccionar el mismo material más de una vez.',
+
                 'portafolio_fotos.max' =>
                     'Solo puedes subir un máximo de 3 fotos al portafolio.',
 
@@ -143,25 +357,126 @@ class PerfilController extends Controller
             ]
         );
 
+        $especialidadesIds = collect();
+
+        $especialidadesAprobacionIds = collect();
+
+        $requiereAprobacion = false;
+
+        $estadoAprobacion = null;
+
         if ($usuario->rol->nombre === 'profesional') {
-            $especialidadValida = Especialidad::where(
+            $profesionValida = Profesion::where(
                 'id',
-                $datos['especialidad_id']
+                $datos['profesion_id']
+            )
+                ->where(
+                    'activo',
+                    true
+                )
+                ->exists();
+
+            if (!$profesionValida) {
+                return back()
+                    ->withErrors([
+                        'profesion_id' =>
+                            'La profesión seleccionada no está disponible.'
+                    ])
+                    ->withInput();
+            }
+
+            $especialidadesIds = collect(
+                $datos['especialidades']
+            )
+                ->map(
+                    fn ($id) => (int) $id
+                )
+                ->unique()
+                ->values();
+
+            $especialidades = Especialidad::whereIn(
+                'id',
+                $especialidadesIds
             )
                 ->where(
                     'profesion_id',
                     $datos['profesion_id']
                 )
-                ->where('activo', true)
-                ->exists();
+                ->where(
+                    'activo',
+                    true
+                )
+                ->get();
 
-            if (!$especialidadValida) {
+            if (
+                $especialidades->count() !==
+                $especialidadesIds->count()
+            ) {
                 return back()
                     ->withErrors([
-                        'especialidad_id' =>
-                            'La especialidad no corresponde a la profesión seleccionada.'
+                        'especialidades' =>
+                            'Una o más especialidades no corresponden a la profesión seleccionada.'
                     ])
                     ->withInput();
+            }
+
+            $especialidadesAprobacionIds =
+                $especialidades
+                    ->where(
+                        'requiere_aprobacion',
+                        true
+                    )
+                    ->pluck('id')
+                    ->map(
+                        fn ($id) => (int) $id
+                    )
+                    ->sort()
+                    ->values();
+
+            $requiereAprobacion =
+                $especialidadesAprobacionIds
+                    ->isNotEmpty();
+
+            $profesionalActual =
+                $usuario->profesional;
+
+            $especialidadesAprobadasActuales =
+                collect();
+
+            if ($profesionalActual) {
+                $especialidadesAprobadasActuales =
+                    $profesionalActual
+                        ->especialidades
+                        ->where(
+                            'requiere_aprobacion',
+                            true
+                        )
+                        ->pluck('id')
+                        ->map(
+                            fn ($id) => (int) $id
+                        )
+                        ->sort()
+                        ->values();
+            }
+
+            if (!$requiereAprobacion) {
+                $estadoAprobacion =
+                    'no_requerida';
+            } elseif (
+                $profesionalActual &&
+                $profesionalActual
+                    ->estado_aprobacion ===
+                    'aprobado' &&
+                $especialidadesAprobadasActuales
+                    ->all() ===
+                $especialidadesAprobacionIds
+                    ->all()
+            ) {
+                $estadoAprobacion =
+                    'aprobado';
+            } else {
+                $estadoAprobacion =
+                    'pendiente';
             }
         }
 
@@ -174,12 +489,17 @@ class PerfilController extends Controller
 
             $fotoPerfil = $request
                 ->file('foto_perfil')
-                ->store('perfiles', 'public');
+                ->store(
+                    'perfiles',
+                    'public'
+                );
         } else {
-            $fotoPerfil = $usuario->foto_perfil;
+            $fotoPerfil =
+                $usuario->foto_perfil;
         }
 
-        $portafolioFotos = $usuario->portafolio_fotos ?? [];
+        $portafolioFotos =
+            $usuario->portafolio_fotos ?? [];
 
         if (is_string($portafolioFotos)) {
             $portafolioFotos = json_decode(
@@ -188,8 +508,15 @@ class PerfilController extends Controller
             ) ?? [];
         }
 
-        if ($request->hasFile('portafolio_fotos')) {
-            foreach ($portafolioFotos as $fotoAnterior) {
+        if (
+            $request->hasFile(
+                'portafolio_fotos'
+            )
+        ) {
+            foreach (
+                $portafolioFotos
+                as $fotoAnterior
+            ) {
                 Storage::disk('public')->delete(
                     $fotoAnterior
                 );
@@ -198,110 +525,220 @@ class PerfilController extends Controller
             $portafolioFotos = [];
 
             foreach (
-                $request->file('portafolio_fotos') as $foto
+                $request->file(
+                    'portafolio_fotos'
+                )
+                as $foto
             ) {
-                $portafolioFotos[] = $foto->store(
-                    'portafolios',
-                    'public'
-                );
+                $portafolioFotos[] =
+                    $foto->store(
+                        'portafolios',
+                        'public'
+                    );
             }
         }
 
-        DB::transaction(function () use (
-            $usuario,
-            $datos,
-            $fotoPerfil,
-            $portafolioFotos
-        ) {
-            $usuario->update([
-                'nombre' => $datos['nombre'],
+        DB::transaction(
+            function () use (
+                $usuario,
+                $datos,
+                $fotoPerfil,
+                $portafolioFotos,
+                $especialidadesIds,
+                $especialidadesAprobacionIds,
+                $requiereAprobacion,
+                $estadoAprobacion
+            ) {
+                $usuario->update([
+                    'nombre' =>
+                        $datos['nombre'],
 
-                'apellido_paterno' =>
-                    $datos['apellido_paterno'],
+                    'apellido_paterno' =>
+                        $datos['apellido_paterno'],
 
-                'apellido_materno' =>
-                    $datos['apellido_materno'] ?? null,
+                    'apellido_materno' =>
+                        $datos['apellido_materno']
+                        ?? null,
 
-                'telefono' =>
-                    $datos['telefono'] ?? null,
+                    'telefono' =>
+                        $datos['telefono']
+                        ?? null,
 
-                'ubicacion' =>
-                    $datos['ubicacion'] ?? null,
+                    'ubicacion' =>
+                        $datos['ubicacion']
+                        ?? null,
 
-                'descripcion' =>
-                    $datos['descripcion_usuario'] ?? null,
+                    'descripcion' =>
+                        $datos['descripcion_usuario']
+                        ?? null,
 
-                'foto_perfil' =>
-                    $fotoPerfil,
+                    'foto_perfil' =>
+                        $fotoPerfil,
 
-                'portafolio_fotos' =>
-                    $portafolioFotos,
-            ]);
+                    'portafolio_fotos' =>
+                        $portafolioFotos,
+                ]);
 
-            if ($usuario->rol->nombre === 'profesional') {
-                $profesional = Profesional::updateOrCreate(
-                    [
-                        'usuario_id' => $usuario->id
-                    ],
-                    [
-                        'anios_experiencia' =>
-                            $datos['anios_experiencia'],
+                if (
+                    $usuario->rol->nombre ===
+                    'profesional'
+                ) {
+                    $profesional =
+                        Profesional::updateOrCreate(
+                            [
+                                'usuario_id' =>
+                                    $usuario->id
+                            ],
+                            [
+                                'anios_experiencia' =>
+                                    $datos[
+                                        'anios_experiencia'
+                                    ],
 
-                        'descripcion' =>
-                            $datos['descripcion_profesional'],
+                                'descripcion' =>
+                                    $datos[
+                                        'descripcion_profesional'
+                                    ],
 
-                        'portafolio_url' =>
-                            $datos['portafolio_url'] ?? null,
+                                'portafolio_url' =>
+                                    $datos[
+                                        'portafolio_url'
+                                    ] ?? null,
 
-                        'zona_trabajo' =>
-                            $datos['zona_trabajo_profesional'],
-                    ]
-                );
+                                'zona_trabajo' =>
+                                    $datos[
+                                        'zona_trabajo_profesional'
+                                    ],
 
-                $profesional
-                    ->profesiones()
-                    ->sync([
-                        $datos['profesion_id']
-                    ]);
+                                'estado_aprobacion' =>
+                                    $estadoAprobacion,
+                            ]
+                        );
 
-                $profesional
-                    ->especialidades()
-                    ->sync([
-                        $datos['especialidad_id']
-                    ]);
+                    $profesional
+                        ->profesiones()
+                        ->sync([
+                            $datos[
+                                'profesion_id'
+                            ]
+                        ]);
 
-                $profesional
-                    ->servicios()
-                    ->sync(
-                        $datos['servicios'] ?? []
-                    );
+                    $profesional
+                        ->especialidades()
+                        ->sync(
+                            $especialidadesIds->all()
+                        );
+
+                    $profesional
+                        ->servicios()
+                        ->sync(
+                            $datos['servicios']
+                            ?? []
+                        );
+
+                    if (
+                        $requiereAprobacion &&
+                        $estadoAprobacion ===
+                        'pendiente'
+                    ) {
+                        SolicitudAprobacionProfesional::updateOrCreate(
+                            [
+                                'profesional_id' =>
+                                    $profesional->id,
+
+                                'estado' =>
+                                    'pendiente'
+                            ],
+                            [
+                                'especialidades_requieren_aprobacion' =>
+                                    $especialidadesAprobacionIds
+                                        ->all(),
+
+                                'revisado_por' =>
+                                    null,
+
+                                'motivo_rechazo' =>
+                                    null,
+
+                                'revisado_at' =>
+                                    null,
+                            ]
+                        );
+                    } else {
+                        SolicitudAprobacionProfesional::where(
+                            'profesional_id',
+                            $profesional->id
+                        )
+                            ->where(
+                                'estado',
+                                'pendiente'
+                            )
+                            ->delete();
+                    }
+                }
+
+                if (
+                    $usuario->rol->nombre ===
+                    'proveedor'
+                ) {
+                    $proveedor =
+                        Proveedor::updateOrCreate(
+                            [
+                                'usuario_id' =>
+                                    $usuario->id
+                            ],
+                            [
+                                'descripcion' =>
+                                    $datos[
+                                        'descripcion_proveedor'
+                                    ] ?? null,
+
+                                'zona_trabajo' =>
+                                    $datos[
+                                        'zona_trabajo_proveedor'
+                                    ],
+                            ]
+                        );
+
+                    $proveedor
+                        ->materiales()
+                        ->sync(
+                            $datos['materiales']
+                        );
+                }
             }
+        );
 
-            if ($usuario->rol->nombre === 'proveedor') {
-                $proveedor = Proveedor::updateOrCreate(
-                    [
-                        'usuario_id' => $usuario->id
-                    ],
-                    [
-                        'descripcion' =>
-                            $datos['descripcion_proveedor'] ?? null,
+        $usuario->refresh();
 
-                        'zona_trabajo' =>
-                            $datos['zona_trabajo_proveedor'],
-                    ]
-                );
+        $usuario->load(
+            'rol',
+            'profesional.servicios',
+            'proveedor.materiales'
+        );
 
-                $proveedor
-                    ->materiales()
-                    ->sync(
-                        $datos['materiales']
-                    );
-            }
-        });
+        $perfilNotificacionService
+            ->sincronizar(
+                $usuario
+            );
 
         $usuario->notify(
             new PerfilActualizado()
         );
+
+        if (
+            $usuario->rol->nombre ===
+            'profesional' &&
+            $estadoAprobacion ===
+            'pendiente'
+        ) {
+            return redirect()
+                ->route('perfil')
+                ->with(
+                    'success',
+                    'Perfil actualizado. Tu perfil profesional permanecerá pendiente hasta que un administrador revise y apruebe la especialidad seleccionada.'
+                );
+        }
 
         return redirect()
             ->route('perfil')
@@ -314,7 +751,10 @@ class PerfilController extends Controller
     public function buscar(Request $request)
     {
         $busqueda = trim(
-            $request->input('buscar', '')
+            $request->input(
+                'buscar',
+                ''
+            )
         );
 
         $tipo = $request->input(
@@ -322,24 +762,32 @@ class PerfilController extends Controller
             ''
         );
 
-        $profesionId = $request->input(
-            'profesion_id'
-        );
+        $profesionId =
+            $request->input(
+                'profesion_id'
+            );
 
-        $especialidadId = $request->input(
-            'especialidad_id'
-        );
+        $especialidadId =
+            $request->input(
+                'especialidad_id'
+            );
 
         $profesiones = Profesion::where(
             'activo',
             true
         )
             ->with([
-                'especialidades' => function ($query) {
-                    $query
-                        ->where('activo', true)
-                        ->orderBy('nombre');
-                }
+                'especialidades' =>
+                    function ($query) {
+                        $query
+                            ->where(
+                                'activo',
+                                true
+                            )
+                            ->orderBy(
+                                'nombre'
+                            );
+                    }
             ])
             ->orderBy('nombre')
             ->get();
@@ -365,11 +813,57 @@ class PerfilController extends Controller
                     );
                 }
             )
+            ->where(
+                function ($query) {
+                    $query
+                        ->whereHas(
+                            'rol',
+                            function ($rol) {
+                                $rol->where(
+                                    'nombre',
+                                    '!=',
+                                    'profesional'
+                                );
+                            }
+                        )
+                        ->orWhere(
+                            function ($profesionalQuery) {
+                                $profesionalQuery
+                                    ->whereHas(
+                                        'rol',
+                                        function ($rol) {
+                                            $rol->where(
+                                                'nombre',
+                                                'profesional'
+                                            );
+                                        }
+                                    )
+                                    ->whereHas(
+                                        'profesional',
+                                        function ($profesional) {
+                                            $profesional
+                                                ->whereIn(
+                                                    'estado_aprobacion',
+                                                    [
+                                                        'no_requerida',
+                                                        'aprobado'
+                                                    ]
+                                                );
+                                        }
+                                    );
+                            }
+                        );
+                }
+            )
             ->when(
                 $busqueda,
-                function ($query) use ($busqueda) {
+                function ($query) use (
+                    $busqueda
+                ) {
                     $query->where(
-                        function ($q) use ($busqueda) {
+                        function ($q) use (
+                            $busqueda
+                        ) {
                             $q
                                 ->where(
                                     'nombre',
@@ -398,7 +892,9 @@ class PerfilController extends Controller
                                 )
                                 ->orWhereHas(
                                     'rol',
-                                    function ($rol) use ($busqueda) {
+                                    function ($rol) use (
+                                        $busqueda
+                                    ) {
                                         $rol->where(
                                             'nombre',
                                             'like',
@@ -408,7 +904,9 @@ class PerfilController extends Controller
                                 )
                                 ->orWhereHas(
                                     'profesional.profesiones',
-                                    function ($profesion) use ($busqueda) {
+                                    function ($profesion) use (
+                                        $busqueda
+                                    ) {
                                         $profesion->where(
                                             'nombre',
                                             'like',
@@ -418,7 +916,9 @@ class PerfilController extends Controller
                                 )
                                 ->orWhereHas(
                                     'profesional.especialidades',
-                                    function ($especialidad) use ($busqueda) {
+                                    function ($especialidad) use (
+                                        $busqueda
+                                    ) {
                                         $especialidad->where(
                                             'nombre',
                                             'like',
@@ -428,7 +928,9 @@ class PerfilController extends Controller
                                 )
                                 ->orWhereHas(
                                     'proveedor.materiales',
-                                    function ($material) use ($busqueda) {
+                                    function ($material) use (
+                                        $busqueda
+                                    ) {
                                         $material->where(
                                             'nombre',
                                             'like',
@@ -442,10 +944,14 @@ class PerfilController extends Controller
             )
             ->when(
                 $tipo,
-                function ($query) use ($tipo) {
+                function ($query) use (
+                    $tipo
+                ) {
                     $query->whereHas(
                         'rol',
-                        function ($rol) use ($tipo) {
+                        function ($rol) use (
+                            $tipo
+                        ) {
                             $rol->where(
                                 'nombre',
                                 $tipo
@@ -456,10 +962,14 @@ class PerfilController extends Controller
             )
             ->when(
                 $profesionId,
-                function ($query) use ($profesionId) {
+                function ($query) use (
+                    $profesionId
+                ) {
                     $query->whereHas(
                         'profesional.profesiones',
-                        function ($profesion) use ($profesionId) {
+                        function ($profesion) use (
+                            $profesionId
+                        ) {
                             $profesion->where(
                                 'profesiones.id',
                                 $profesionId
@@ -470,10 +980,14 @@ class PerfilController extends Controller
             )
             ->when(
                 $especialidadId,
-                function ($query) use ($especialidadId) {
+                function ($query) use (
+                    $especialidadId
+                ) {
                     $query->whereHas(
                         'profesional.especialidades',
-                        function ($especialidad) use ($especialidadId) {
+                        function ($especialidad) use (
+                            $especialidadId
+                        ) {
                             $especialidad->where(
                                 'especialidades.id',
                                 $especialidadId
@@ -501,7 +1015,10 @@ class PerfilController extends Controller
 
     public function publico(Usuario $usuario)
     {
-        if ($usuario->estado !== 'activo') {
+        if (
+            $usuario->estado !==
+            'activo'
+        ) {
             abort(404);
         }
 
@@ -512,6 +1029,30 @@ class PerfilController extends Controller
             'profesional.especialidades',
             'profesional.servicios'
         );
+
+        if (
+            $usuario->rol->nombre ===
+            'profesional'
+        ) {
+            if (!$usuario->profesional) {
+                abort(404);
+            }
+
+            if (
+                !in_array(
+                    $usuario
+                        ->profesional
+                        ->estado_aprobacion,
+                    [
+                        'no_requerida',
+                        'aprobado'
+                    ],
+                    true
+                )
+            ) {
+                abort(404);
+            }
+        }
 
         return view(
             'perfil-publico',

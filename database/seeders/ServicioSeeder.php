@@ -9,11 +9,45 @@ class ServicioSeeder extends Seeder
 {
     public function run(): void
     {
-        Servicio::firstOrCreate(['nombre' =>'Diseño de planos']);
-        Servicio::firstOrCreate(['nombre' =>'Diseño arquitectonico']);
-        Servicio::firstOrCreate(['nombre' =>'Supervision de obra']);
-        Servicio::firstOrCreate(['nombre' =>'Remodelacion']);
-        Servicio::firstOrCreate(['nombre' =>'Instalacion electrica']);
-        Servicio::firstOrCreate(['nombre' =>'Instalacion hidraulica']);
+        $servicios = [
+            'Diseño de planos',
+            'Diseño arquitectónico',
+            'Diseño de interiores',
+            'Levantamiento arquitectónico',
+            'Modelado 3D',
+            'Renderizado arquitectónico',
+            'Supervisión de obra',
+            'Construcción',
+            'Remodelación',
+            'Ampliación de vivienda',
+            'Administración de obra',
+            'Presupuesto de obra',
+            'Estimación de costos',
+            'Diseño estructural',
+            'Cálculo estructural',
+            'Revisión estructural',
+            'Instalación eléctrica',
+            'Instalación hidráulica',
+            'Instalación sanitaria',
+            'Mantenimiento eléctrico',
+            'Mantenimiento hidráulico',
+            'Impermeabilización',
+            'Pintura',
+            'Albañilería',
+            'Carpintería',
+            'Herrería',
+            'Colocación de pisos',
+            'Colocación de azulejo',
+            'Acabados',
+            'Paisajismo',
+            'Restauración arquitectónica',
+            'Mantenimiento de inmuebles',
+        ];
+
+        foreach ($servicios as $nombre) {
+            Servicio::firstOrCreate([
+                'nombre' => $nombre,
+            ]);
+        }
     }
 }

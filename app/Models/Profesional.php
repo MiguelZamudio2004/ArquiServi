@@ -13,7 +13,8 @@ class Profesional extends Model
         'anios_experiencia',
         'descripcion',
         'portafolio_url',
-        'zona_trabajo'
+        'zona_trabajo',
+        'estado_aprobacion'
     ];
 
     public function usuario()
@@ -31,7 +32,7 @@ class Profesional extends Model
             'profesional_profesion',
             'profesional_id',
             'profesion_id'
-        );
+        )->withTimestamps();
     }
 
     public function especialidades()
@@ -41,7 +42,7 @@ class Profesional extends Model
             'profesional_especialidad',
             'profesional_id',
             'especialidad_id'
-        );
+        )->withTimestamps();
     }
 
     public function servicios()
@@ -60,6 +61,26 @@ class Profesional extends Model
             Solicitud::class,
             'destinatario_id',
             'usuario_id'
+        );
+    }
+
+    public function solicitudesAprobacion()
+    {
+        return $this->hasMany(
+            SolicitudAprobacionProfesional::class,
+            'profesional_id'
+        );
+    }
+
+    public function estaDisponiblePublicamente(): bool
+    {
+        return in_array(
+            $this->estado_aprobacion,
+            [
+                'no_requerida',
+                'aprobado'
+            ],
+            true
         );
     }
 }

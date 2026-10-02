@@ -3,12 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Editar Perfil</title>
 
-    <link rel="stylesheet" href="{{ asset('css/perfil-editar.css') }}">
-    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/perfil-editar.css') }}"
+    >
+
+    <link
+        rel="icon"
+        href="{{ asset('icono.png') }}"
+        type="image/png"
+    >
 </head>
 
 <body>
@@ -36,13 +47,17 @@
         @method('PUT')
 
         <div class="foto-actual">
+
             @if($usuario->foto_perfil)
+
                 <img
                     id="previewFoto"
                     src="{{ asset('storage/' . $usuario->foto_perfil) }}"
                     alt="Foto de perfil"
                 >
+
             @else
+
                 <div
                     class="foto-inicial"
                     id="fotoInicial"
@@ -56,7 +71,9 @@
                     alt="Vista previa"
                     style="display:none;"
                 >
+
             @endif
+
         </div>
 
         <label class="etiqueta">
@@ -64,6 +81,7 @@
         </label>
 
         <div class="selector-archivo">
+
             <label
                 for="foto_perfil"
                 class="btn-archivo"
@@ -74,6 +92,7 @@
             <span id="nombreArchivo">
                 Ningún archivo seleccionado
             </span>
+
         </div>
 
         <input
@@ -185,9 +204,17 @@
                     $usuario->profesional?->profesiones->first()?->id
                 );
 
-                $especialidadActual = old(
-                    'especialidad_id',
-                    $usuario->profesional?->especialidades->first()?->id
+                $especialidadesSeleccionadas = array_map(
+                    'intval',
+                    old(
+                        'especialidades',
+                        $usuario
+                            ->profesional
+                            ?->especialidades
+                            ->pluck('id')
+                            ->toArray()
+                            ?? []
+                    )
                 );
             @endphp
 
@@ -209,44 +236,69 @@
                 </option>
 
                 @foreach($profesiones as $profesion)
+
                     <option
                         value="{{ $profesion->id }}"
                         {{ $profesionActual == $profesion->id ? 'selected' : '' }}
                     >
                         {{ $profesion->nombre }}
                     </option>
+
                 @endforeach
+
             </select>
 
-            <label
-                class="etiqueta"
-                for="especialidad_id"
-            >
-                Especialidad:
+            <label class="etiqueta">
+                Especialidades:
             </label>
 
-            <select
-                class="form-control"
-                name="especialidad_id"
-                id="especialidad_id"
-                required
+            <div
+                class="materiales"
+                id="especialidadesContenedor"
             >
-                <option value="">
-                    Seleccione una especialidad
-                </option>
 
                 @foreach($profesiones as $profesion)
+
                     @foreach($profesion->especialidades as $especialidad)
-                        <option
-                            value="{{ $especialidad->id }}"
+
+                        <label
+                            class="material-opcion especialidad-opcion"
                             data-profesion="{{ $profesion->id }}"
-                            {{ $especialidadActual == $especialidad->id ? 'selected' : '' }}
+                            data-requiere-aprobacion="{{ $especialidad->requiere_aprobacion ? '1' : '0' }}"
                         >
-                            {{ $especialidad->nombre }}
-                        </option>
+
+                            <input
+                                type="checkbox"
+                                name="especialidades[]"
+                                value="{{ $especialidad->id }}"
+                                {{ in_array(
+                                    (int) $especialidad->id,
+                                    $especialidadesSeleccionadas,
+                                    true
+                                ) ? 'checked' : '' }}
+                            >
+
+                            <span>
+                                {{ $especialidad->nombre }}
+                            </span>
+
+                        </label>
+
                     @endforeach
+
                 @endforeach
-            </select>
+
+            </div>
+
+            <div
+                class="error"
+                id="avisoAprobacion"
+                hidden
+            >
+                <p>
+                    La especialidad Supervisor de obra requiere aprobación administrativa. Si agregas esta especialidad, tu perfil profesional dejará de mostrarse públicamente hasta que sea aprobado.
+                </p>
+            </div>
 
             <label
                 class="etiqueta"
@@ -316,14 +368,20 @@
                 id="previewPortafolio"
                 class="preview-portafolio"
             >
+
                 @if($usuario->portafolio_fotos)
+
                     @foreach($usuario->portafolio_fotos as $foto)
+
                         <img
                             src="{{ asset('storage/' . $foto) }}"
                             alt="Foto de portafolio"
                         >
+
                     @endforeach
+
                 @endif
+
             </div>
 
             <label
@@ -354,24 +412,35 @@
             @endphp
 
             <div class="materiales">
+
                 @forelse($servicios as $servicio)
+
                     <label class="material-opcion">
+
                         <input
                             type="checkbox"
                             name="servicios[]"
                             value="{{ $servicio->id }}"
-                            {{ in_array($servicio->id, $serviciosSeleccionados) ? 'checked' : '' }}
+                            {{ in_array(
+                                $servicio->id,
+                                $serviciosSeleccionados
+                            ) ? 'checked' : '' }}
                         >
 
                         <span>
                             {{ $servicio->nombre }}
                         </span>
+
                     </label>
+
                 @empty
+
                     <p>
                         No hay servicios registrados.
                     </p>
+
                 @endforelse
+
             </div>
 
         @elseif($usuario->rol->nombre === 'proveedor')
@@ -420,20 +489,29 @@
             @endphp
 
             <div class="materiales">
+
                 @foreach($materiales as $material)
+
                     <label class="material-opcion">
+
                         <input
                             type="checkbox"
                             name="materiales[]"
                             value="{{ $material->id }}"
-                            {{ in_array($material->id, $materialesSeleccionados) ? 'checked' : '' }}
+                            {{ in_array(
+                                $material->id,
+                                $materialesSeleccionados
+                            ) ? 'checked' : '' }}
                         >
 
                         <span>
                             {{ $material->nombre }}
                         </span>
+
                     </label>
+
                 @endforeach
+
             </div>
 
             <label
@@ -456,29 +534,42 @@
                 id="previewPortafolio"
                 class="preview-portafolio"
             >
+
                 @if($usuario->portafolio_fotos)
+
                     @foreach($usuario->portafolio_fotos as $foto)
+
                         <img
                             src="{{ asset('storage/' . $foto) }}"
                             alt="Foto de portafolio"
                         >
+
                     @endforeach
+
                 @endif
+
             </div>
 
         @endif
 
         @if($errors->any())
+
             <div class="error">
+
                 @foreach($errors->all() as $error)
+
                     <p>
                         {{ $error }}
                     </p>
+
                 @endforeach
+
             </div>
+
         @endif
 
         <div class="acciones">
+
             <a
                 href="{{ route('perfil') }}"
                 class="btn-cancelar"
@@ -492,6 +583,7 @@
             >
                 Guardar cambios
             </button>
+
         </div>
 
     </form>
@@ -499,9 +591,11 @@
 </main>
 
 <footer class="pie">
+
     <p>
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
+
 </footer>
 
 <script
@@ -510,44 +604,117 @@
 ></script>
 
 @if($usuario->rol->nombre === 'profesional')
+
     <script>
-        const profesion = document.getElementById('profesion_id');
-        const especialidad = document.getElementById('especialidad_id');
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+                const profesion =
+                    document.getElementById(
+                        'profesion_id'
+                    );
 
-        const opcionesEspecialidad = Array.from(
-            especialidad.querySelectorAll('option[data-profesion]')
+                const opcionesEspecialidad =
+                    Array.from(
+                        document.querySelectorAll(
+                            '.especialidad-opcion'
+                        )
+                    );
+
+                const avisoAprobacion =
+                    document.getElementById(
+                        'avisoAprobacion'
+                    );
+
+                function actualizarAvisoAprobacion() {
+                    const requiereAprobacion =
+                        opcionesEspecialidad.some(
+                            opcion => {
+                                if (opcion.hidden) {
+                                    return false;
+                                }
+
+                                const checkbox =
+                                    opcion.querySelector(
+                                        'input[type="checkbox"]'
+                                    );
+
+                                return (
+                                    checkbox.checked &&
+                                    opcion.dataset
+                                        .requiereAprobacion ===
+                                        '1'
+                                );
+                            }
+                        );
+
+                    if (avisoAprobacion) {
+                        avisoAprobacion.hidden =
+                            !requiereAprobacion;
+                    }
+                }
+
+                function filtrarEspecialidades(
+                    limpiarSeleccion = false
+                ) {
+                    const profesionId =
+                        profesion.value;
+
+                    opcionesEspecialidad.forEach(
+                        opcion => {
+                            const pertenece =
+                                opcion.dataset.profesion ===
+                                profesionId;
+
+                            opcion.hidden =
+                                !pertenece;
+
+                            const checkbox =
+                                opcion.querySelector(
+                                    'input[type="checkbox"]'
+                                );
+
+                            if (
+                                limpiarSeleccion &&
+                                !pertenece
+                            ) {
+                                checkbox.checked =
+                                    false;
+                            }
+                        }
+                    );
+
+                    actualizarAvisoAprobacion();
+                }
+
+                profesion.addEventListener(
+                    'change',
+                    function () {
+                        filtrarEspecialidades(
+                            true
+                        );
+                    }
+                );
+
+                opcionesEspecialidad.forEach(
+                    opcion => {
+                        const checkbox =
+                            opcion.querySelector(
+                                'input[type="checkbox"]'
+                            );
+
+                        checkbox.addEventListener(
+                            'change',
+                            actualizarAvisoAprobacion
+                        );
+                    }
+                );
+
+                filtrarEspecialidades(false);
+            }
         );
-
-        function cargarEspecialidades(cambio = false) {
-            const profesionId = profesion.value;
-
-            if (cambio) {
-                especialidad.value = '';
-            }
-
-            opcionesEspecialidad.forEach(opcion => {
-                opcion.hidden =
-                    opcion.dataset.profesion !== profesionId;
-            });
-
-            const seleccionada =
-                especialidad.options[especialidad.selectedIndex];
-
-            if (
-                seleccionada &&
-                seleccionada.dataset.profesion &&
-                seleccionada.dataset.profesion !== profesionId
-            ) {
-                especialidad.value = '';
-            }
-        }
-
-        profesion.addEventListener('change', function () {
-            cargarEspecialidades(true);
-        });
-
-        cargarEspecialidades();
     </script>
+
 @endif
 
 </body>

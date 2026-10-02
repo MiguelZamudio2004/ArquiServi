@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 class NotificacionController extends Controller
 {
-    public function marcarLeida(Request $request, string $id)
-    {
-        $notificacion = $request->user()
+    public function marcarLeida(
+        Request $request,
+        string $id
+    ) {
+        $usuario = $request->user();
+
+        $notificacion = $usuario
             ->notifications()
             ->where('id', $id)
             ->firstOrFail();
@@ -17,19 +21,15 @@ class NotificacionController extends Controller
             $notificacion->markAsRead();
         }
 
-        $redirectUrl = null;
-
-        if (!empty($notificacion->data['solicitud_id'])) {
-            $redirectUrl = route(
-                'solicitudes.mostrar',
-                $notificacion->data['solicitud_id']
-            );
-        }
-
         return response()->json([
             'success' => true,
-            'no_leidas' => $request->user()->unreadNotifications()->count(),
-            'redirect_url' => $redirectUrl,
+            'redirect_url' =>
+                $notificacion->data['url']
+                ?? null,
+            'unread_count' =>
+                $usuario
+                    ->unreadNotifications()
+                    ->count(),
         ]);
     }
 }

@@ -23,7 +23,11 @@
 
 <header class="encabezado">
     <a href="{{ route('menu') }}" class="logo-link">
-        <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
+        <img
+            src="{{ asset('encabezado2.png') }}"
+            class="logo"
+            alt="ArquiServi"
+        >
     </a>
 
     <nav class="menu-superior">
@@ -62,7 +66,11 @@
                 @endif
 
                 <li class="notificaciones-container">
-                    <input type="hidden" id="csrf-notificaciones" value="{{ csrf_token() }}">
+                    <input
+                        type="hidden"
+                        id="csrf-notificaciones"
+                        value="{{ csrf_token() }}"
+                    >
 
                     <button
                         type="button"
@@ -174,30 +182,19 @@
 
 <main class="solicitudes-contenedor">
 
-    <h1>
-        Nueva solicitud
-    </h1>
+    <h1>Nueva solicitud</h1>
 
     @if($errors->any())
-
         <div class="errores">
-
             @foreach($errors->all() as $error)
-
-                <p>
-                    {{ $error }}
-                </p>
-
+                <p>{{ $error }}</p>
             @endforeach
-
         </div>
-
     @endif
 
     <section class="solicitud-form">
 
         <div class="solicitud-destinatario">
-
             <span>
                 {{ $destinatario->rol->nombre === 'proveedor' ? 'Proveedor' : 'Profesional' }}
             </span>
@@ -206,14 +203,12 @@
                 {{ $destinatario->nombre }}
                 {{ $destinatario->apellido_paterno }}
             </strong>
-
         </div>
 
         <form
             action="{{ route('solicitudes.guardar') }}"
             method="POST"
         >
-
             @csrf
 
             <input
@@ -225,7 +220,6 @@
             @if($destinatario->rol->nombre === 'profesional')
 
                 <div class="campo">
-
                     <label for="servicio_id">
                         Servicio
                     </label>
@@ -235,69 +229,94 @@
                         id="servicio_id"
                         required
                     >
-
                         <option value="">
                             Selecciona un servicio
                         </option>
 
                         @foreach($destinatario->profesional->servicios as $servicio)
-
                             <option
                                 value="{{ $servicio->id }}"
                                 {{ old('servicio_id') == $servicio->id ? 'selected' : '' }}
                             >
                                 {{ $servicio->nombre }}
                             </option>
-
                         @endforeach
-
                     </select>
-
                 </div>
 
             @endif
 
             @if($destinatario->rol->nombre === 'proveedor')
 
-                <div class="campo">
+                @php
+                    $materialesSeleccionados = array_map(
+                        'intval',
+                        old('materiales', [])
+                    );
+                @endphp
 
-                    <label for="material_id">
-                        Material o producto
+                <div class="campo">
+                    <label>
+                        Materiales o productos
                     </label>
 
-                    <select
-                        name="material_id"
-                        id="material_id"
-                        required
-                    >
+                    <p class="campo-ayuda">
+                        Selecciona uno o varios materiales.
+                    </p>
 
-                        <option value="">
-                            Selecciona un material o producto
-                        </option>
+                    <div class="materiales-solicitud">
 
-                        @foreach($destinatario->proveedor->materiales as $material)
+                        @forelse($destinatario->proveedor->materiales as $material)
 
-                            @if($material->pivot->disponible)
+                            @if($material->activo && $material->pivot->disponible)
 
-                                <option
-                                    value="{{ $material->id }}"
-                                    {{ old('material_id') == $material->id ? 'selected' : '' }}
+                                <label
+                                    class="material-solicitud-opcion"
+                                    for="material_{{ $material->id }}"
                                 >
-                                    {{ $material->nombre }}
-                                </option>
+                                    <input
+                                        type="checkbox"
+                                        name="materiales[]"
+                                        id="material_{{ $material->id }}"
+                                        value="{{ $material->id }}"
+                                        {{ in_array((int) $material->id, $materialesSeleccionados, true) ? 'checked' : '' }}
+                                    >
+
+                                    <span class="material-solicitud-contenido">
+                                        <span class="material-solicitud-check">
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+
+                                        <span class="material-solicitud-info">
+                                            <strong class="material-solicitud-nombre">
+                                                {{ $material->nombre }}
+                                            </strong>
+
+                                            @if($material->categoria)
+                                                <small class="material-solicitud-categoria">
+                                                    {{ $material->categoria }}
+                                                </small>
+                                            @endif
+                                        </span>
+                                    </span>
+                                </label>
 
                             @endif
 
-                        @endforeach
+                        @empty
 
-                    </select>
+                            <p class="sin-materiales">
+                                Este proveedor no tiene materiales disponibles.
+                            </p>
 
+                        @endforelse
+
+                    </div>
                 </div>
 
             @endif
 
             <div class="campo">
-
                 <label for="descripcion">
                     Descripción
                 </label>
@@ -309,11 +328,9 @@
                     required
                     placeholder="Describe lo que necesitas..."
                 >{{ old('descripcion') }}</textarea>
-
             </div>
 
             <div class="acciones">
-
                 <a
                     href="{{ route('perfil.publico', $destinatario) }}"
                     class="btn-secundario"
@@ -327,7 +344,6 @@
                 >
                     Enviar solicitud
                 </button>
-
             </div>
 
         </form>
@@ -337,13 +353,10 @@
 </main>
 
 <footer class="pie">
-
     <p>
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
-
 </footer>
 
 </body>
-
 </html>

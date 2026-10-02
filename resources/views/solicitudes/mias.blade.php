@@ -11,7 +11,10 @@
     <link rel="stylesheet" href="{{ asset('css/solicitudes.css') }}">
     <link rel="stylesheet" href="{{ asset('css/calificacion.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
 
     <script src="{{ asset('js/notification.js') }}" defer></script>
     <script src="{{ asset('js/perfil.js') }}" defer></script>
@@ -22,7 +25,11 @@
 
 <header class="encabezado">
     <a href="{{ route('menu') }}" class="logo-link">
-        <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
+        <img
+            src="{{ asset('encabezado2.png') }}"
+            class="logo"
+            alt="ArquiServi"
+        >
     </a>
 
     <nav class="menu-superior">
@@ -61,7 +68,11 @@
                 @endif
 
                 <li class="notificaciones-container">
-                    <input type="hidden" id="csrf-notificaciones" value="{{ csrf_token() }}">
+                    <input
+                        type="hidden"
+                        id="csrf-notificaciones"
+                        value="{{ csrf_token() }}"
+                    >
 
                     <button
                         type="button"
@@ -82,7 +93,9 @@
                             @endif
                         </span>
 
-                        <span class="texto">Notificaciones</span>
+                        <span class="texto">
+                            Notificaciones
+                        </span>
                     </button>
 
                     <div
@@ -141,7 +154,9 @@
                             aria-label="Cerrar sesión"
                         >
                             <i class="fa-solid fa-right-from-bracket icono"></i>
-                            <span class="texto">Cerrar sesión</span>
+                            <span class="texto">
+                                Cerrar sesión
+                            </span>
                         </button>
                     </form>
                 </li>
@@ -182,15 +197,11 @@
     @endif
 
     @if($errors->any())
-
         <div class="errores">
-
             @foreach($errors->all() as $error)
                 <p>{{ $error }}</p>
             @endforeach
-
         </div>
-
     @endif
 
     @if($solicitudes->isNotEmpty())
@@ -203,7 +214,7 @@
                     <tr>
                         <th>Destinatario</th>
                         <th>Tipo</th>
-                        <th>Servicio / Material</th>
+                        <th>Servicio / Materiales</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -214,10 +225,16 @@
                     @foreach($solicitudes as $solicitud)
 
                         @php
-                            $concepto =
-                                $solicitud->servicio?->nombre
-                                ?? $solicitud->material?->nombre
-                                ?? 'Sin especificar';
+                            if ($solicitud->servicio) {
+                                $concepto = $solicitud->servicio->nombre;
+                            } elseif ($solicitud->materiales->isNotEmpty()) {
+                                $concepto = $solicitud
+                                    ->materiales
+                                    ->pluck('nombre')
+                                    ->join(', ');
+                            } else {
+                                $concepto = 'Sin especificar';
+                            }
                         @endphp
 
                         <tr>
@@ -231,10 +248,37 @@
                                 {{ ucfirst($solicitud->destinatario->rol->nombre) }}
                             </td>
 
-                            <td data-label="Servicio / Material">
-                                {{ $concepto }}
-                            </td>
+<td data-label="Servicio / Materiales">
 
+    @if($solicitud->servicio)
+
+        <div class="materiales-solicitud-lista">
+            <span class="material-solicitud-etiqueta">
+                {{ $solicitud->servicio->nombre }}
+            </span>
+        </div>
+
+    @elseif($solicitud->materiales->isNotEmpty())
+
+        <div class="materiales-solicitud-lista">
+
+            @foreach($solicitud->materiales as $material)
+
+                <span class="material-solicitud-etiqueta">
+                    {{ $material->nombre }}
+                </span>
+
+            @endforeach
+
+        </div>
+
+    @else
+
+        Sin especificar
+
+    @endif
+
+</td>
                             <td data-label="Estado">
                                 <span class="estado estado-{{ $solicitud->estado }}">
                                     {{ ucfirst($solicitud->estado) }}
@@ -261,10 +305,9 @@
                                     )
 
                                         @php
-                                            $telefono =
-                                                $solicitud
-                                                    ->destinatario
-                                                    ->telefonoWhatsapp();
+                                            $telefono = $solicitud
+                                                ->destinatario
+                                                ->telefonoWhatsapp();
 
                                             $mensaje =
                                                 "Hola {$solicitud->destinatario->nombre}, soy {$solicitud->solicitante->nombre}. "
@@ -325,7 +368,6 @@
     @else
 
         <div class="sin-solicitudes">
-
             <p>
                 Aún no has enviado solicitudes.
             </p>
@@ -333,7 +375,6 @@
             <a href="{{ route('usuarios.buscar') }}">
                 Buscar perfiles
             </a>
-
         </div>
 
     @endif

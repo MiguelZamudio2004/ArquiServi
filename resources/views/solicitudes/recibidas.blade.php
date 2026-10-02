@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +11,25 @@
     <link rel="stylesheet" href="{{ asset('css/solicitudes.css') }}">
     <link rel="stylesheet" href="{{ asset('css/calificacion.css') }}">
     <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+
     <script src="{{ asset('js/notification.js') }}" defer></script>
+    <script src="{{ asset('js/perfil.js') }}" defer></script>
+    <script src="{{ asset('js/reseña.js') }}" defer></script>
 </head>
 
 <body>
 
-    <header class="encabezado">
+<header class="encabezado">
     <a href="{{ route('menu') }}" class="logo-link">
-        <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
+        <img
+            src="{{ asset('encabezado2.png') }}"
+            class="logo"
+            alt="ArquiServi"
+        >
     </a>
 
     <nav class="menu-superior">
@@ -57,7 +68,11 @@
                 @endif
 
                 <li class="notificaciones-container">
-                    <input type="hidden" id="csrf-notificaciones" value="{{ csrf_token() }}">
+                    <input
+                        type="hidden"
+                        id="csrf-notificaciones"
+                        value="{{ csrf_token() }}"
+                    >
 
                     <button
                         type="button"
@@ -137,7 +152,9 @@
                             aria-label="Cerrar sesión"
                         >
                             <i class="fa-solid fa-right-from-bracket icono"></i>
-                            <span class="texto">Cerrar sesión</span>
+                            <span class="texto">
+                                Cerrar sesión
+                            </span>
                         </button>
                     </form>
                 </li>
@@ -188,13 +205,14 @@
     @if($solicitudes->isNotEmpty())
 
         <div class="tabla-contenedor">
+
             <table class="tabla-solicitudes">
 
                 <thead>
                     <tr>
                         <th>Solicitante</th>
                         <th>Tipo</th>
-                        <th>Servicio / Material</th>
+                        <th>Servicio / Materiales</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -205,62 +223,101 @@
                     @foreach($solicitudes as $solicitud)
 
                         @php
-                            $concepto = $solicitud->servicio?->nombre
-                                ?? $solicitud->material?->nombre
-                                ?? 'Sin especificar';
+                            if ($solicitud->servicio) {
+                                $concepto = $solicitud->servicio->nombre;
+                            } elseif ($solicitud->materiales->isNotEmpty()) {
+                                $concepto = $solicitud
+                                    ->materiales
+                                    ->pluck('nombre')
+                                    ->join(', ');
+                            } else {
+                                $concepto = 'Sin especificar';
+                            }
                         @endphp
 
                         <tr>
 
-                            <td>
+                            <td data-label="Solicitante">
                                 {{ $solicitud->solicitante->nombre }}
                                 {{ $solicitud->solicitante->apellido_paterno }}
                             </td>
 
-                            <td>
+                            <td data-label="Tipo">
                                 {{ ucfirst($solicitud->solicitante->rol->nombre) }}
                             </td>
 
-                            <td>
-                                {{ $concepto }}
+                            <td data-label="Servicio / Materiales">
+
+                                @if($solicitud->servicio)
+
+                                    {{ $solicitud->servicio->nombre }}
+
+                                @elseif($solicitud->materiales->isNotEmpty())
+
+                                    <div class="materiales-solicitud-lista">
+                                        @foreach($solicitud->materiales as $material)
+                                            <span class="material-solicitud-etiqueta">
+                                                {{ $material->nombre }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+
+                                @else
+
+                                    Sin especificar
+
+                                @endif
+
                             </td>
 
-                            <td>
+                            <td data-label="Estado">
                                 <span class="estado estado-{{ $solicitud->estado }}">
                                     {{ ucfirst($solicitud->estado) }}
                                 </span>
                             </td>
 
-                            <td>
+                            <td data-label="Acciones">
 
                                 <div class="acciones-tabla">
 
-                                    <a href="{{ route('solicitudes.mostrar', $solicitud) }}" class="btn-ver">
+                                    <a
+                                        href="{{ route('solicitudes.mostrar', $solicitud) }}"
+                                        class="btn-ver"
+                                    >
                                         Ver
                                     </a>
 
                                     @if(
-                                        in_array($solicitud->estado, ['aceptada', 'terminada']) &&
+                                        in_array(
+                                            $solicitud->estado,
+                                            ['aceptada', 'terminada']
+                                        ) &&
                                         !empty($solicitud->solicitante->telefono)
                                     )
 
                                         @php
-                                            $telefono = $solicitud->solicitante->telefonoWhatsapp();
+                                            $telefono = $solicitud
+                                                ->solicitante
+                                                ->telefonoWhatsapp();
 
-                                            $mensaje = "Hola {$solicitud->solicitante->nombre}, soy {$solicitud->destinatario->nombre}. "
+                                            $mensaje =
+                                                "Hola {$solicitud->solicitante->nombre}, soy {$solicitud->destinatario->nombre}. "
                                                 . "Te contacto desde ArquiServi respecto a tu solicitud de \"{$concepto}\". "
                                                 . "Podemos continuar con los detalles.";
 
-                                            $whatsappUrl = 'https://wa.me/'
+                                            $whatsappUrl =
+                                                'https://wa.me/'
                                                 . $telefono
                                                 . '?text='
                                                 . urlencode($mensaje);
                                         @endphp
 
-                                        <a href="{{ $whatsappUrl }}"
+                                        <a
+                                            href="{{ $whatsappUrl }}"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            class="btn-whatsapp">
+                                            class="btn-whatsapp"
+                                        >
                                             WhatsApp
                                         </a>
 
@@ -268,17 +325,20 @@
 
                                     @if($solicitud->estado === 'aceptada')
 
-                                        <form action="{{ route('solicitudes.terminar', $solicitud) }}"
+                                        <form
+                                            action="{{ route('solicitudes.terminar', $solicitud) }}"
                                             method="POST"
-                                            class="form-accion-tabla">
-
+                                            class="form-accion-tabla"
+                                        >
                                             @csrf
                                             @method('PATCH')
 
-                                            <button type="submit" class="btn-terminar">
+                                            <button
+                                                type="submit"
+                                                class="btn-terminar"
+                                            >
                                                 Terminar
                                             </button>
-
                                         </form>
 
                                     @endif
@@ -291,9 +351,11 @@
                                         )
                                     )
 
-                                        <button type="button"
+                                        <button
+                                            type="button"
                                             class="btn-calificar btn-abrir-calificacion"
-                                            data-url="{{ route('solicitudes.calificar', $solicitud) }}">
+                                            data-url="{{ route('solicitudes.calificar', $solicitud) }}"
+                                        >
                                             Calificar solicitante
                                         </button>
 
@@ -310,12 +372,15 @@
                 </tbody>
 
             </table>
+
         </div>
 
     @else
 
         <div class="sin-solicitudes">
-            <p>Aún no has recibido solicitudes.</p>
+            <p>
+                Aún no has recibido solicitudes.
+            </p>
         </div>
 
     @endif
@@ -323,12 +388,12 @@
 </main>
 
 <footer class="pie">
-    <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
+    <p>
+        © 2026 ArquiServi. Todos los derechos reservados.
+    </p>
 </footer>
 
 <div id="modalCalificacionContenedor"></div>
-
-<script src="{{ asset('js/reseña.js') }}"></script>
 
 </body>
 </html>

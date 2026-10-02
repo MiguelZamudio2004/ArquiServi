@@ -77,6 +77,13 @@ body {
     border-radius: 50%;
     font-family: Poppins, sans-serif;
     font-weight: 600;
+    overflow: hidden;
+}
+
+.perfil-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .perfil-nombre {
@@ -160,25 +167,6 @@ body {
 
 .perfil-dropdown form {
     margin: 0;
-}
-
-.perfil-avatar {
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #F47A20;
-    color: #FFFFFF;
-    border-radius: 50%;
-    font-weight: 600;
-    overflow: hidden;
-}
-
-.perfil-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 .editar-perfil {
@@ -315,25 +303,32 @@ body {
 }
 
 .materiales {
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(150px, 1fr)
+    );
     gap: 10px;
     margin-top: 10px;
 }
 
 .material-opcion {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     display: flex;
     align-items: center;
     gap: 5px;
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
-    color: #333333;
+    padding: 5px 10px;
     background-color: #F9FAFB;
+    color: #333333;
     border: 1px solid #6B7280;
     border-radius: 8px;
-    padding: 5px 10px;
-    transition: 0.3s;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .material-opcion:hover {
@@ -341,18 +336,33 @@ body {
     background-color: #FFF7F0;
 }
 
-.material-opcion input[type="checkbox"]:checked + span {
-    font-weight: bold;
-    color: #F47A20;
-}
-
 .material-opcion input[type="checkbox"] {
+    flex-shrink: 0;
     accent-color: #1E40AF;
 }
 
-.material-opcion:has(input[type="checkbox"]:checked) {
+.material-opcion span {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.material-opcion input[type="checkbox"]:checked + span {
+    color: #F47A20;
+    font-weight: bold;
+}
+
+.material-opcion:has(
+    input[type="checkbox"]:checked
+) {
     border-color: #F47A20;
     background-color: #FFF7F0;
+}
+
+.especialidad-opcion[hidden] {
+    display: none !important;
 }
 
 .descripcion {
@@ -431,11 +441,11 @@ body {
     width: 100%;
     margin-top: auto;
     padding: 10px 0;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
     background-color: #0C2D5A;
     color: #FFFFFF;
     text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
 }
 
 @media (max-width: 768px) {
@@ -476,12 +486,18 @@ body {
     }
 
     .notificaciones-dropdown {
-        width: min(350px, calc(100vw - 20px));
+        width: min(
+            350px,
+            calc(100vw - 20px)
+        );
         right: -45px;
     }
 
     .perfil-dropdown {
-        width: min(250px, calc(100vw - 20px));
+        width: min(
+            250px,
+            calc(100vw - 20px)
+        );
     }
 
     .editar-perfil {
@@ -500,7 +516,10 @@ body {
     }
 
     .preview-portafolio {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(
+            2,
+            1fr
+        );
         gap: 10px;
     }
 
@@ -549,6 +568,34 @@ body {
 
     .preview-portafolio img {
         height: 220px;
+    }
+
+    .materiales {
+        width: 100%;
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .material-opcion {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        padding: 7px 10px;
+    }
+
+    .material-opcion input[type="checkbox"] {
+        flex-shrink: 0;
+    }
+
+    .material-opcion span {
+        flex: 1;
+        min-width: 0;
+        max-width: 100%;
+        font-size: 14px;
+        line-height: 1.3;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: normal;
     }
 
     .acciones {
