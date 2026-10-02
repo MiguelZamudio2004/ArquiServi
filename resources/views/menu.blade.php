@@ -238,20 +238,14 @@
     <div class="bloque">
         <div class="bloque-contenido">
             <div class="bloque-texto">
-                <h3 class="subtitulo">
-                    ¿Qué es ArquiServi?
-                </h3>
-
+                <h3 class="subtitulo"> ¿Qué es ArquiServi? </h3>
                 <p class="parrafo">
                     ArquiServi es la plataforma digital que concentra y conecta el entorno de la arquitectura, construcción, remodelación y servicios relacionados. Es el medio de encuentro donde usuarios con profesionales de la industria de la construcción, arquitectura e ingeniería, proveedores de materiales e insumos y servicios relacionados conectan de manera directa, eficiente y transparente.
                 </p>
             </div>
 
             <div class="bloque-imagen">
-                <img
-                    src="{{ asset('images/Que es.png') }}"
-                    alt="¿Qué es ArquiServi?"
-                >
+                <img src="{{ asset('images/1_QueEs.png') }}" alt="¿Qué es ArquiServi?">
             </div>
         </div>
     </div>
@@ -259,17 +253,11 @@
     <div class="bloque alterno">
         <div class="bloque-contenido">
             <div class="bloque-imagen">
-                <img
-                    src="{{ asset('images/Finalidad.png') }}"
-                    alt="Finalidad de ArquiServi"
-                >
+                <img src="{{ asset('images/2_Finalidad.png') }}" alt="Finalidad de ArquiServi">
             </div>
 
             <div class="bloque-texto">
-                <h3 class="subtitulo">
-                    Finalidad
-                </h3>
-
+                <h3 class="subtitulo"> Finalidad </h3>
                 <p class="parrafo">
                     Está enfocada en el contacto rápido entre particulares que necesitan obras/remodelaciones y profesionales o contratistas, materiales y servicios relacionados al sector. Nuestra finalidad es democratizar y simplificar la gestión de proyectos e insumos de construcción y diseño, facilitando la visibilidad de talento profesional, y contacto directo entre las partes sin intermediarios.
                 </p>
@@ -280,20 +268,14 @@
     <div class="bloque">
         <div class="bloque-contenido">
             <div class="bloque-texto">
-                <h3 class="subtitulo">
-                    Misión
-                </h3>
-
+                <h3 class="subtitulo"> Misión </h3>
                 <p class="parrafo">
                     Conectar e integrar a las personas a crear el hogar en el que desean vivir, facilitándolo de forma confiable y mejor la experiencia en el diseño técnico de construcción y servicios relacionados en el hogar, enlazando a profesionales, prestadores de servicios relacionados, mano de obra calificada, brindando soluciones en espacios habitables a través de una plataforma digital intuitiva.
                 </p>
             </div>
 
             <div class="bloque-imagen">
-                <img
-                    src="{{ asset('images/Mision.png') }}"
-                    alt="Misión de ArquiServi"
-                >
+                <img src="{{ asset('images/3_Mision.png') }}" alt="Misión de ArquiServi" >
             </div>
         </div>
     </div>
@@ -301,17 +283,11 @@
     <div class="bloque alterno">
         <div class="bloque-contenido">
             <div class="bloque-imagen">
-                <img
-                    src="{{ asset('images/Vision.png') }}"
-                    alt="Visión de ArquiServi"
-                >
+                <img src="{{ asset('images/4_Vision.png') }}" alt="Visión de ArquiServi" >
             </div>
 
             <div class="bloque-texto">
-                <h3 class="subtitulo">
-                    Visión
-                </h3>
-
+                <h3 class="subtitulo"> Visión </h3>
                 <p class="parrafo">
                     Ser el directorio global y digital de referencia en el sector para que tu vida sea sencilla, siendo imprescindible para integrar y atender las necesidades de nuestros usuarios, con calidad, confianza, rapidez y servicio profesional en la contratación de servicios, optimizando la cadena de valor.
                 </p>
@@ -322,10 +298,7 @@
     <div class="bloque">
         <div class="bloque-contenido">
             <div class="bloque-texto">
-                <h3 class="subtitulo">
-                    Objetivos
-                </h3>
-
+                <h3 class="subtitulo"> Objetivos </h3>
                 <ul class="lista">
                     <li>Simplificar la búsqueda de profesionales éticos mediante portafolios visuales y reseñas verificadas y calificadas.</li>
                     <li>Reducir el tiempo de investigación técnica para identificar despachos de arquitectura, directores responsables de obra y trámites ante instancias gubernamentales.</li>
@@ -338,10 +311,7 @@
             </div>
 
             <div class="bloque-imagen">
-                <img
-                    src="{{ asset('images/Objetivos.png') }}"
-                    alt="Objetivos de ArquiServi"
-                >
+                <img src="{{ asset('images/5_Objetivos.png') }}" alt="Objetivos de ArquiServi">
             </div>
         </div>
     </div>
@@ -349,17 +319,11 @@
     <div class="bloque alterno">
         <div class="bloque-contenido">
             <div class="bloque-imagen">
-                <img
-                    src="{{ asset('images/Valores.png') }}"
-                    alt="Valores de ArquiServi"
-                >
+                <img src="{{ asset('images/6_Valores.png') }}" alt="Valores de ArquiServi">
             </div>
 
             <div class="bloque-texto">
-                <h3 class="subtitulo">
-                    Valores
-                </h3>
-
+                <h3 class="subtitulo"> Valores </h3>
                 <ul class="lista">
                     <li>Transparencia: Promovemos relaciones directas, claras y honestas entre clientes, profesionales y proveedores.</li>
                     <li>Colaboración: Creemos en la fuerza de la comunidad para potenciar el crecimiento técnico y comercial del sector.</li>
@@ -374,34 +338,21 @@
     <div class="bloque">
         <div class="bloque-contenido">
             <div class="bloque-texto">
-                <h3 class="subtitulo">
-                    ¿Por qué elegirnos?
-                </h3>
-
-                <h4 class="subapartado">
-                    Para Clientes y Usuarios
-                </h4>
-
+                <h3 class="subtitulo"> ¿Por qué elegirnos? </h3>
+                <h4 class="subapartado"> Para Clientes y Usuarios </h4>
                 <ul class="lista">
                     <li>Todo en un solo lugar: Encuentra desde el arquitecto para tu proyecto hasta el proveedor del material y servicios de reparación y remodelación que necesitas.</li>
                     <li>Decisiones informadas: Explora portafolios visuales, catálogos actualizados y opiniones de otros usuarios.</li>
                     <li>Contacto directo: Negocia, cotiza y acuerda sin intermediarios ni comisiones ocultas.</li>
                 </ul>
-
-                <h4 class="subapartado">
-                    Para Profesionales
-                </h4>
-
+                <h4 class="subapartado"> Para Profesionales </h4>
                 <ul class="lista">
                     <li>Vitrina profesional: Exhibe tu portafolio, especialidad y zona de cobertura ante clientes potenciales.</li>
                     <li>Reputación digital: Construye credibilidad en el sector a través de valoraciones y experiencias reales.</li>
                     <li>Red de alianzas: Localiza proveedores de materiales cerca de tus zonas de obra.</li>
                 </ul>
 
-                <h4 class="subapartado">
-                    Para Proveedores
-                </h4>
-
+                <h4 class="subapartado"> Para Proveedores </h4>
                 <ul class="lista">
                     <li>Catálogo activo: Publica tus insumos y productos para que sean vistos por profesionales en etapa de especificación.</li>
                     <li>Alcance local y regional: Posiciona tu negocio en las zonas de trabajo donde entregas material.</li>
@@ -410,18 +361,135 @@
             </div>
 
             <div class="bloque-imagen">
-                <img
-                    src="{{ asset('images/Porque elegirnos.png') }}"
-                    alt="¿Por qué elegirnos?"
-                >
+                <img src="{{ asset('images/7_PorqueElegirnos.png') }}" alt="¿Por qué elegirnos?" >
             </div>
         </div>
     </div>
 </section>
 
 <footer class="pie">
-    <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
-</footer>
+    <div class="pie-contenido">
+        <div class="pie-marca">
+            <a href="#" class="pie-logo-enlace" aria-label="ArquiServi" >
+                <img src="{{ asset('encabezado2.png') }}" alt="ArquiServi" class="pie-logo-arquiservi" >
+            </a>
+            <p class="pie-eslogan">Conectando personas, construyendo espacios. </p>
+            <p class="pie-descripcion"> Encuentra profesionales y proveedores para llevar tus proyectos a la realidad de forma sencilla, segura y confiable. </p>
+        </div>
 
+        <div class="pie-columnas">
+            <div class="pie-columna">
+                <h3> ArquiServi </h3>
+                <nav class="pie-enlaces">
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Acerca de</span>
+                    </a>
+
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>Servicios</span>
+                    </a>
+
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Profesionales</span>
+                    </a>
+
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-store"></i>
+                        <span>Proveedores</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="pie-columna">
+                <h3> Ayuda </h3>
+                <nav class="pie-enlaces">
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-circle-question"></i>
+                        <span>Centro de ayuda</span>
+                    </a>
+
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Contacto</span>
+                    </a>
+
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Seguridad</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="pie-columna">
+                <h3> Legal </h3>
+                <nav class="pie-enlaces">
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-file-contract"></i>
+                        <span>Términos y condiciones</span>
+                    </a>
+
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Privacidad</span>
+                    </a>
+
+                    <a href="#" class="pie-enlace">
+                        <i class="fa-solid fa-cookie-bite"></i>
+                        <span>Cookies</span>
+                    </a>
+                </nav>
+            </div>
+
+        </div>
+        <div class="pie-derecha">
+            <div class="pie-redes">
+                <span class="pie-subtitulo"> Síguenos </span>
+                <div class="pie-redes-lista">
+                    <a href="#" class="pie-red-social" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+
+                    <a href="#" class="pie-red-social" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+
+                    <a href="#" class="pie-red-social" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+
+                    <a href="#" class="pie-red-social" aria-label="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="pie-colaboradores">
+                <span class="pie-subtitulo"> Colaboradores </span>
+                <div class="pie-logos">
+                    <img src="{{ asset('footer/Logo_Labsol.png') }}" alt="LABSOL Network" class="logo-footer logo-labsol" >
+                    <img src="{{ asset('footer/Logo_GPLv3.png') }}" alt="GPLv3 Free Software" class="logo-footer logo-gpl" >
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pie-separador"></div>
+    <div class="pie-inferior">
+        <div class="pie-copyright">
+            <p> © 2026 ArquiServi. Todos los derechos reservados. </p>
+        </div>
+
+        <div class="pie-inferior-enlaces">
+            <a href="#"> Aviso de privacidad </a>
+            <span class="pie-punto"></span>
+            <a href="#"> Términos </a>
+            <span class="pie-punto"></span>
+            <a href="#"> Contacto </a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

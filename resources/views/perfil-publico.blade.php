@@ -478,6 +478,156 @@
         </section>
     @endif
 
+    @if(
+        in_array($usuario->rol->nombre, ['profesional', 'proveedor']) &&
+        !empty($usuario->portafolio_fotos) &&
+        count($usuario->portafolio_fotos) > 0
+    )
+
+        <section class="portafolio-seccion">
+
+            <div class="portafolio-encabezado">
+
+                <div>
+                    <h2>Portafolio</h2>
+
+                    <p>
+                        Trabajos realizados
+                    </p>
+                </div>
+
+                <span class="portafolio-contador">
+                    <span id="portafolioActual">1</span>
+                    /
+                    <span id="portafolioTotal">
+                        {{ count($usuario->portafolio_fotos) }}
+                    </span>
+                </span>
+
+            </div>
+
+            <div
+                class="portafolio-carrusel"
+                id="portafolioCarrusel"
+                data-total="{{ count($usuario->portafolio_fotos) }}"
+            >
+
+                @if(count($usuario->portafolio_fotos) > 1)
+
+                    <button
+                        type="button"
+                        class="portafolio-flecha portafolio-anterior"
+                        id="portafolioAnterior"
+                        aria-label="Imagen anterior"
+                    >
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                @endif
+
+                <div class="portafolio-ventana">
+
+                    @foreach($usuario->portafolio_fotos as $indice => $foto)
+
+                        <div
+                            class="portafolio-slide {{ $loop->first ? 'activo' : '' }}"
+                            data-indice="{{ $indice }}"
+                        >
+
+                            <button
+                                type="button"
+                                class="portafolio-imagen-boton"
+                                data-imagen="{{ asset('storage/' . $foto) }}"
+                                aria-label="Ampliar imagen {{ $indice + 1 }} del portafolio"
+                            >
+
+                                <img
+                                    src="{{ asset('storage/' . $foto) }}"
+                                    alt="Trabajo del portafolio {{ $indice + 1 }}"
+                                    loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                                >
+
+                                <span class="portafolio-overlay">
+
+                                    <span class="portafolio-expandir">
+                                        <i class="fa-solid fa-expand"></i>
+                                    </span>
+
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    @endforeach
+
+                </div>
+
+                @if(count($usuario->portafolio_fotos) > 1)
+
+                    <button
+                        type="button"
+                        class="portafolio-flecha portafolio-siguiente"
+                        id="portafolioSiguiente"
+                        aria-label="Imagen siguiente"
+                    >
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                @endif
+
+            </div>
+
+            <div class="portafolio-pie">
+
+                <span class="portafolio-etiqueta">
+                    <i class="fa-solid fa-camera"></i>
+                    Trabajo
+                    <span id="portafolioTrabajoActual">1</span>
+                </span>
+
+                <span class="portafolio-ayuda">
+                    Haz clic en la imagen para ampliarla
+                </span>
+
+            </div>
+
+        </section>
+
+        <div
+            class="portafolio-modal"
+            id="portafolioModal"
+            aria-hidden="true"
+        >
+
+            <div
+                class="portafolio-modal-fondo"
+                id="portafolioModalFondo"
+            ></div>
+
+            <div class="portafolio-modal-contenido">
+
+                <button
+                    type="button"
+                    class="portafolio-modal-cerrar"
+                    id="cerrarPortafolio"
+                    aria-label="Cerrar imagen"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <img
+                    src=""
+                    id="imagenPortafolioGrande"
+                    alt="Imagen ampliada del portafolio"
+                >
+
+            </div>
+
+        </div>
+
+    @endif
+
     @if(in_array($usuario->rol->nombre, ['profesional', 'proveedor']))
         @auth
             @if(
@@ -565,6 +715,11 @@
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
 </footer>
+
+<script
+    src="{{ asset('js/portafolio.js') }}"
+    defer
+></script>
 
 </body>
 </html>
