@@ -198,6 +198,10 @@ Route::get('/', function () {
     return view('menu');
 })->name('menu');
 
+Route::get('/acerca-de', function () {
+    return view('acerca');
+})->name('acerca');
+
 Route::get('/login', function () {
     return view('login');
 })->name('login');

@@ -22,6 +22,7 @@ main {
 }
 
 /* ENCABEZADO */
+
 .encabezado {
     width: 100%;
     min-height: 80px;
@@ -54,6 +55,7 @@ main {
 }
 
 /* FOTO DE PERFIL DERECHA */
+
 .perfil-header {
     display: flex;
     align-items: center;
@@ -94,6 +96,7 @@ main {
 }
 
 /* MENÚ */
+
 .menu-superior {
     grid-column: 2;
     grid-row: 1;
@@ -137,6 +140,7 @@ main {
 }
 
 /* ICONOS */
+
 .icono {
     font-size: clamp(20px, 2.5vw, 25px);
     transition: transform 0.3s ease;
@@ -153,6 +157,7 @@ main {
 }
 
 /* HOVER DEL MENÚ */
+
 .menu-lista:hover {
     padding: 10px 20px;
     background: rgba(255, 255, 255, 0.25);
@@ -168,6 +173,7 @@ main {
 }
 
 /* CERRAR SESIÓN */
+
 .logout-menu-form {
     margin: 0;
     padding: 0;
@@ -181,6 +187,7 @@ main {
 }
 
 /* CAMPANA DENTRO DEL MENÚ */
+
 .notificaciones-container {
     position: relative;
     z-index: 1100;
@@ -220,6 +227,7 @@ main {
 }
 
 /* DROPDOWN NOTIFICACIONES */
+
 .notificaciones-dropdown {
     display: none;
     position: absolute;
@@ -331,6 +339,7 @@ main {
 }
 
 /* BIENVENIDA */
+
 .bienvenida {
     color: #333333;
     text-align: center;
@@ -359,6 +368,7 @@ main {
 }
 
 /* CONTENEDOR PRINCIPAL */
+
 .contenedor-principal {
     width: 90%;
     max-width: 1200px;
@@ -463,6 +473,7 @@ main {
 }
 
 /* INFORMACIÓN */
+
 .subtitulo {
     font-family: 'Libre Baskeville';
     font-size: 28px;
@@ -567,6 +578,7 @@ main {
 }
 
 /* FOOTER */
+
 .pie {
     width: 100%;
     margin-top: auto;
@@ -1042,6 +1054,7 @@ main {
 }
 
 /* TABLET */
+
 @media (max-width: 900px) {
     .contenedor-principal {
         width: 90%;
@@ -1050,6 +1063,58 @@ main {
 
     .imagen-bienvenida {
         max-width: 450px;
+    }
+
+    .pie {
+        padding: 22px 25px 15px;
+    }
+
+    .pie:hover {
+        padding: 28px 25px 18px;
+    }
+
+    .pie-contenido {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+
+    .pie:hover .pie-contenido {
+        gap: 30px;
+    }
+
+    .pie-columnas {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .pie-logo-arquiservi {
+        width: 135px;
+    }
+
+    .pie:hover .pie-logo-arquiservi {
+        width: 210px;
+    }
+
+    .logo-labsol {
+        max-width: 95px;
+        max-height: 34px;
+    }
+
+    .logo-gpl {
+        max-width: 70px;
+        max-height: 34px;
+    }
+
+    .pie:hover .logo-labsol {
+        max-width: 160px;
+        max-height: 60px;
+    }
+
+    .pie:hover .logo-gpl {
+        max-width: 125px;
+        max-height: 60px;
     }
 }
 
@@ -1219,9 +1284,164 @@ main {
         width: 90%;
         max-width: 400px;
     }
+
+    .pie,
+    .pie:hover {
+        padding: 25px 20px 18px;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .pie-contenido,
+    .pie:hover .pie-contenido {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        align-items: start;
+    }
+
+    .pie-marca {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .pie-logo-enlace {
+        justify-content: center;
+    }
+
+    .pie-logo-arquiservi,
+    .pie:hover .pie-logo-arquiservi {
+        width: 180px;
+    }
+
+    .pie-eslogan,
+    .pie:hover .pie-eslogan {
+        max-height: none;
+        margin-top: 12px;
+        opacity: 1;
+        transform: none;
+    }
+
+    .pie-descripcion,
+    .pie:hover .pie-descripcion {
+        max-width: 500px;
+        max-height: none;
+        margin-top: 8px;
+        opacity: 1;
+        transform: none;
+    }
+
+    .pie-columnas,
+    .pie:hover .pie-columnas {
+        width: 100%;
+        max-height: none;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        overflow: visible;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .pie-columna {
+        align-items: center;
+        text-align: center;
+    }
+
+    .pie-columna h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .pie-enlaces {
+        align-items: center;
+    }
+
+    .pie-enlace {
+        margin-left: 0;
+    }
+
+    .pie-derecha,
+    .pie:hover .pie-derecha {
+        width: 100%;
+        align-items: center;
+        gap: 22px;
+    }
+
+    .pie-redes,
+    .pie:hover .pie-redes {
+        max-height: none;
+        align-items: center;
+        overflow: visible;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .pie-redes-lista,
+    .pie-logos,
+    .pie:hover .pie-logos {
+        justify-content: center;
+    }
+
+    .pie-colaboradores {
+        align-items: center;
+    }
+
+    .pie-colaboradores .pie-subtitulo,
+    .pie:hover .pie-colaboradores .pie-subtitulo {
+        max-height: none;
+        margin-bottom: 10px;
+        opacity: 1;
+    }
+
+    .pie-logos,
+    .pie:hover .pie-logos {
+        gap: 20px;
+    }
+
+    .logo-labsol,
+    .pie:hover .logo-labsol {
+        max-width: 150px;
+        max-height: 55px;
+    }
+
+    .logo-gpl,
+    .pie:hover .logo-gpl {
+        max-width: 115px;
+        max-height: 55px;
+    }
+
+    .pie-separador,
+    .pie:hover .pie-separador {
+        margin-top: 25px;
+    }
+
+    .pie-inferior {
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .pie-inferior-enlaces,
+    .pie:hover .pie-inferior-enlaces {
+        max-width: none;
+        justify-content: center;
+        overflow: visible;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .pie-copyright p,
+    .pie:hover .pie-copyright p {
+        font-size: 12px;
+    }
 }
 
 /* CELULAR */
+
 @media (max-width: 480px) {
     .encabezado {
         padding: 7px 6px;
@@ -1304,5 +1524,117 @@ main {
 
     .btn {
         font-size: 14px;
+    }
+
+    .pie,
+    .pie:hover {
+        padding: 22px 15px 16px;
+    }
+
+    .pie-contenido,
+    .pie:hover .pie-contenido {
+        gap: 24px;
+    }
+
+    .pie-logo-arquiservi,
+    .pie:hover .pie-logo-arquiservi {
+        width: 155px;
+    }
+
+    .pie-eslogan,
+    .pie-descripcion {
+        font-size: 11px;
+    }
+
+    .pie-descripcion {
+        max-width: 100%;
+        line-height: 1.6;
+    }
+
+    .pie-columnas,
+    .pie:hover .pie-columnas {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .pie-columna {
+        width: 100%;
+    }
+
+    .pie-columna h3 {
+        margin-bottom: 12px;
+        font-size: 15px;
+    }
+
+    .pie-enlaces {
+        width: 100%;
+        gap: 2px;
+    }
+
+    .pie-enlace {
+        justify-content: center;
+        padding: 6px 8px;
+        font-size: 11px;
+        white-space: normal;
+        text-align: center;
+    }
+
+    .pie-red-social {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    .pie-redes-lista {
+        gap: 8px;
+    }
+
+    .pie-logos,
+    .pie:hover .pie-logos {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .logo-labsol,
+    .pie:hover .logo-labsol {
+        max-width: 125px;
+        max-height: 48px;
+    }
+
+    .logo-gpl,
+    .pie:hover .logo-gpl {
+        max-width: 95px;
+        max-height: 48px;
+    }
+
+    .pie-separador,
+    .pie:hover .pie-separador {
+        margin-top: 20px;
+    }
+
+    .pie-inferior {
+        gap: 10px;
+    }
+
+    .pie-inferior-enlaces,
+    .pie:hover .pie-inferior-enlaces {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 7px;
+    }
+
+    .pie-inferior-enlaces a {
+        font-size: 9px;
+    }
+
+    .pie-punto {
+        width: 2px;
+        height: 2px;
+    }
+
+    .pie-copyright p,
+    .pie:hover .pie-copyright p {
+        font-size: 10px;
+        line-height: 1.4;
     }
 }
