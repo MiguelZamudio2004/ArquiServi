@@ -152,26 +152,66 @@
         </ul>
     </nav>
 
-    @auth
-        <div class="acciones-usuario">
+@auth
+
+    <div class="acciones-usuario">
+
+        @if(
+            auth()->user()->rol &&
+            auth()->user()->rol->nombre === 'administrador'
+        )
+
+            <a
+                href="{{ route('admin.dashboard') }}"
+                class="volver-admin-header"
+                aria-label="Volver al panel de administración"
+                title="Panel de administración"
+            >
+
+                <span class="volver-admin-icono">
+
+                    <i class="fa-solid fa-user-shield"></i>
+
+                </span>
+
+                <span class="volver-admin-texto">
+                    Panel admin
+                </span>
+
+            </a>
+
+        @else
+
             <a
                 href="{{ route('perfil') }}"
                 class="perfil-header"
                 aria-label="Mi perfil"
             >
+
                 <span class="perfil-avatar-header">
+
                     @if(auth()->user()->foto_perfil)
+
                         <img
                             src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
                             alt="Foto de perfil"
                         >
+
                     @else
+
                         <i class="fa-solid fa-user"></i>
+
                     @endif
+
                 </span>
+
             </a>
-        </div>
-    @endauth
+
+        @endif
+
+    </div>
+
+@endauth
 </header>
 
 <main class="catalogo">

@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminUsuarioController;
+use App\Http\Controllers\Admin\AdminProfesionalController;
+use App\Http\Controllers\Admin\AdminProveedorController;
+use App\Http\Controllers\Admin\AdminAprobacionController;
+use App\Http\Controllers\Admin\AdminSolicitudController;
+use App\Http\Controllers\Admin\AdminCalificacionController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\LoginController;
@@ -58,9 +65,7 @@ Route::middleware('auth')->group(function () {
             SolicitudController::class,
             'guardarCalificacion'
         ]
-    )->name(
-        'solicitudes.calificar.guardar'
-    );
+    )->name('solicitudes.calificar.guardar');
 
     Route::get(
         '/solicitudes/{solicitud}',
@@ -101,8 +106,152 @@ Route::middleware('auth')->group(function () {
             'terminar'
         ]
     )->name('solicitudes.terminar');
-
 });
+
+Route::middleware([
+    'auth',
+    'administrador'
+])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get(
+            '/',
+            [
+                AdminController::class,
+                'index'
+            ]
+        )->name('dashboard');
+
+        Route::get(
+            '/usuarios',
+            [
+                AdminUsuarioController::class,
+                'index'
+            ]
+        )->name('usuarios.index');
+
+        Route::get(
+            '/usuarios/{usuario}',
+            [
+                AdminUsuarioController::class,
+                'mostrar'
+            ]
+        )->name('usuarios.mostrar');
+
+        Route::patch(
+            '/usuarios/{usuario}/estado',
+            [
+                AdminUsuarioController::class,
+                'actualizarEstado'
+            ]
+        )->name('usuarios.estado');
+
+        Route::delete(
+            '/usuarios/{usuario}',
+            [
+                AdminUsuarioController::class,
+                'eliminar'
+            ]
+        )->name('usuarios.eliminar');
+
+        Route::get(
+            '/profesionales',
+            [
+                AdminProfesionalController::class,
+                'index'
+            ]
+        )->name('profesionales.index');
+
+        Route::get(
+            '/profesionales/{profesional}',
+            [
+                AdminProfesionalController::class,
+                'mostrar'
+            ]
+        )->name('profesionales.mostrar');
+
+        Route::get(
+            '/proveedores',
+            [
+                AdminProveedorController::class,
+                'index'
+            ]
+        )->name('proveedores.index');
+
+        Route::get(
+            '/proveedores/{proveedor}',
+            [
+                AdminProveedorController::class,
+                'mostrar'
+            ]
+        )->name('proveedores.mostrar');
+
+        Route::get(
+            '/aprobaciones',
+            [
+                AdminAprobacionController::class,
+                'index'
+            ]
+        )->name('aprobaciones.index');
+
+        Route::get(
+            '/aprobaciones/{solicitud}',
+            [
+                AdminAprobacionController::class,
+                'mostrar'
+            ]
+        )->name('aprobaciones.mostrar');
+
+        Route::patch(
+            '/aprobaciones/{solicitud}/aprobar',
+            [
+                AdminAprobacionController::class,
+                'aprobar'
+            ]
+        )->name('aprobaciones.aprobar');
+
+        Route::patch(
+            '/aprobaciones/{solicitud}/rechazar',
+            [
+                AdminAprobacionController::class,
+                'rechazar'
+            ]
+        )->name('aprobaciones.rechazar');
+
+        Route::get(
+            '/solicitudes',
+            [
+                AdminSolicitudController::class,
+                'index'
+            ]
+        )->name('solicitudes.index');
+
+        Route::get(
+            '/solicitudes/{solicitud}',
+            [
+                AdminSolicitudController::class,
+                'mostrar'
+            ]
+        )->name('solicitudes.mostrar');
+
+        Route::get(
+            '/calificaciones',
+            [
+                AdminCalificacionController::class,
+                'index'
+            ]
+        )->name('calificaciones.index');
+
+        Route::get(
+            '/calificaciones/{calificacion}',
+            [
+                AdminCalificacionController::class,
+                'mostrar'
+            ]
+        )->name('calificaciones.mostrar');
+    });
 
 Route::get(
     '/usuarios',
@@ -134,9 +283,7 @@ Route::post(
         RegistroProfesionalController::class,
         'guardar'
     ]
-)->name(
-    'registro.profesional.guardar'
-);
+)->name('registro.profesional.guardar');
 
 Route::get(
     '/register/proveedor',
@@ -152,9 +299,7 @@ Route::post(
         RegistroProveedorController::class,
         'guardar'
     ]
-)->name(
-    'registro.proveedor.guardar'
-);
+)->name('registro.proveedor.guardar');
 
 Route::middleware('auth')->group(function () {
 
@@ -181,7 +326,6 @@ Route::middleware('auth')->group(function () {
             'actualizar'
         ]
     )->name('perfil.actualizar');
-
 });
 
 Route::post(
@@ -194,17 +338,26 @@ Route::post(
     ->middleware('auth')
     ->name('notificaciones.leer');
 
-Route::get('/', function () {
-    return view('menu');
-})->name('menu');
+Route::get(
+    '/',
+    function () {
+        return view('menu');
+    }
+)->name('menu');
 
-Route::get('/acerca-de', function () {
-    return view('acerca');
-})->name('acerca');
+Route::get(
+    '/acerca-de',
+    function () {
+        return view('acerca');
+    }
+)->name('acerca');
 
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+Route::get(
+    '/login',
+    function () {
+        return view('login');
+    }
+)->name('login');
 
 Route::post(
     '/login',

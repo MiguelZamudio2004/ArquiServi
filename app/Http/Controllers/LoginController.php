@@ -23,6 +23,7 @@ class LoginController extends Controller
                     'required',
                     'email'
                 ],
+
                 'password' => [
                     'required',
                     'string'
@@ -52,6 +53,16 @@ class LoginController extends Controller
                 ->regenerate();
 
             $usuario = $request->user();
+
+            $usuario->loadMissing('rol');
+
+            if (
+                $usuario->rol &&
+                $usuario->rol->nombre === 'administrador'
+            ) {
+                return redirect()
+                    ->route('admin.dashboard');
+            }
 
             $perfilNotificacionService
                 ->sincronizar(

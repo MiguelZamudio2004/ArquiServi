@@ -231,7 +231,33 @@
 
     @auth
 
-        <div class="acciones-usuario">
+    <div class="acciones-usuario">
+
+        @if(
+            auth()->user()->rol &&
+            auth()->user()->rol->nombre === 'administrador'
+        )
+
+            <a
+                href="{{ route('admin.dashboard') }}"
+                class="volver-admin-header"
+                aria-label="Volver al panel de administración"
+                title="Panel de administración"
+            >
+
+                <span class="volver-admin-icono">
+
+                    <i class="fa-solid fa-user-shield"></i>
+
+                </span>
+
+                <span class="volver-admin-texto">
+                    Panel admin
+                </span>
+
+            </a>
+
+        @else
 
             <a
                 href="{{ route('perfil') }}"
@@ -258,9 +284,11 @@
 
             </a>
 
-        </div>
+        @endif
 
-    @endauth
+    </div>
+
+@endauth
 
 </header>
 

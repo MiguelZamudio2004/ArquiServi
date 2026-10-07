@@ -26,10 +26,11 @@ class Material extends Model
     {
         return $this->belongsToMany(
             Proveedor::class,
-            'material_proveedor',
+            'proveedor_material',
             'material_id',
             'proveedor_id'
-        )->withPivot('disponible')
+        )
+        ->withPivot('disponible')
         ->withTimestamps();
     }
 
