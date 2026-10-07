@@ -719,7 +719,7 @@ main {
 }
 
 .pie:hover .pie-columnas {
-    max-height: 350px;
+    max-height: 450px;
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -818,9 +818,12 @@ main {
 }
 
 .pie-redes {
+    grid-column: 1 / -1;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    margin-top: 5px;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -852,7 +855,7 @@ main {
 .pie-redes-lista {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 9px;
 }
 
@@ -917,14 +920,15 @@ main {
 
 .pie-logos {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
     gap: 12px;
     transition: gap 0.5s ease;
 }
 
 .pie:hover .pie-logos {
-    gap: 25px;
+    gap: 18px;
 }
 
 .logo-footer {
@@ -1378,9 +1382,14 @@ main {
         transform: none;
     }
 
-    .pie-redes-lista,
+    .pie-redes-lista {
+        justify-content: center;
+    }
+
     .pie-logos,
     .pie:hover .pie-logos {
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
     }
 
@@ -1591,8 +1600,11 @@ main {
 
     .pie-logos,
     .pie:hover .pie-logos {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         gap: 15px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     .logo-labsol,
