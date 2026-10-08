@@ -14,18 +14,18 @@ main {
 }
 
 .logo {
-    display: block;
-    margin: 0 auto;
     width: 200px;
     height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 #subtitulo {
+    margin: 0 0 25px;
     color: #333333;
     text-align: center;
     font-family: 'Libre Baskerville', serif;
     font-size: clamp(1.8rem, 3vw, 2.5rem);
-    margin: 0 0 25px;
 }
 
 .form-validar {
@@ -34,21 +34,21 @@ main {
     margin: 40px auto 60px;
     padding: 35px 40px;
     box-sizing: border-box;
-    background-color: #F9FAFB;
-    border: 1px solid #F47A20;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    background-color: #F9FAFB;
+    border: 1px solid #F47A20;
     text-align: center;
 }
 
 .etiqueta {
+    margin-bottom: 10px;
+    color: #6B7280;
+    text-align: center;
     font-family: Poppins, sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    color: #6B7280;
-    text-align: center;
-    margin-bottom: 10px;
 }
 
 .codigo-container {
@@ -65,12 +65,12 @@ main {
     min-width: 0;
     height: 58px;
     box-sizing: border-box;
+    border: 1px solid #6B7280;
+    border-radius: 6px;
+    outline: none;
     text-align: center;
     font-family: Poppins, sans-serif;
     font-size: 22px;
-    outline: none;
-    border: 1px solid #6B7280;
-    border-radius: 6px;
     transition: 0.2s;
 }
 
@@ -85,27 +85,27 @@ main {
     height: 48px;
     margin-top: 10px;
     color: #F47A20;
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
     border: 2px solid #F47A20;
     border-radius: 15px;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .btn:hover {
-    color: #FFFFFF;
     background-color: #F47A20;
+    color: #FFFFFF;
 }
 
 .error {
-    font-family: Caudex, sans-serif;
-    color: red;
-    font-size: 14px;
     margin-top: 10px;
     padding: 5px;
+    color: red;
     border: 1px solid red;
     text-align: center;
+    font-family: Caudex, sans-serif;
+    font-size: 14px;
 }
 
 .error p {
@@ -114,28 +114,28 @@ main {
 }
 
 .reenviar-form {
+    margin-top: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
     flex-wrap: wrap;
-    margin-top: 10px;
 }
 
 .text-alter {
     margin: 0;
+    color: #6B7280;
     font-family: Poppins, sans-serif;
     font-size: 14px;
-    color: #6B7280;
 }
 
 .reenviar-codigo {
-    background: none;
-    border: none;
-    padding: 0;
     margin: 0;
-    font: inherit;
+    padding: 0;
+    background: none;
     color: #F47A20;
+    border: none;
+    font: inherit;
     text-decoration: underline;
     cursor: pointer;
     transition: 0.3s;
@@ -149,9 +149,9 @@ main {
     width: 100%;
     margin-top: auto;
     padding: 10px 0;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
     background-color: #0C2D5A;
     color: #FFFFFF;
     text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
 }

@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -23,7 +24,6 @@
 </head>
 
 <body>
-
 <header class="encabezado">
     <a href="{{ route('menu') }}">
         <img
@@ -35,8 +35,9 @@
 </header>
 
 <main class="editar-perfil">
-
-    <h1>Editar perfil</h1>
+    <h1>
+        Editar perfil
+    </h1>
 
     <form
         action="{{ route('perfil.actualizar') }}"
@@ -47,17 +48,13 @@
         @method('PUT')
 
         <div class="foto-actual">
-
             @if($usuario->foto_perfil)
-
                 <img
                     id="previewFoto"
                     src="{{ asset('storage/' . $usuario->foto_perfil) }}"
                     alt="Foto de perfil"
                 >
-
             @else
-
                 <div
                     class="foto-inicial"
                     id="fotoInicial"
@@ -71,9 +68,7 @@
                     alt="Vista previa"
                     style="display:none;"
                 >
-
             @endif
-
         </div>
 
         <label class="etiqueta">
@@ -81,7 +76,6 @@
         </label>
 
         <div class="selector-archivo">
-
             <label
                 for="foto_perfil"
                 class="btn-archivo"
@@ -92,7 +86,6 @@
             <span id="nombreArchivo">
                 Ningún archivo seleccionado
             </span>
-
         </div>
 
         <input
@@ -195,8 +188,9 @@
         >{{ old('descripcion_usuario', $usuario->descripcion) }}</textarea>
 
         @if($usuario->rol->nombre === 'profesional')
-
-            <h2>Información profesional</h2>
+            <h2>
+                Información profesional
+            </h2>
 
             @php
                 $profesionActual = old(
@@ -213,7 +207,7 @@
                             ?->especialidades
                             ->pluck('id')
                             ->toArray()
-                            ?? []
+                        ?? []
                     )
                 );
             @endphp
@@ -236,16 +230,13 @@
                 </option>
 
                 @foreach($profesiones as $profesion)
-
                     <option
                         value="{{ $profesion->id }}"
                         {{ $profesionActual == $profesion->id ? 'selected' : '' }}
                     >
                         {{ $profesion->nombre }}
                     </option>
-
                 @endforeach
-
             </select>
 
             <label class="etiqueta">
@@ -256,17 +247,13 @@
                 class="materiales"
                 id="especialidadesContenedor"
             >
-
                 @foreach($profesiones as $profesion)
-
                     @foreach($profesion->especialidades as $especialidad)
-
                         <label
                             class="material-opcion especialidad-opcion"
                             data-profesion="{{ $profesion->id }}"
                             data-requiere-aprobacion="{{ $especialidad->requiere_aprobacion ? '1' : '0' }}"
                         >
-
                             <input
                                 type="checkbox"
                                 name="especialidades[]"
@@ -281,13 +268,9 @@
                             <span>
                                 {{ $especialidad->nombre }}
                             </span>
-
                         </label>
-
                     @endforeach
-
                 @endforeach
-
             </div>
 
             <div
@@ -368,20 +351,14 @@
                 id="previewPortafolio"
                 class="preview-portafolio"
             >
-
                 @if($usuario->portafolio_fotos)
-
                     @foreach($usuario->portafolio_fotos as $foto)
-
                         <img
                             src="{{ asset('storage/' . $foto) }}"
                             alt="Foto de portafolio"
                         >
-
                     @endforeach
-
                 @endif
-
             </div>
 
             <label
@@ -412,11 +389,8 @@
             @endphp
 
             <div class="materiales">
-
                 @forelse($servicios as $servicio)
-
                     <label class="material-opcion">
-
                         <input
                             type="checkbox"
                             name="servicios[]"
@@ -430,22 +404,18 @@
                         <span>
                             {{ $servicio->nombre }}
                         </span>
-
                     </label>
-
                 @empty
-
                     <p>
                         No hay servicios registrados.
                     </p>
-
                 @endforelse
-
             </div>
 
         @elseif($usuario->rol->nombre === 'proveedor')
-
-            <h2>Información del proveedor</h2>
+            <h2>
+                Información del proveedor
+            </h2>
 
             <label
                 class="etiqueta"
@@ -489,11 +459,8 @@
             @endphp
 
             <div class="materiales">
-
                 @foreach($materiales as $material)
-
                     <label class="material-opcion">
-
                         <input
                             type="checkbox"
                             name="materiales[]"
@@ -507,11 +474,8 @@
                         <span>
                             {{ $material->nombre }}
                         </span>
-
                     </label>
-
                 @endforeach
-
             </div>
 
             <label
@@ -534,42 +498,28 @@
                 id="previewPortafolio"
                 class="preview-portafolio"
             >
-
                 @if($usuario->portafolio_fotos)
-
                     @foreach($usuario->portafolio_fotos as $foto)
-
                         <img
                             src="{{ asset('storage/' . $foto) }}"
                             alt="Foto de portafolio"
                         >
-
                     @endforeach
-
                 @endif
-
             </div>
-
         @endif
 
         @if($errors->any())
-
             <div class="error">
-
                 @foreach($errors->all() as $error)
-
                     <p>
                         {{ $error }}
                     </p>
-
                 @endforeach
-
             </div>
-
         @endif
 
         <div class="acciones">
-
             <a
                 href="{{ route('perfil') }}"
                 class="btn-cancelar"
@@ -583,19 +533,14 @@
             >
                 Guardar cambios
             </button>
-
         </div>
-
     </form>
-
 </main>
 
 <footer class="pie">
-
     <p>
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
-
 </footer>
 
 <script
@@ -604,117 +549,75 @@
 ></script>
 
 @if($usuario->rol->nombre === 'profesional')
-
     <script>
-        document.addEventListener(
-            'DOMContentLoaded',
-            function () {
-                const profesion =
-                    document.getElementById(
-                        'profesion_id'
-                    );
+        document.addEventListener('DOMContentLoaded', function () {
+            const profesion = document.getElementById('profesion_id');
 
-                const opcionesEspecialidad =
-                    Array.from(
-                        document.querySelectorAll(
-                            '.especialidad-opcion'
-                        )
-                    );
+            const opcionesEspecialidad = Array.from(
+                document.querySelectorAll('.especialidad-opcion')
+            );
 
-                const avisoAprobacion =
-                    document.getElementById(
-                        'avisoAprobacion'
-                    );
+            const avisoAprobacion = document.getElementById('avisoAprobacion');
 
-                function actualizarAvisoAprobacion() {
-                    const requiereAprobacion =
-                        opcionesEspecialidad.some(
-                            opcion => {
-                                if (opcion.hidden) {
-                                    return false;
-                                }
-
-                                const checkbox =
-                                    opcion.querySelector(
-                                        'input[type="checkbox"]'
-                                    );
-
-                                return (
-                                    checkbox.checked &&
-                                    opcion.dataset
-                                        .requiereAprobacion ===
-                                        '1'
-                                );
-                            }
-                        );
-
-                    if (avisoAprobacion) {
-                        avisoAprobacion.hidden =
-                            !requiereAprobacion;
+            function actualizarAvisoAprobacion() {
+                const requiereAprobacion = opcionesEspecialidad.some(opcion => {
+                    if (opcion.hidden) {
+                        return false;
                     }
+
+                    const checkbox = opcion.querySelector(
+                        'input[type="checkbox"]'
+                    );
+
+                    return (
+                        checkbox.checked &&
+                        opcion.dataset.requiereAprobacion === '1'
+                    );
+                });
+
+                if (avisoAprobacion) {
+                    avisoAprobacion.hidden = !requiereAprobacion;
                 }
-
-                function filtrarEspecialidades(
-                    limpiarSeleccion = false
-                ) {
-                    const profesionId =
-                        profesion.value;
-
-                    opcionesEspecialidad.forEach(
-                        opcion => {
-                            const pertenece =
-                                opcion.dataset.profesion ===
-                                profesionId;
-
-                            opcion.hidden =
-                                !pertenece;
-
-                            const checkbox =
-                                opcion.querySelector(
-                                    'input[type="checkbox"]'
-                                );
-
-                            if (
-                                limpiarSeleccion &&
-                                !pertenece
-                            ) {
-                                checkbox.checked =
-                                    false;
-                            }
-                        }
-                    );
-
-                    actualizarAvisoAprobacion();
-                }
-
-                profesion.addEventListener(
-                    'change',
-                    function () {
-                        filtrarEspecialidades(
-                            true
-                        );
-                    }
-                );
-
-                opcionesEspecialidad.forEach(
-                    opcion => {
-                        const checkbox =
-                            opcion.querySelector(
-                                'input[type="checkbox"]'
-                            );
-
-                        checkbox.addEventListener(
-                            'change',
-                            actualizarAvisoAprobacion
-                        );
-                    }
-                );
-
-                filtrarEspecialidades(false);
             }
-        );
-    </script>
 
+            function filtrarEspecialidades(limpiarSeleccion = false) {
+                const profesionId = profesion.value;
+
+                opcionesEspecialidad.forEach(opcion => {
+                    const pertenece = opcion.dataset.profesion === profesionId;
+
+                    opcion.hidden = !pertenece;
+
+                    const checkbox = opcion.querySelector(
+                        'input[type="checkbox"]'
+                    );
+
+                    if (limpiarSeleccion && !pertenece) {
+                        checkbox.checked = false;
+                    }
+                });
+
+                actualizarAvisoAprobacion();
+            }
+
+            profesion.addEventListener('change', function () {
+                filtrarEspecialidades(true);
+            });
+
+            opcionesEspecialidad.forEach(opcion => {
+                const checkbox = opcion.querySelector(
+                    'input[type="checkbox"]'
+                );
+
+                checkbox.addEventListener(
+                    'change',
+                    actualizarAvisoAprobacion
+                );
+            });
+
+            filtrarEspecialidades(false);
+        });
+    </script>
 @endif
 
 </body>

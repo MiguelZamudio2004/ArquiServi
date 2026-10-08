@@ -1,156 +1,85 @@
-document.addEventListener(
-    'DOMContentLoaded',
-    function () {
-        const boton =
-            document.getElementById(
-                'btnNotificaciones'
-            );
+document.addEventListener('DOMContentLoaded', function () {
+    const boton = document.getElementById('btnNotificaciones');
+    const dropdown = document.getElementById('notificacionesDropdown');
+    const csrf = document.getElementById('csrf-notificaciones');
 
-        const dropdown =
-            document.getElementById(
-                'notificacionesDropdown'
-            );
+    if (!boton || !dropdown) {
+        return;
+    }
 
-        const csrf =
-            document.getElementById(
-                'csrf-notificaciones'
-            );
+    boton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        dropdown.classList.toggle('activo');
+    });
 
-        if (!boton || !dropdown) {
-            return;
-        }
+    dropdown.addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
 
-        boton.addEventListener(
-            'click',
-            function (event) {
-                event.stopPropagation();
+    document.addEventListener('click', function () {
+        dropdown.classList.remove('activo');
+    });
 
-                dropdown.classList.toggle(
-                    'activo'
-                );
-            }
-        );
+    document.querySelectorAll('.notificacion').forEach((notificacion) => {
+        notificacion.addEventListener('click', async function () {
+            const url = this.dataset.url;
 
-        dropdown.addEventListener(
-            'click',
-            function (event) {
-                event.stopPropagation();
-            }
-        );
-
-        document.addEventListener(
-            'click',
-            function () {
-                dropdown.classList.remove(
-                    'activo'
-                );
-            }
-        );
-
-        document
-            .querySelectorAll(
-                '.notificacion'
-            )
-            .forEach(
-                notificacion => {
-                    notificacion
-                        .addEventListener(
-                            'click',
-                            async function () {
-                                const url =
-                                    this.dataset.url;
-
-                                if (!url) {
-                                    return;
-                                }
-
-                                try {
-                                    const respuesta =
-                                        await fetch(
-                                            url,
-                                            {
-                                                method:
-                                                    'POST',
-
-                                                headers: {
-                                                    'X-CSRF-TOKEN':
-                                                        csrf
-                                                            ? csrf.value
-                                                            : '',
-
-                                                    'Accept':
-                                                        'application/json',
-                                                },
-                                            }
-                                        );
-
-                                    if (
-                                        !respuesta.ok
-                                    ) {
-                                        return;
-                                    }
-
-                                    const datos =
-                                        await respuesta
-                                            .json();
-
-                                    this.classList.remove(
-                                        'no-leida'
-                                    );
-
-                                    this.classList.add(
-                                        'leida'
-                                    );
-
-                                    const indicador =
-                                        this.querySelector(
-                                            '.indicador-no-leida'
-                                        );
-
-                                    if (indicador) {
-                                        indicador.remove();
-                                    }
-
-                                    actualizarContador(
-                                        datos.unread_count
-                                    );
-
-                                    if (
-                                        datos.redirect_url
-                                    ) {
-                                        window.location.href =
-                                            datos.redirect_url;
-                                    }
-                                } catch (error) {
-                                    console.error(
-                                        error
-                                    );
-                                }
-                            }
-                        );
-                }
-            );
-
-        function actualizarContador(
-            cantidad
-        ) {
-            const contador =
-                document.getElementById(
-                    'contadorNotificaciones'
-                );
-
-            if (cantidad <= 0) {
-                if (contador) {
-                    contador.remove();
-                }
-
+            if (!url) {
                 return;
             }
 
-            if (contador) {
-                contador.textContent =
-                    cantidad;
+            try {
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrf ? csrf.value : '',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!respuesta.ok) {
+                    return;
+                }
+
+                const datos = await respuesta.json();
+
+                this.classList.remove('no-leida');
+                this.classList.add('leida');
+
+                const indicador = this.querySelector(
+                    '.indicador-no-leida'
+                );
+
+                if (indicador) {
+                    indicador.remove();
+                }
+
+                actualizarContador(datos.unread_count);
+
+                if (datos.redirect_url) {
+                    window.location.href = datos.redirect_url;
+                }
+            } catch (error) {
+                console.error(error);
             }
+        });
+    });
+
+    function actualizarContador(cantidad) {
+        const contador = document.getElementById(
+            'contadorNotificaciones'
+        );
+
+        if (cantidad <= 0) {
+            if (contador) {
+                contador.remove();
+            }
+
+            return;
+        }
+
+        if (contador) {
+            contador.textContent = cantidad;
         }
     }
-);
+});

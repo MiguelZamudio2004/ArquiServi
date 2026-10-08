@@ -10,7 +10,11 @@ return new class extends Migration
     {
         Schema::create('proveedores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->unique()->constrained('usuarios')->onDelete('cascade');
+            $table->foreignId('usuario_id')
+                ->unique()
+                ->constrained('usuarios')
+                ->cascadeOnDelete();
+
             $table->text('descripcion')->nullable();
             $table->string('zona_trabajo', 200);
             $table->timestamps();

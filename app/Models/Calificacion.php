@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Calificacion extends Model
 {
@@ -15,35 +16,26 @@ class Calificacion extends Model
         'tipo_evaluado',
         'criterios',
         'promedio',
-        'comentario'
+        'comentario',
     ];
 
     protected $casts = [
         'criterios' => 'array',
-        'promedio' => 'decimal:1'
+        'promedio' => 'decimal:1',
     ];
 
-    public function solicitud()
+    public function solicitud(): BelongsTo
     {
-        return $this->belongsTo(
-            Solicitud::class,
-            'solicitud_id'
-        );
+        return $this->belongsTo(Solicitud::class, 'solicitud_id');
     }
 
-    public function evaluador()
+    public function evaluador(): BelongsTo
     {
-        return $this->belongsTo(
-            Usuario::class,
-            'evaluador_id'
-        );
+        return $this->belongsTo(Usuario::class, 'evaluador_id');
     }
 
-    public function evaluado()
+    public function evaluado(): BelongsTo
     {
-        return $this->belongsTo(
-            Usuario::class,
-            'evaluado_id'
-        );
+        return $this->belongsTo(Usuario::class, 'evaluado_id');
     }
 }

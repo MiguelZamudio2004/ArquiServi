@@ -6,13 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void {
+    public function up(): void
+    {
         Schema::table('usuarios', function (Blueprint $table) {
             $table->text('descripcion')->nullable()->after('ubicacion');
         });
     }
-    public function down(): void {
-        Schema::table('usuarios', function (Blueprint $table){
+
+    public function down(): void
+    {
+        Schema::table('usuarios', function (Blueprint $table) {
             $table->dropColumn('descripcion');
         });
     }

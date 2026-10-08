@@ -43,6 +43,8 @@ body.modal-abierto {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
     background-color: #F47A20;
     color: #FFFFFF;
     border: 4px solid #FFFFFF;
@@ -51,8 +53,6 @@ body.modal-abierto {
     font-family: Poppins, sans-serif;
     font-size: 32px;
     font-weight: 600;
-    overflow: hidden;
-    flex-shrink: 0;
 }
 
 .persona-foto img {
@@ -131,11 +131,11 @@ body.modal-abierto {
 }
 
 .criterio {
+    padding: 13px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
-    padding: 13px 0;
     border-bottom: 1px solid #F3F4F6;
 }
 
@@ -156,13 +156,12 @@ body.modal-abierto {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 4px;
     flex-shrink: 0;
+    gap: 4px;
 }
 
 .modal-calificacion .estrella {
     --relleno: 0%;
-
     padding: 0;
     background: linear-gradient(
         90deg,
@@ -260,8 +259,8 @@ body.modal-abierto {
 .acciones-modal {
     margin-top: 25px;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
     gap: 10px;
 }
 
@@ -386,10 +385,10 @@ body.modal-abierto {
     }
 
     .criterio {
+        padding: 11px 0;
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
-        padding: 11px 0;
     }
 
     .criterio label {

@@ -10,7 +10,11 @@ return new class extends Migration
     {
         Schema::create('especialidades', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('profesion_id')->constrained('profesiones')->onDelete('cascade');
+
+            $table->foreignId('profesion_id')
+                ->constrained('profesiones')
+                ->cascadeOnDelete();
+
             $table->string('nombre', 100);
             $table->string('descripcion', 255)->nullable();
             $table->boolean('activo')->default(true);

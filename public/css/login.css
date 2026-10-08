@@ -1,7 +1,7 @@
 body {
     height: 100%;
-    margin: 0;
     min-height: 100vh;
+    margin: 0;
     display: flex;
     flex-direction: column;
 }
@@ -15,10 +15,10 @@ main {
 }
 
 .logo {
-    display: block;
-    margin: 0 auto;
     width: 200px;
     height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 .form-login {
@@ -27,30 +27,27 @@ main {
     margin: 40px auto 60px;
     padding: 35px 40px;
     box-sizing: border-box;
-    background-color: #F9FAFB;
-    border: 1px solid #F47A20;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    background-color: #F9FAFB;
+    border: 1px solid #F47A20;
 }
 
 .form-control {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
+    width: 100%;
     margin-bottom: 10px;
     padding: 5px;
     background-color: #F9FAFB;
-    border-color: #6B7280;
     border: 1px solid #6B7280;
-    width: 100%;
     border-radius: 10px;
-
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
 }
 
 .form-control:focus {
     border-color: #1E40AF;
     outline: none;
-
 }
 
 #titulo {
@@ -68,27 +65,29 @@ main {
 }
 
 @keyframes wave {
-    0%, 40%, 100% {
+    0%,
+    40%,
+    100% {
         transform: translateY(0);
     }
+
     20% {
         transform: translateY(-12px);
     }
 }
 
 #subtitulo {
-    text-align: center;
     color: #333333;
-    font-size: clamp(1.5rem, 3vw + 1rem, 2.5rem);
+    text-align: center;
     font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.5rem, 3vw + 1rem, 2.5rem);
 }
 
 .etiqueta {
     margin-bottom: 5px;
-    font-size: 16px;
-    font-family: Poppins, sans-serif;
     color: #6B7280;
-
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
 }
 
 .campo-password {
@@ -104,68 +103,67 @@ main {
 
 .eye {
     position: absolute;
-    right: 10px;
     top: 43%;
+    right: 10px;
     transform: translateY(-50%);
     cursor: pointer;
 }
 
 .textalter {
+    color: #6B7280;
     font-family: Poppins, sans-serif;
     font-size: 16px;
-    color: #6B7280;
 }
 
 .textalter a {
-    color:#F47A20
+    color: #F47A20;
 }
 
 .textalter a:visited {
-    color:#1E40AF
+    color: #1E40AF;
 }
 
 .btn {
-    font-family: Caudex, sans-serif;
-    font-size: 16px;
+    width: 100%;
+    height: 45px;
+    box-sizing: border-box;
     color: #F47A20;
     border-color: #F47A20;
     border-radius: 15px;
-    box-sizing: border-box;
     cursor: pointer;
-    width: 100%;
-    height: 45px;
+    font-family: Caudex, sans-serif;
+    font-size: 16px;
     transition: 0.3s;
 }
 
 .btn:hover {
-    color: #FFFFFF;
     background-color: #F47A20;
+    color: #FFFFFF;
     border-color: #F47A20;
 }
 
 .pie {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 0;
+    bottom: 0;
     background-color: #0C2D5A;
     color: #FFFFFF;
     text-align: center;
-    padding: 10px 0;
-    bottom: 0;
-    margin-top: auto;
-    width: 100%;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
 }
 
 .error {
-    font-family: Caudex, sans-serif;
-    color: red;
-    font-size: 16px;
     margin-top: 10px;
+    color: red;
     border: 1px solid red;
     text-align: center;
+    font-family: Caudex, sans-serif;
+    font-size: 16px;
 }
 
 .error p {
     margin: 0;
     padding: 5px;
 }
-

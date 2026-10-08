@@ -27,8 +27,7 @@ body.arquiservi-modal-abierto {
 .arquiservi-confirmacion-fondo {
     position: absolute;
     inset: 0;
-    background:
-        rgba(6, 20, 39, 0.68);
+    background: rgba(6, 20, 39, 0.68);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
@@ -41,26 +40,16 @@ body.arquiservi-modal-abierto {
     padding: 38px 32px 30px;
     overflow: hidden;
     background-color: #FFFFFF;
-    border:
-        1px solid
-        rgba(12, 45, 90, 0.08);
+    border: 1px solid rgba(12, 45, 90, 0.08);
     border-radius: 18px;
-    box-shadow:
-        0 28px 65px
-        rgba(0, 0, 0, 0.24);
+    box-shadow: 0 28px 65px rgba(0, 0, 0, 0.24);
     text-align: center;
-    transform:
-        translateY(18px)
-        scale(0.97);
-    transition:
-        transform 0.25s ease;
+    transform: translateY(18px) scale(0.97);
+    transition: transform 0.25s ease;
 }
 
-.arquiservi-confirmacion.activo
-.arquiservi-confirmacion-contenido {
-    transform:
-        translateY(0)
-        scale(1);
+.arquiservi-confirmacion.activo .arquiservi-confirmacion-contenido {
+    transform: translateY(0) scale(1);
 }
 
 .arquiservi-confirmacion-contenido::before {
@@ -119,9 +108,7 @@ body.arquiservi-modal-abierto {
     display: block;
     margin-bottom: 6px;
     color: #F47A20;
-    font-family:
-        'Poppins',
-        sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 1.8px;
@@ -131,9 +118,7 @@ body.arquiservi-modal-abierto {
 .arquiservi-confirmacion h2 {
     margin: 0;
     color: #0C2D5A;
-    font-family:
-        'Poppins',
-        sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 20px;
     font-weight: 700;
     line-height: 1.3;
@@ -143,9 +128,7 @@ body.arquiservi-modal-abierto {
     max-width: 345px;
     margin: 11px auto 0;
     color: #6B7280;
-    font-family:
-        'Poppins',
-        sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 11px;
     line-height: 1.75;
 }
@@ -168,9 +151,7 @@ body.arquiservi-modal-abierto {
     border: none;
     border-radius: 9px;
     cursor: pointer;
-    font-family:
-        'Poppins',
-        sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 10px;
     font-weight: 600;
     transition:
@@ -195,69 +176,52 @@ body.arquiservi-modal-abierto {
 .arquiservi-confirmacion-boton.confirmar {
     background-color: #0C2D5A;
     color: #FFFFFF;
-    box-shadow:
-        0 7px 17px
-        rgba(12, 45, 90, 0.18);
+    box-shadow: 0 7px 17px rgba(12, 45, 90, 0.18);
 }
 
 .arquiservi-confirmacion-boton.confirmar:hover {
     background-color: #092449;
 }
 
-.arquiservi-confirmacion.tipo-aprobar
-.arquiservi-confirmacion-icono {
+.arquiservi-confirmacion.tipo-aprobar .arquiservi-confirmacion-icono {
     background-color: #ECFDF5;
     color: #047857;
 }
 
-.arquiservi-confirmacion.tipo-aprobar
-.arquiservi-confirmacion-boton.confirmar {
+.arquiservi-confirmacion.tipo-aprobar .arquiservi-confirmacion-boton.confirmar {
     background-color: #047857;
-    box-shadow:
-        0 7px 17px
-        rgba(4, 120, 87, 0.18);
+    box-shadow: 0 7px 17px rgba(4, 120, 87, 0.18);
 }
 
-.arquiservi-confirmacion.tipo-aprobar
-.arquiservi-confirmacion-boton.confirmar:hover {
+.arquiservi-confirmacion.tipo-aprobar .arquiservi-confirmacion-boton.confirmar:hover {
     background-color: #036B4D;
 }
 
-.arquiservi-confirmacion.tipo-rechazar
-.arquiservi-confirmacion-icono {
+.arquiservi-confirmacion.tipo-rechazar .arquiservi-confirmacion-icono {
     background-color: #FEF2F2;
     color: #B91C1C;
 }
 
-.arquiservi-confirmacion.tipo-rechazar
-.arquiservi-confirmacion-boton.confirmar {
+.arquiservi-confirmacion.tipo-rechazar .arquiservi-confirmacion-boton.confirmar {
     background-color: #B91C1C;
-    box-shadow:
-        0 7px 17px
-        rgba(185, 28, 28, 0.18);
+    box-shadow: 0 7px 17px rgba(185, 28, 28, 0.18);
 }
 
-.arquiservi-confirmacion.tipo-rechazar
-.arquiservi-confirmacion-boton.confirmar:hover {
+.arquiservi-confirmacion.tipo-rechazar .arquiservi-confirmacion-boton.confirmar:hover {
     background-color: #991B1B;
 }
 
-.arquiservi-confirmacion.tipo-advertencia
-.arquiservi-confirmacion-icono {
+.arquiservi-confirmacion.tipo-advertencia .arquiservi-confirmacion-icono {
     background-color: #FFF7ED;
     color: #F47A20;
 }
 
-.arquiservi-confirmacion.tipo-advertencia
-.arquiservi-confirmacion-boton.confirmar {
+.arquiservi-confirmacion.tipo-advertencia .arquiservi-confirmacion-boton.confirmar {
     background-color: #F47A20;
-    box-shadow:
-        0 7px 17px
-        rgba(244, 122, 32, 0.18);
+    box-shadow: 0 7px 17px rgba(244, 122, 32, 0.18);
 }
 
-.arquiservi-confirmacion.tipo-advertencia
-.arquiservi-confirmacion-boton.confirmar:hover {
+.arquiservi-confirmacion.tipo-advertencia .arquiservi-confirmacion-boton.confirmar:hover {
     background-color: #DE6818;
 }
 
@@ -268,10 +232,7 @@ body.arquiservi-modal-abierto {
 
     .arquiservi-confirmacion-contenido {
         max-width: 100%;
-        padding:
-            34px
-            20px
-            22px;
+        padding: 34px 20px 22px;
         border-radius: 15px;
     }
 

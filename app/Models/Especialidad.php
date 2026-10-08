@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Especialidad extends Model
 {
@@ -13,26 +15,23 @@ class Especialidad extends Model
         'nombre',
         'descripcion',
         'activo',
-        'requiere_aprobacion'
+        'requiere_aprobacion',
     ];
 
     protected function casts(): array
     {
         return [
             'activo' => 'boolean',
-            'requiere_aprobacion' => 'boolean'
+            'requiere_aprobacion' => 'boolean',
         ];
     }
 
-    public function profesion()
+    public function profesion(): BelongsTo
     {
-        return $this->belongsTo(
-            Profesion::class,
-            'profesion_id'
-        );
+        return $this->belongsTo(Profesion::class, 'profesion_id');
     }
 
-    public function profesionales()
+    public function profesionales(): BelongsToMany
     {
         return $this->belongsToMany(
             Profesional::class,

@@ -5,17 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\Rol;
 use App\Models\Usuario;
 use App\Notifications\BienvenidoArquiservi;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class RegistroController extends Controller
 {
-    public function create()
+    private const ROLES_REGISTRABLES = [
+        'usuario',
+        'profesional',
+        'proveedor',
+    ];
+
+    private const RUTAS_REGISTRO_COMPLEMENTARIO = [
+        'profesional' => 'registro.profesional',
+        'proveedor' => 'registro.proveedor',
+    ];
+
+    private const ESTADO_ACTIVO = 'activo';
+
+    public function create(): View
     {
         return view('register');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $datos = $request->validate(
             [
@@ -24,7 +40,7 @@ class RegistroController extends Controller
                 'apellido_materno' => ['required', 'string', 'max:100'],
                 'correo' => ['required', 'email', 'max:150', 'unique:usuarios,correo'],
                 'telefono' => ['required', 'string', 'max:20'],
-                'rol' => ['required', 'in:usuario,profesional,proveedor'],
+                'rol' => ['required', Rule::in(self::ROLES_REGISTRABLES)],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ],
             [
@@ -43,13 +59,13 @@ class RegistroController extends Controller
             ]
         );
 
-        $rol = Rol::where('nombre', $datos['rol'])->first();
+        $rol = Rol::query()
+            ->where('nombre', $datos['rol'])
+            ->first();
 
         if (!$rol) {
             return back()
-                ->withErrors([
-                    'rol' => 'El rol seleccionado no existe.'
-                ])
+                ->withErrors(['rol' => 'El rol seleccionado no existe.'])
                 ->withInput();
         }
 
@@ -61,32 +77,21 @@ class RegistroController extends Controller
             'correo' => $datos['correo'],
             'telefono' => $datos['telefono'],
             'password' => Hash::make($datos['password']),
-            'estado' => 'activo',
+            'estado' => self::ESTADO_ACTIVO,
         ]);
 
         $usuario->notify(new BienvenidoArquiservi());
 
-        if ($datos['rol'] === 'profesional') {
-            session([
-                'registro_usuario_id' => $usuario->id
-            ]);
+        $rutaComplementaria = self::RUTAS_REGISTRO_COMPLEMENTARIO[$datos['rol']] ?? null;
 
-            return redirect()->route('registro.profesional');
-        }
+        if ($rutaComplementaria) {
+            session(['registro_usuario_id' => $usuario->id]);
 
-        if ($datos['rol'] === 'proveedor') {
-            session([
-                'registro_usuario_id' => $usuario->id
-            ]);
-
-            return redirect()->route('registro.proveedor');
+            return redirect()->route($rutaComplementaria);
         }
 
         return redirect()
             ->route('login')
-            ->with(
-                'success',
-                'Tu cuenta se creó correctamente.'
-            );
+            ->with('success', 'Tu cuenta se creó correctamente.');
     }
 }

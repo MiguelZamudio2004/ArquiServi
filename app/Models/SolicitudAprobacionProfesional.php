@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SolicitudAprobacionProfesional extends Model
 {
@@ -14,30 +15,24 @@ class SolicitudAprobacionProfesional extends Model
         'estado',
         'revisado_por',
         'motivo_rechazo',
-        'revisado_at'
+        'revisado_at',
     ];
 
     protected function casts(): array
     {
         return [
             'especialidades_requieren_aprobacion' => 'array',
-            'revisado_at' => 'datetime'
+            'revisado_at' => 'datetime',
         ];
     }
 
-    public function profesional()
+    public function profesional(): BelongsTo
     {
-        return $this->belongsTo(
-            Profesional::class,
-            'profesional_id'
-        );
+        return $this->belongsTo(Profesional::class, 'profesional_id');
     }
 
-    public function revisor()
+    public function revisor(): BelongsTo
     {
-        return $this->belongsTo(
-            Usuario::class,
-            'revisado_por'
-        );
+        return $this->belongsTo(Usuario::class, 'revisado_por');
     }
 }

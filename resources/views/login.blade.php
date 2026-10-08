@@ -1,63 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Iniciar Sesion</title>
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
-    <script src="{{ asset('js/mostrar.js')}}" defer></script>
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/login.css') }}"
+    >
+
+    <link
+        rel="icon"
+        href="{{ asset('icono.png') }}"
+        type="image/png"
+    >
+
+    <script
+        src="{{ asset('js/mostrar.js') }}"
+        defer
+    ></script>
 </head>
 
 <body>
-
 <header class="encabezado">
-    <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
+    <img
+        src="{{ asset('encabezado2.png') }}"
+        class="logo"
+        alt="ArquiServi"
+    >
 </header>
-    <h1 id="titulo">
-        <span style="--i:1">A</span>
-        <span style="--i:2">R</span>
-        <span style="--i:3">Q</span>
-        <span style="--i:4">U</span>
-        <span style="--i:5">I</span>
-        <span style="--i:6">S</span>
-        <span style="--i:7">E</span>
-        <span style="--i:8">R</span>
-        <span style="--i:9">V</span>
-        <span style="--i:10">I</span>
-    </h1>
-    <section class="form-login">
-        <form action="{{ route('login.auth') }}" method="POST">
-            @csrf
-        <h2 id="subtitulo">Inicio de sesión</h2>
-        <form>
-                <label class="etiqueta" for="username">Correo electrónico:</label>
-                <input class="form-control" type="text" id="username" name="correo" placeholder="Ingrese su correo electrónico" required>
-                <label class="etiqueta">Contraseña:</label>
 
-                <div class="campo-password">
-                    <input class="form-control" id="password" type="password" name="password" placeholder="Ingrese su contraseña" required>
-                    <span class="eye" id="eye"> &#x1F441 </span>
-                </div>
-        
-        @if ($errors->any())
-    <div class="error">
-        @foreach ($errors->all() as $error)
-            <p>{{ $error }}</p>
-        @endforeach
-    </div>
-    @endif
-        
-            <p class="textalter">¿No tienes una cuenta? <a href="/register">Crea una</a></p>
-            <p class="textalter">¿Olvidaste tu contraseña? <a href="/recuperation">Recuperala</a></p>
-            <button class="btn" type="submit">Iniciar Sesion</button>
-            
-        </form>
-    </section>
+<h1 id="titulo">
+    <span style="--i:1">A</span>
+    <span style="--i:2">R</span>
+    <span style="--i:3">Q</span>
+    <span style="--i:4">U</span>
+    <span style="--i:5">I</span>
+    <span style="--i:6">S</span>
+    <span style="--i:7">E</span>
+    <span style="--i:8">R</span>
+    <span style="--i:9">V</span>
+    <span style="--i:10">I</span>
+</h1>
 
-    <footer class="pie">
-        <p>© 2026 ArquiServi. Todos los derechos reservados.</p>
-    </footer>
+<section class="form-login">
+    <form
+        action="{{ route('login.auth') }}"
+        method="POST"
+    >
+        @csrf
+
+        <h2 id="subtitulo">
+            Inicio de sesión
+        </h2>
+
+        <label
+            class="etiqueta"
+            for="username"
+        >
+            Correo electrónico:
+        </label>
+
+        <input
+            class="form-control"
+            type="text"
+            id="username"
+            name="correo"
+            placeholder="Ingrese su correo electrónico"
+            required
+        >
+
+        <label class="etiqueta">
+            Contraseña:
+        </label>
+
+        <div class="campo-password">
+            <input
+                class="form-control"
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Ingrese su contraseña"
+                required
+            >
+
+            <span
+                class="eye"
+                id="eye"
+            >
+                &#x1F441;
+            </span>
+        </div>
+
+        @if($errors->any())
+            <div class="error">
+                @foreach($errors->all() as $error)
+                    <p>
+                        {{ $error }}
+                    </p>
+                @endforeach
+            </div>
+        @endif
+
+        <p class="textalter">
+            ¿No tienes una cuenta?
+            <a href="/register">Crea una</a>
+        </p>
+
+        <p class="textalter">
+            ¿Olvidaste tu contraseña?
+            <a href="/recuperation">Recuperala</a>
+        </p>
+
+        <button
+            class="btn"
+            type="submit"
+        >
+            Iniciar Sesion
+        </button>
+    </form>
+</section>
+
+<footer class="pie">
+    <p>
+        © 2026 ArquiServi. Todos los derechos reservados.
+    </p>
+</footer>
 
 </body>
 </html>

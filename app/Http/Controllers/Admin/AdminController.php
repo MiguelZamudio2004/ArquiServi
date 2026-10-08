@@ -4,90 +4,57 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Usuario;
+use Illuminate\View\View;
 
 class AdminController extends Controller
 {
-    public function index()
+    private const ROL_USUARIO = 'usuario';
+    private const ROL_PROFESIONAL = 'profesional';
+    private const ROL_PROVEEDOR = 'proveedor';
+    private const ROL_ADMINISTRADOR = 'administrador';
+
+    public function index(): View
     {
-        $usuarios = Usuario::whereHas(
-            'rol',
-            function ($query) {
-                $query->where(
-                    'nombre',
-                    'usuario'
-                );
-            }
-        )->count();
+        $estadisticas = Usuario::query()
+            ->join('roles', 'roles.id', '=', 'usuarios.rol_id')
+            ->selectRaw("
+                COUNT(CASE WHEN roles.nombre = ? THEN 1 END) AS usuarios,
+                COUNT(CASE WHEN roles.nombre = ? THEN 1 END) AS profesionales,
+                COUNT(CASE WHEN roles.nombre = ? THEN 1 END) AS proveedores,
+                COUNT(
+                    CASE
+                        WHEN usuarios.estado IN ('inactivo', 'suspendido')
+                        AND roles.nombre != ?
+                        THEN 1
+                    END
+                ) AS cuentas_no_activas
+            ", [
+                self::ROL_USUARIO,
+                self::ROL_PROFESIONAL,
+                self::ROL_PROVEEDOR,
+                self::ROL_ADMINISTRADOR,
+            ])
+            ->first();
 
-        $profesionales = Usuario::whereHas(
-            'rol',
-            function ($query) {
-                $query->where(
-                    'nombre',
-                    'profesional'
-                );
-            }
-        )->count();
-
-        $proveedores = Usuario::whereHas(
-            'rol',
-            function ($query) {
-                $query->where(
-                    'nombre',
-                    'proveedor'
-                );
-            }
-        )->count();
-
-        $cuentasNoActivas = Usuario::whereIn(
-            'estado',
-            [
-                'inactivo',
-                'suspendido'
-            ]
-        )
-            ->whereHas(
-                'rol',
-                function ($query) {
-                    $query->where(
-                        'nombre',
-                        '!=',
-                        'administrador'
-                    );
-                }
-            )
-            ->count();
-
-        $totalUsuarios =
-            $usuarios +
-            $profesionales +
-            $proveedores;
+        $usuarios = (int) $estadisticas->usuarios;
+        $profesionales = (int) $estadisticas->profesionales;
+        $proveedores = (int) $estadisticas->proveedores;
+        $cuentasNoActivas = (int) $estadisticas->cuentas_no_activas;
+        $totalUsuarios = $usuarios + $profesionales + $proveedores;
 
         $usuariosRecientes = Usuario::with('rol')
-            ->whereHas(
-                'rol',
-                function ($query) {
-                    $query->where(
-                        'nombre',
-                        '!=',
-                        'administrador'
-                    );
-                }
-            )
+            ->whereRelation('rol', 'nombre', '!=', self::ROL_ADMINISTRADOR)
             ->latest()
-            ->take(6)
+            ->limit(6)
             ->get();
 
-        return view(
-            'admin.dashboard',
-            compact(
-                'usuarios',
-                'profesionales',
-                'proveedores',
-                'cuentasNoActivas',
-                'totalUsuarios',
-                'usuariosRecientes'
-            )
-        );
+        return view('admin.dashboard', compact(
+            'usuarios',
+            'profesionales',
+            'proveedores',
+            'cuentasNoActivas',
+            'totalUsuarios',
+            'usuariosRecientes'
+        ));
     }
 }

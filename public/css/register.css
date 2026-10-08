@@ -1,7 +1,7 @@
 body {
     height: 100%;
-    margin: 0;
     min-height: 100vh;
+    margin: 0;
     display: flex;
     flex-direction: column;
 }
@@ -15,10 +15,10 @@ main {
 }
 
 .logo {
-    display: block;
-    margin: 0 auto;
     width: 200px;
     height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 #subtitulo {
@@ -34,25 +34,25 @@ main {
     margin: 40px auto 60px;
     padding: 35px 40px;
     box-sizing: border-box;
-    background-color: #F9FAFB;
-    border: 1px solid #F47A20;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    background-color: #F9FAFB;
+    border: 1px solid #F47A20;
 }
 
 .select {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
     width: 100%;
-    padding: 5px;
     margin-bottom: 10px;
+    padding: 5px;
     box-sizing: border-box;
-    color: #6B7280;
     background-color: #F9FAFB;
+    color: #6B7280;
     border: 1px solid #6B7280;
     border-radius: 10px;
     outline: none;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -68,17 +68,17 @@ main {
 }
 
 .select option {
+    background-color: #F9FAFB;
+    color: #333333;
     font-family: Poppins, sans-serif;
     font-size: 16px;
-    color: #333333;
-    background-color: #F9FAFB;
 }
 
 .etiqueta {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
     margin-bottom: 5px;
     color: #6B7280;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
 }
 
 .campo-password {
@@ -94,8 +94,8 @@ main {
 
 .eye {
     position: absolute;
-    right: 10px;
     top: 43%;
+    right: 10px;
     transform: translateY(-50%);
     cursor: pointer;
 }
@@ -103,9 +103,9 @@ main {
 .strength {
     height: 8px;
     margin-top: 5px;
+    overflow: hidden;
     border: 1px solid #F47A20;
     border-radius: 20px;
-    overflow: hidden;
 }
 
 .bar {
@@ -117,20 +117,19 @@ main {
 
 .message {
     margin-bottom: 10px;
+    color: #1E40AF;
     font-size: 12px;
-    color:#1E40AF;
 }
 
 .form-control {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
+    width: 100%;
     margin-bottom: 10px;
     padding: 5px;
     background-color: #F9FAFB;
-    border-color: #6B7280;
     border: 1px solid #6B7280;
-    width: 100%;
     border-radius: 10px;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
 }
 
 .form-control:focus {
@@ -140,62 +139,61 @@ main {
 }
 
 .btn {
-    color:#F47A20;
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
-    border-color: #F47A20;
-    border-radius: 15px;
-    box-sizing: border-box;
-    cursor: pointer;
     width: 100%;
     height: 45px;
+    box-sizing: border-box;
+    color: #F47A20;
+    border-color: #F47A20;
+    border-radius: 15px;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
     transition: 0.3s;
 }
 
 .btn:hover {
-    color: #FFFFFF;
     background-color: #F47A20;
+    color: #FFFFFF;
     border-color: #F47A20;
 }
 
 .text-alter {
-    font-family: Poppins, sans-serif;
-    font-size: 14px;
     color: #6B7280;
     text-align: center;
+    font-family: Poppins, sans-serif;
+    font-size: 14px;
 }
 
 .text-alter a {
-    color:#F47A20
+    color: #F47A20;
 }
 
 .text-alter a:visited {
-    color:#1E40AF
+    color: #1E40AF;
 }
 
 .pie {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 0;
+    bottom: 0;
     background-color: #0C2D5A;
     color: #FFFFFF;
     text-align: center;
-    padding: 10px 0;
-    bottom: 0;
-    margin-top: auto;
-    width: 100%;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
 }
 
 .error {
-    font-family: Caudex, sans-serif;
-    color: red;
-    font-size: 16px;
     margin-top: 10px;
+    padding: 5px;
+    color: red;
     border: 1px solid red;
     text-align: center;
-    padding: 5px;
     justify-content: center;
     align-items: center;
-
+    font-family: Caudex, sans-serif;
+    font-size: 16px;
 }
 
 .error ul {

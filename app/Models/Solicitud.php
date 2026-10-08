@@ -24,26 +24,17 @@ class Solicitud extends Model
 
     public function solicitante(): BelongsTo
     {
-        return $this->belongsTo(
-            Usuario::class,
-            'solicitante_id'
-        );
+        return $this->belongsTo(Usuario::class, 'solicitante_id');
     }
 
     public function destinatario(): BelongsTo
     {
-        return $this->belongsTo(
-            Usuario::class,
-            'destinatario_id'
-        );
+        return $this->belongsTo(Usuario::class, 'destinatario_id');
     }
 
     public function servicio(): BelongsTo
     {
-        return $this->belongsTo(
-            Servicio::class,
-            'servicio_id'
-        );
+        return $this->belongsTo(Servicio::class, 'servicio_id');
     }
 
     public function materiales(): BelongsToMany
@@ -58,13 +49,10 @@ class Solicitud extends Model
 
     public function calificaciones(): HasMany
     {
-        return $this->hasMany(
-            Calificacion::class,
-            'solicitud_id'
-        );
+        return $this->hasMany(Calificacion::class, 'solicitud_id');
     }
 
-    public function getMaterialAttribute()
+    public function getMaterialAttribute(): ?Material
     {
         return $this->materiales->first();
     }

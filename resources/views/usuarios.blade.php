@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
     <title>Catálogo - ArquiServi</title>
 
-    <link rel="stylesheet" href="{{ asset('css/usuarios.css') }}">
-    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/usuarios.css') }}"
+    >
 
-    <script src="{{ asset('js/notification.js') }}" defer></script>
-    <script src="{{ asset('js/usuarios.js') }}" defer></script>
+    <link
+        rel="icon"
+        href="{{ asset('icono.png') }}"
+        type="image/png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+
+    <script
+        src="{{ asset('js/notification.js') }}"
+        defer
+    ></script>
+
+    <script
+        src="{{ asset('js/usuarios.js') }}"
+        defer
+    ></script>
 </head>
 
 <body>
-
 <header class="encabezado">
-    <a href="{{ route('menu') }}" class="logo-enlace">
-        <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
+    <a
+        href="{{ route('menu') }}"
+        class="logo-enlace"
+    >
+        <img
+            src="{{ asset('encabezado2.png') }}"
+            class="logo"
+            alt="ArquiServi"
+        >
     </a>
 
     <nav class="menu-superior">
@@ -26,14 +61,20 @@
             <li>
                 <a href="{{ route('menu') }}">
                     <i class="fa-solid fa-house icono"></i>
-                    <span class="texto">Inicio</span>
+
+                    <span class="texto">
+                        Inicio
+                    </span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('usuarios.buscar') }}">
                     <i class="fa-solid fa-folder-open icono"></i>
-                    <span class="texto">Catálogo</span>
+
+                    <span class="texto">
+                        Catálogo
+                    </span>
                 </a>
             </li>
 
@@ -42,7 +83,10 @@
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
                             <i class="fa-solid fa-envelope icono"></i>
-                            <span class="texto">Mis solicitudes</span>
+
+                            <span class="texto">
+                                Mis solicitudes
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -51,13 +95,20 @@
                     <li>
                         <a href="{{ route('solicitudes.recibidas') }}">
                             <i class="fa-solid fa-inbox icono"></i>
-                            <span class="texto">Solicitudes recibidas</span>
+
+                            <span class="texto">
+                                Solicitudes recibidas
+                            </span>
                         </a>
                     </li>
                 @endif
 
                 <li class="notificaciones-container">
-                    <input type="hidden" id="csrf-notificaciones" value="{{ csrf_token() }}">
+                    <input
+                        type="hidden"
+                        id="csrf-notificaciones"
+                        value="{{ csrf_token() }}"
+                    >
 
                     <button
                         type="button"
@@ -78,7 +129,9 @@
                             @endif
                         </span>
 
-                        <span class="texto">Notificaciones</span>
+                        <span class="texto">
+                            Notificaciones
+                        </span>
                     </button>
 
                     <div
@@ -86,18 +139,13 @@
                         id="notificacionesDropdown"
                     >
                         <div class="notificaciones-header">
-                            <h3>Notificaciones</h3>
+                            <h3>
+                                Notificaciones
+                            </h3>
                         </div>
 
                         <div class="notificaciones-lista">
-                            @forelse(
-                                auth()->user()
-                                    ->notifications()
-                                    ->latest()
-                                    ->take(10)
-                                    ->get()
-                                as $notificacion
-                            )
+                            @forelse(auth()->user()->notifications()->latest()->take(10)->get() as $notificacion)
                                 <button
                                     type="button"
                                     class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
@@ -144,7 +192,10 @@
                             aria-label="Cerrar sesión"
                         >
                             <i class="fa-solid fa-right-from-bracket icono"></i>
-                            <span class="texto">Cerrar sesión</span>
+
+                            <span class="texto">
+                                Cerrar sesión
+                            </span>
                         </button>
                     </form>
                 </li>
@@ -152,71 +203,50 @@
         </ul>
     </nav>
 
-@auth
+    @auth
+        <div class="acciones-usuario">
+            @if(auth()->user()->rol && auth()->user()->rol->nombre === 'administrador')
+                <a
+                    href="{{ route('admin.dashboard') }}"
+                    class="volver-admin-header"
+                    aria-label="Volver al panel de administración"
+                    title="Panel de administración"
+                >
+                    <span class="volver-admin-icono">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
 
-    <div class="acciones-usuario">
-
-        @if(
-            auth()->user()->rol &&
-            auth()->user()->rol->nombre === 'administrador'
-        )
-
-            <a
-                href="{{ route('admin.dashboard') }}"
-                class="volver-admin-header"
-                aria-label="Volver al panel de administración"
-                title="Panel de administración"
-            >
-
-                <span class="volver-admin-icono">
-
-                    <i class="fa-solid fa-user-shield"></i>
-
-                </span>
-
-                <span class="volver-admin-texto">
-                    Panel admin
-                </span>
-
-            </a>
-
-        @else
-
-            <a
-                href="{{ route('perfil') }}"
-                class="perfil-header"
-                aria-label="Mi perfil"
-            >
-
-                <span class="perfil-avatar-header">
-
-                    @if(auth()->user()->foto_perfil)
-
-                        <img
-                            src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
-                            alt="Foto de perfil"
-                        >
-
-                    @else
-
-                        <i class="fa-solid fa-user"></i>
-
-                    @endif
-
-                </span>
-
-            </a>
-
-        @endif
-
-    </div>
-
-@endauth
+                    <span class="volver-admin-texto">
+                        Panel admin
+                    </span>
+                </a>
+            @else
+                <a
+                    href="{{ route('perfil') }}"
+                    class="perfil-header"
+                    aria-label="Mi perfil"
+                >
+                    <span class="perfil-avatar-header">
+                        @if(auth()->user()->foto_perfil)
+                            <img
+                                src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
+                                alt="Foto de perfil"
+                            >
+                        @else
+                            <i class="fa-solid fa-user"></i>
+                        @endif
+                    </span>
+                </a>
+            @endif
+        </div>
+    @endauth
 </header>
 
 <main class="catalogo">
     <section class="catalogo-encabezado">
-        <h1>Encuentra lo que necesitas</h1>
+        <h1>
+            Encuentra lo que necesitas
+        </h1>
 
         <p>
             Explora profesionales, proveedores y usuarios registrados en ArquiServi.
@@ -327,7 +357,9 @@
 
     <section class="resultados">
         <div class="resultados-header">
-            <h2>Perfiles</h2>
+            <h2>
+                Perfiles
+            </h2>
 
             <span>
                 {{ $usuarios->total() }}
@@ -438,6 +470,7 @@
                                         @endif
                                     </p>
                                 @endif
+
                             @elseif(
                                 $usuario->rol->nombre === 'proveedor' &&
                                 $usuario->proveedor
@@ -456,6 +489,7 @@
                             @if($usuario->ubicacion)
                                 <p class="usuario-ubicacion">
                                     <i class="fa-solid fa-location-dot"></i>
+
                                     {{ $usuario->ubicacion }}
                                 </p>
                             @endif
@@ -529,6 +563,7 @@
                     @endif
                 </div>
             @endif
+
         @else
             <div class="sin-resultados">
                 <h3>

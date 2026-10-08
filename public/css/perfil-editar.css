@@ -305,10 +305,7 @@ body {
 .materiales {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(150px, 1fr)
-    );
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 10px;
     margin-top: 10px;
 }
@@ -354,9 +351,7 @@ body {
     font-weight: bold;
 }
 
-.material-opcion:has(
-    input[type="checkbox"]:checked
-) {
+.material-opcion:has(input[type="checkbox"]:checked) {
     border-color: #F47A20;
     background-color: #FFF7F0;
 }
@@ -486,18 +481,12 @@ body {
     }
 
     .notificaciones-dropdown {
-        width: min(
-            350px,
-            calc(100vw - 20px)
-        );
+        width: min(350px, calc(100vw - 20px));
         right: -45px;
     }
 
     .perfil-dropdown {
-        width: min(
-            250px,
-            calc(100vw - 20px)
-        );
+        width: min(250px, calc(100vw - 20px));
     }
 
     .editar-perfil {
@@ -516,10 +505,7 @@ body {
     }
 
     .preview-portafolio {
-        grid-template-columns: repeat(
-            2,
-            1fr
-        );
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
     }
 

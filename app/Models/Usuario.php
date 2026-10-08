@@ -3,12 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Usuario extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    private const PREFIJO_MEXICO = '52';
+    private const PREFIJO_MEXICO_ANTIGUO = '521';
 
     protected $table = 'usuarios';
 
@@ -25,107 +31,79 @@ class Usuario extends Authenticatable
         'foto_perfil',
         'portafolio_fotos',
         'estado',
-        'email_verified_at'
+        'email_verified_at',
     ];
 
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'portafolio_fotos' => 'array'
-    ];
-
-    public function rol()
+    protected function casts(): array
     {
-        return $this->belongsTo(
-            Rol::class,
-            'rol_id'
-        );
+        return [
+            'email_verified_at' => 'datetime',
+            'portafolio_fotos' => 'array',
+        ];
     }
 
-    public function profesional()
+    public function rol(): BelongsTo
     {
-        return $this->hasOne(
-            Profesional::class,
-            'usuario_id'
-        );
+        return $this->belongsTo(Rol::class, 'rol_id');
     }
 
-    public function proveedor()
+    public function profesional(): HasOne
     {
-        return $this->hasOne(
-            Proveedor::class,
-            'usuario_id'
-        );
+        return $this->hasOne(Profesional::class, 'usuario_id');
     }
 
-    public function solicitudes()
+    public function proveedor(): HasOne
     {
-        return $this->hasMany(
-            Solicitud::class,
-            'solicitante_id'
-        );
+        return $this->hasOne(Proveedor::class, 'usuario_id');
     }
 
-    public function solicitudesRealizadas()
+    public function solicitudes(): HasMany
     {
-        return $this->hasMany(
-            Solicitud::class,
-            'solicitante_id'
-        );
+        return $this->hasMany(Solicitud::class, 'solicitante_id');
     }
 
-    public function solicitudesRecibidas()
+    public function solicitudesRealizadas(): HasMany
     {
-        return $this->hasMany(
-            Solicitud::class,
-            'destinatario_id'
-        );
+        return $this->hasMany(Solicitud::class, 'solicitante_id');
     }
 
-    public function calificacionesRealizadas()
+    public function solicitudesRecibidas(): HasMany
     {
-        return $this->hasMany(
-            Calificacion::class,
-            'evaluador_id'
-        );
+        return $this->hasMany(Solicitud::class, 'destinatario_id');
     }
 
-    public function calificacionesRecibidas()
+    public function calificacionesRealizadas(): HasMany
     {
-        return $this->hasMany(
-            Calificacion::class,
-            'evaluado_id'
-        );
+        return $this->hasMany(Calificacion::class, 'evaluador_id');
     }
 
-    public function telefonoWhatsapp()
+    public function calificacionesRecibidas(): HasMany
+    {
+        return $this->hasMany(Calificacion::class, 'evaluado_id');
+    }
+
+    public function telefonoWhatsapp(): ?string
     {
         if (!$this->telefono) {
             return null;
         }
 
-        $telefono = preg_replace(
-            '/\D/',
-            '',
-            $this->telefono
-        );
+        $telefono = preg_replace('/\D/', '', $this->telefono) ?? '';
 
         if (strlen($telefono) === 10) {
-            return '52' . $telefono;
+            return self::PREFIJO_MEXICO . $telefono;
         }
 
         if (
             strlen($telefono) === 13 &&
-            str_starts_with($telefono, '521')
+            str_starts_with($telefono, self::PREFIJO_MEXICO_ANTIGUO)
         ) {
-            return '52' . substr(
-                $telefono,
-                3
-            );
+            return self::PREFIJO_MEXICO . substr($telefono, 3);
         }
 
         return $telefono;

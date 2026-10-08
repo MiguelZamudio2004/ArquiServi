@@ -4,144 +4,78 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Calificacion;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AdminCalificacionController extends Controller
 {
-    public function index(Request $request)
+    private const TIPOS = [
+        'profesional' => 'Profesional',
+        'proveedor' => 'Proveedor',
+        'cliente' => 'Cliente',
+    ];
+
+    private const PROMEDIOS = [
+        '5.0' => '5.0',
+        '4.5' => '4.5',
+        '4.0' => '4.0',
+        '3.5' => '3.5',
+        '3.0' => '3.0',
+        '2.5' => '2.5',
+        '2.0' => '2.0',
+        '1.5' => '1.5',
+        '1.0' => '1.0',
+        '0.5' => '0.5',
+    ];
+
+    private const CRITERIOS = [
+        'profesional' => [
+            'calidad_trabajo' => 'Calidad del trabajo',
+            'puntualidad' => 'Puntualidad',
+            'comunicacion' => 'Comunicación',
+            'profesionalismo' => 'Profesionalismo',
+            'cumplimiento' => 'Cumplimiento',
+        ],
+        'proveedor' => [
+            'calidad_materiales' => 'Calidad de los materiales',
+            'cumplimiento_entrega' => 'Cumplimiento de entrega',
+            'comunicacion' => 'Comunicación',
+            'atencion' => 'Atención',
+            'cumplimiento' => 'Cumplimiento',
+        ],
+        'cliente' => [
+            'claridad_requerimientos' => 'Claridad de requerimientos',
+            'comunicacion' => 'Comunicación',
+            'trato' => 'Trato',
+            'responsabilidad' => 'Responsabilidad',
+            'cumplimiento' => 'Cumplimiento',
+        ],
+    ];
+
+    public function index(Request $request): View
     {
-        $buscar = trim(
-            (string) $request->query(
-                'buscar',
-                ''
-            )
-        );
+        $buscar = trim((string) $request->query('buscar', ''));
+        $tipo = $request->query('tipo');
+        $promedio = $request->query('promedio');
 
-        $tipo = $request->query(
-            'tipo'
-        );
-
-        $promedio = $request->query(
-            'promedio'
-        );
-
-        $tipos = [
-            'profesional' => 'Profesional',
-            'proveedor' => 'Proveedor',
-            'cliente' => 'Cliente'
-        ];
-
-        $promedios = [
-            '5.0' => '5.0',
-            '4.5' => '4.5',
-            '4.0' => '4.0',
-            '3.5' => '3.5',
-            '3.0' => '3.0',
-            '2.5' => '2.5',
-            '2.0' => '2.0',
-            '1.5' => '1.5',
-            '1.0' => '1.0',
-            '0.5' => '0.5'
-        ];
-
-        $query = Calificacion::query()
-            ->with([
-                'evaluador.rol',
-                'evaluado.rol',
-                'solicitud.servicio',
-                'solicitud.materiales'
-            ]);
+        $query = Calificacion::query()->with([
+            'evaluador.rol',
+            'evaluado.rol',
+            'solicitud.servicio',
+            'solicitud.materiales',
+        ]);
 
         if ($buscar !== '') {
-            $query->where(
-                function ($query) use ($buscar) {
-                    $query
-                        ->where(
-                            'comentario',
-                            'like',
-                            '%' . $buscar . '%'
-                        )
-                        ->orWhereHas(
-                            'evaluador',
-                            function ($query) use ($buscar) {
-                                $query
-                                    ->where(
-                                        'nombre',
-                                        'like',
-                                        '%' . $buscar . '%'
-                                    )
-                                    ->orWhere(
-                                        'apellido_paterno',
-                                        'like',
-                                        '%' . $buscar . '%'
-                                    )
-                                    ->orWhere(
-                                        'apellido_materno',
-                                        'like',
-                                        '%' . $buscar . '%'
-                                    )
-                                    ->orWhere(
-                                        'correo',
-                                        'like',
-                                        '%' . $buscar . '%'
-                                    );
-                            }
-                        )
-                        ->orWhereHas(
-                            'evaluado',
-                            function ($query) use ($buscar) {
-                                $query
-                                    ->where(
-                                        'nombre',
-                                        'like',
-                                        '%' . $buscar . '%'
-                                    )
-                                    ->orWhere(
-                                        'apellido_paterno',
-                                        'like',
-                                        '%' . $buscar . '%'
-                                    )
-                                    ->orWhere(
-                                        'apellido_materno',
-                                        'like',
-                                        '%' . $buscar . '%'
-                                    )
-                                    ->orWhere(
-                                        'correo',
-                                        'like',
-                                        '%' . $buscar . '%'
-                                    );
-                            }
-                        );
-                }
-            );
+            $this->aplicarBusqueda($query, $buscar);
         }
 
-        if (
-            $tipo &&
-            array_key_exists(
-                $tipo,
-                $tipos
-            )
-        ) {
-            $query->where(
-                'tipo_evaluado',
-                $tipo
-            );
+        if (is_string($tipo) && isset(self::TIPOS[$tipo])) {
+            $query->where('tipo_evaluado', $tipo);
         }
 
-        if (
-            $promedio !== null &&
-            $promedio !== '' &&
-            array_key_exists(
-                $promedio,
-                $promedios
-            )
-        ) {
-            $query->where(
-                'promedio',
-                (float) $promedio
-            );
+        if (is_string($promedio) && isset(self::PROMEDIOS[$promedio])) {
+            $query->where('promedio', (float) $promedio);
         }
 
         $calificaciones = $query
@@ -149,130 +83,75 @@ class AdminCalificacionController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        $totalCalificaciones =
-            Calificacion::count();
+        $estadisticas = $this->obtenerEstadisticas();
 
-        $promedioGeneral =
-            Calificacion::count() > 0
-                ? round(
-                    (float) Calificacion::avg(
-                        'promedio'
-                    ),
-                    1
-                )
-                : 0;
-
-        $totalProfesionales =
-            Calificacion::where(
-                'tipo_evaluado',
-                'profesional'
-            )->count();
-
-        $totalProveedores =
-            Calificacion::where(
-                'tipo_evaluado',
-                'proveedor'
-            )->count();
-
-        return view(
-            'admin.calificaciones.index',
-            compact(
-                'calificaciones',
-                'buscar',
-                'tipo',
-                'promedio',
-                'tipos',
-                'promedios',
-                'totalCalificaciones',
-                'promedioGeneral',
-                'totalProfesionales',
-                'totalProveedores'
-            )
-        );
+        return view('admin.calificaciones.index', [
+            'calificaciones' => $calificaciones,
+            'buscar' => $buscar,
+            'tipo' => $tipo,
+            'promedio' => $promedio,
+            'tipos' => self::TIPOS,
+            'promedios' => self::PROMEDIOS,
+            'totalCalificaciones' => (int) $estadisticas->total,
+            'promedioGeneral' => (float) $estadisticas->promedio_general,
+            'totalProfesionales' => (int) $estadisticas->profesionales,
+            'totalProveedores' => (int) $estadisticas->proveedores,
+        ]);
     }
 
-    public function mostrar(
-        Calificacion $calificacion
-    ) {
+    public function mostrar(Calificacion $calificacion): View
+    {
         $calificacion->load([
             'evaluador.rol',
             'evaluado.rol',
             'solicitud.solicitante.rol',
             'solicitud.destinatario.rol',
             'solicitud.servicio',
-            'solicitud.materiales'
+            'solicitud.materiales',
         ]);
 
-        $criteriosEtiquetas =
-            $this->obtenerCriteriosEtiquetas(
-                $calificacion->tipo_evaluado
-            );
+        $criteriosEtiquetas = self::CRITERIOS[$calificacion->tipo_evaluado] ?? [];
 
-        return view(
-            'admin.calificaciones.mostrar',
-            compact(
-                'calificacion',
-                'criteriosEtiquetas'
-            )
-        );
+        return view('admin.calificaciones.mostrar', compact(
+            'calificacion',
+            'criteriosEtiquetas'
+        ));
     }
 
-    private function obtenerCriteriosEtiquetas(
-        string $tipo
-    ): array {
-        return match ($tipo) {
-            'profesional' => [
-                'calidad_trabajo' =>
-                    'Calidad del trabajo',
+    private function aplicarBusqueda(Builder $query, string $buscar): void
+    {
+        $query->where(function (Builder $query) use ($buscar) {
+            $query->where('comentario', 'like', "%{$buscar}%")
+                ->orWhereHas('evaluador', fn (Builder $usuario) =>
+                    $this->aplicarBusquedaUsuario($usuario, $buscar)
+                )
+                ->orWhereHas('evaluado', fn (Builder $usuario) =>
+                    $this->aplicarBusquedaUsuario($usuario, $buscar)
+                );
+        });
+    }
 
-                'puntualidad' =>
-                    'Puntualidad',
+    private function aplicarBusquedaUsuario(Builder $query, string $buscar): void
+    {
+        $query->where(function (Builder $query) use ($buscar) {
+            $query->where('nombre', 'like', "%{$buscar}%")
+                ->orWhere('apellido_paterno', 'like', "%{$buscar}%")
+                ->orWhere('apellido_materno', 'like', "%{$buscar}%")
+                ->orWhere('correo', 'like', "%{$buscar}%");
+        });
+    }
 
-                'comunicacion' =>
-                    'Comunicación',
-
-                'profesionalismo' =>
-                    'Profesionalismo',
-
-                'cumplimiento' =>
-                    'Cumplimiento'
-            ],
-
-            'proveedor' => [
-                'calidad_materiales' =>
-                    'Calidad de los materiales',
-
-                'cumplimiento_entrega' =>
-                    'Cumplimiento de entrega',
-
-                'comunicacion' =>
-                    'Comunicación',
-
-                'atencion' =>
-                    'Atención',
-
-                'cumplimiento' =>
-                    'Cumplimiento'
-            ],
-
-            'cliente' => [
-                'claridad_requerimientos' =>
-                    'Claridad de requerimientos',
-
-                'comunicacion' =>
-                    'Comunicación',
-
-                'trato' =>
-                    'Trato',
-
-                'responsabilidad' =>
-                    'Responsabilidad',
-
-                'cumplimiento' =>
-                    'Cumplimiento'
-            ],
-
-            default => []
-        };
+    private function obtenerEstadisticas(): Calificacion
+    {
+        return Calificacion::query()
+            ->selectRaw('COUNT(*) AS total')
+            ->selectRaw('COALESCE(ROUND(AVG(promedio), 1), 0) AS promedio_general')
+            ->selectRaw("
+                SUM(CASE WHEN tipo_evaluado = 'profesional' THEN 1 ELSE 0 END) AS profesionales
+            ")
+            ->selectRaw("
+                SUM(CASE WHEN tipo_evaluado = 'proveedor' THEN 1 ELSE 0 END) AS proveedores
+            ")
+            ->firstOrFail();
     }
 }

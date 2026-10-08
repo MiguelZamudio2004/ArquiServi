@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Profesion extends Model
 {
@@ -11,25 +13,22 @@ class Profesion extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
-        'activo'
+        'activo',
     ];
 
     protected function casts(): array
     {
         return [
-            'activo' => 'boolean'
+            'activo' => 'boolean',
         ];
     }
 
-    public function especialidades()
+    public function especialidades(): HasMany
     {
-        return $this->hasMany(
-            Especialidad::class,
-            'profesion_id'
-        );
+        return $this->hasMany(Especialidad::class, 'profesion_id');
     }
 
-    public function profesionales()
+    public function profesionales(): BelongsToMany
     {
         return $this->belongsToMany(
             Profesional::class,

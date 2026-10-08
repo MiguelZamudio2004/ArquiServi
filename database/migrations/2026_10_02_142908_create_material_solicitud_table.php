@@ -22,10 +22,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique([
-                'solicitud_id',
-                'material_id'
-            ]);
+            $table->unique(['solicitud_id', 'material_id']);
         });
 
         if (Schema::hasColumn('solicitudes', 'material_id')) {

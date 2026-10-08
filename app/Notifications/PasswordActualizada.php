@@ -9,11 +9,6 @@ class PasswordActualizada extends Notification
 {
     use Queueable;
 
-    public function __construct()
-    {
-        //
-    }
-
     public function via(object $notifiable): array
     {
         return ['database'];

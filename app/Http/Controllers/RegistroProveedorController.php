@@ -2,66 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
-use App\Models\Proveedor;
 use App\Models\Material;
+use App\Models\Proveedor;
+use App\Models\Usuario;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class RegistroProveedorController extends Controller
 {
-    public function mostrar()
+    private const ROL_PROVEEDOR = 'proveedor';
+    private const SESION_USUARIO = 'registro_usuario_id';
+
+    public function mostrar(): View|RedirectResponse
     {
-        $usuarioId = session('registro_usuario_id');
+        $usuario = $this->obtenerUsuarioRegistro();
 
-        if (!$usuarioId) {
-            return redirect()
-                ->route('register')
-                ->withErrors([
-                    'registro' => 'Debes iniciar el registro nuevamente.'
-                ]);
+        if (!$usuario) {
+            return $this->redireccionRegistroExpirado();
         }
 
-        $usuario = Usuario::with('rol')->findOrFail($usuarioId);
-
-        if ($usuario->rol->nombre !== 'proveedor') {
-            abort(403);
-        }
-
-        $materiales = Material::where('activo', true)
+        $materiales = Material::query()
+            ->where('activo', true)
             ->orderBy('nombre')
             ->get();
 
-        return view(
-            'registerprov',
-            compact('usuario', 'materiales')
-        );
+        return view('registerprov', compact(
+            'usuario',
+            'materiales'
+        ));
     }
 
-    public function guardar(Request $request)
+    public function guardar(Request $request): RedirectResponse
     {
-        $usuarioId = session('registro_usuario_id');
+        $usuario = $this->obtenerUsuarioRegistro();
 
-        if (!$usuarioId) {
-            return redirect()
-                ->route('register')
-                ->withErrors([
-                    'registro' => 'Debes iniciar el registro nuevamente.'
-                ]);
-        }
-
-        $usuario = Usuario::with('rol')->findOrFail($usuarioId);
-
-        if ($usuario->rol->nombre !== 'proveedor') {
-            abort(403);
+        if (!$usuario) {
+            return $this->redireccionRegistroExpirado();
         }
 
         $datos = $request->validate(
             [
-                'descripcion' => 'nullable|string|max:500',
-                'zona_trabajo' => 'required|string|max:200',
-                'materiales' => 'required|array|min:1',
-                'materiales.*' => 'required|exists:materiales,id',
+                'descripcion' => ['nullable', 'string', 'max:500'],
+                'zona_trabajo' => ['required', 'string', 'max:200'],
+                'materiales' => ['required', 'array', 'min:1'],
+                'materiales.*' => ['required', 'exists:materiales,id'],
             ],
             [
                 'zona_trabajo.required' => 'Debes indicar tu zona de trabajo.',
@@ -79,24 +65,51 @@ class RegistroProveedorController extends Controller
                 'zona_trabajo' => $datos['zona_trabajo'],
             ]);
 
-            $materiales = [];
-
-            foreach ($datos['materiales'] as $materialId) {
-                $materiales[$materialId] = [
-                    'disponible' => true
-                ];
-            }
-
-            $proveedor->materiales()->sync($materiales);
+            $proveedor->materiales()->sync(
+                $this->prepararMateriales($datos['materiales'])
+            );
         });
 
-        session()->forget('registro_usuario_id');
+        session()->forget(self::SESION_USUARIO);
 
         return redirect()
             ->route('login')
-            ->with(
-                'success',
-                'Tu registro como proveedor se completó correctamente.'
-            );
+            ->with('success', 'Tu registro como proveedor se completó correctamente.');
+    }
+
+    private function obtenerUsuarioRegistro(): ?Usuario
+    {
+        $usuarioId = session(self::SESION_USUARIO);
+
+        if (!$usuarioId) {
+            return null;
+        }
+
+        $usuario = Usuario::with('rol')->findOrFail($usuarioId);
+
+        abort_unless(
+            $usuario->rol?->nombre === self::ROL_PROVEEDOR,
+            403
+        );
+
+        return $usuario;
+    }
+
+    private function prepararMateriales(array $materialesIds): array
+    {
+        return collect($materialesIds)
+            ->mapWithKeys(fn ($materialId) => [
+                $materialId => ['disponible' => true],
+            ])
+            ->all();
+    }
+
+    private function redireccionRegistroExpirado(): RedirectResponse
+    {
+        return redirect()
+            ->route('register')
+            ->withErrors([
+                'registro' => 'Debes iniciar el registro nuevamente.',
+            ]);
     }
 }

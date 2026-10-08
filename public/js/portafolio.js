@@ -13,29 +13,34 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const botonAnterior =
-        document.getElementById('portafolioAnterior');
+    const botonAnterior = document.getElementById(
+        'portafolioAnterior'
+    );
 
-    const botonSiguiente =
-        document.getElementById('portafolioSiguiente');
+    const botonSiguiente = document.getElementById(
+        'portafolioSiguiente'
+    );
 
-    const contadorActual =
-        document.getElementById('portafolioActual');
+    const contadorActual = document.getElementById(
+        'portafolioActual'
+    );
 
-    const trabajoActual =
-        document.getElementById('portafolioTrabajoActual');
+    const trabajoActual = document.getElementById(
+        'portafolioTrabajoActual'
+    );
 
-    const modal =
-        document.getElementById('portafolioModal');
+    const modal = document.getElementById('portafolioModal');
+    const modalFondo = document.getElementById(
+        'portafolioModalFondo'
+    );
 
-    const modalFondo =
-        document.getElementById('portafolioModalFondo');
+    const cerrarModal = document.getElementById(
+        'cerrarPortafolio'
+    );
 
-    const cerrarModal =
-        document.getElementById('cerrarPortafolio');
-
-    const imagenGrande =
-        document.getElementById('imagenPortafolioGrande');
+    const imagenGrande = document.getElementById(
+        'imagenPortafolioGrande'
+    );
 
     const botonesImagen = Array.from(
         carrusel.querySelectorAll('.portafolio-imagen-boton')
@@ -60,27 +65,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function actualizarInformacion() {
         if (contadorActual) {
-            contadorActual.textContent =
-                indiceActual + 1;
+            contadorActual.textContent = indiceActual + 1;
         }
 
         if (trabajoActual) {
-            trabajoActual.textContent =
-                indiceActual + 1;
+            trabajoActual.textContent = indiceActual + 1;
         }
     }
 
     function cambiarImagen(nuevoIndice, direccion = 1) {
-        if (
-            animando ||
-            slides.length <= 1
-        ) {
+        if (animando || slides.length <= 1) {
             return;
         }
 
-        nuevoIndice = normalizarIndice(
-            nuevoIndice
-        );
+        nuevoIndice = normalizarIndice(nuevoIndice);
 
         if (nuevoIndice === indiceActual) {
             return;
@@ -88,11 +86,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         animando = true;
 
-        const slideActual =
-            slides[indiceActual];
-
-        const slideNuevo =
-            slides[nuevoIndice];
+        const slideActual = slides[indiceActual];
+        const slideNuevo = slides[nuevoIndice];
 
         slideActual.classList.remove(
             'saliendo-izquierda',
@@ -105,22 +100,13 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
         if (direccion > 0) {
-            slideActual.classList.add(
-                'saliendo-izquierda'
-            );
+            slideActual.classList.add('saliendo-izquierda');
         } else {
-            slideActual.classList.add(
-                'saliendo-derecha'
-            );
+            slideActual.classList.add('saliendo-derecha');
         }
 
-        slideActual.classList.remove(
-            'activo'
-        );
-
-        slideNuevo.classList.add(
-            'activo'
-        );
+        slideActual.classList.remove('activo');
+        slideNuevo.classList.add('activo');
 
         indiceActual = nuevoIndice;
 
@@ -137,17 +123,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function siguienteImagen() {
-        cambiarImagen(
-            indiceActual + 1,
-            1
-        );
+        cambiarImagen(indiceActual + 1, 1);
     }
 
     function anteriorImagen() {
-        cambiarImagen(
-            indiceActual - 1,
-            -1
-        );
+        cambiarImagen(indiceActual - 1, -1);
     }
 
     if (botonSiguiente) {
@@ -167,14 +147,11 @@ document.addEventListener('DOMContentLoaded', function () {
     carrusel.addEventListener(
         'touchstart',
         function (event) {
-            if (
-                event.changedTouches.length === 0
-            ) {
+            if (event.changedTouches.length === 0) {
                 return;
             }
 
-            inicioTouchX =
-                event.changedTouches[0].clientX;
+            inicioTouchX = event.changedTouches[0].clientX;
         },
         {
             passive: true
@@ -191,11 +168,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            finTouchX =
-                event.changedTouches[0].clientX;
+            finTouchX = event.changedTouches[0].clientX;
 
-            const diferencia =
-                finTouchX - inicioTouchX;
+            const diferencia = finTouchX - inicioTouchX;
 
             if (Math.abs(diferencia) < 50) {
                 return;
@@ -213,25 +188,15 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
     function abrirModal(imagen) {
-        if (
-            !modal ||
-            !imagenGrande ||
-            !imagen
-        ) {
+        if (!modal || !imagenGrande || !imagen) {
             return;
         }
 
         imagenGrande.src = imagen;
-
-        imagenGrande.alt =
-            'Imagen ampliada del portafolio';
+        imagenGrande.alt = 'Imagen ampliada del portafolio';
 
         modal.classList.add('activo');
-
-        modal.setAttribute(
-            'aria-hidden',
-            'false'
-        );
+        modal.setAttribute('aria-hidden', 'false');
 
         document.body.classList.add(
             'modal-portafolio-abierto'
@@ -244,11 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         modal.classList.remove('activo');
-
-        modal.setAttribute(
-            'aria-hidden',
-            'true'
-        );
+        modal.setAttribute('aria-hidden', 'true');
 
         document.body.classList.remove(
             'modal-portafolio-abierto'
@@ -260,14 +221,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     botonesImagen.forEach(function (boton) {
-        boton.addEventListener(
-            'click',
-            function () {
-                abrirModal(
-                    this.dataset.imagen
-                );
-            }
-        );
+        boton.addEventListener('click', function () {
+            abrirModal(this.dataset.imagen);
+        });
     });
 
     if (cerrarModal) {
@@ -284,29 +240,26 @@ document.addEventListener('DOMContentLoaded', function () {
         );
     }
 
-    document.addEventListener(
-        'keydown',
-        function (event) {
-            if (
-                modal &&
-                modal.classList.contains('activo')
-            ) {
-                if (event.key === 'Escape') {
-                    cerrarVisor();
-                }
-
-                return;
+    document.addEventListener('keydown', function (event) {
+        if (
+            modal &&
+            modal.classList.contains('activo')
+        ) {
+            if (event.key === 'Escape') {
+                cerrarVisor();
             }
 
-            if (event.key === 'ArrowRight') {
-                siguienteImagen();
-            }
-
-            if (event.key === 'ArrowLeft') {
-                anteriorImagen();
-            }
+            return;
         }
-    );
+
+        if (event.key === 'ArrowRight') {
+            siguienteImagen();
+        }
+
+        if (event.key === 'ArrowLeft') {
+            anteriorImagen();
+        }
+    });
 
     actualizarInformacion();
 });

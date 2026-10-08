@@ -1,21 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Perfil de {{ $usuario->nombre }}</title>
-    <link rel="stylesheet" href="{{ asset('css/perfil-publico.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/calificaciones-perfil.css') }}">
-    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="{{ asset('js/notification.js') }}" defer></script>
-</head>
-<body>
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+    <title>Perfil de {{ $usuario->nombre }}</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/perfil-publico.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/calificaciones-perfil.css') }}"
+    >
+
+    <link
+        rel="icon"
+        href="{{ asset('icono.png') }}"
+        type="image/png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+
+    <script
+        src="{{ asset('js/notification.js') }}"
+        defer
+    ></script>
+</head>
+
+<body>
 <header class="encabezado">
-    <a href="{{ route('menu') }}" class="logo-link">
-        <img src="{{ asset('encabezado2.png') }}" class="logo" alt="ArquiServi">
+    <a
+        href="{{ route('menu') }}"
+        class="logo-link"
+    >
+        <img
+            src="{{ asset('encabezado2.png') }}"
+            class="logo"
+            alt="ArquiServi"
+        >
     </a>
 
     <nav class="menu-superior">
@@ -23,14 +61,20 @@
             <li>
                 <a href="{{ route('menu') }}">
                     <i class="fa-solid fa-house icono"></i>
-                    <span class="texto">Inicio</span>
+
+                    <span class="texto">
+                        Inicio
+                    </span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('usuarios.buscar') }}">
                     <i class="fa-solid fa-folder-open icono"></i>
-                    <span class="texto">Catálogo</span>
+
+                    <span class="texto">
+                        Catálogo
+                    </span>
                 </a>
             </li>
 
@@ -39,7 +83,10 @@
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
                             <i class="fa-solid fa-envelope icono"></i>
-                            <span class="texto">Mis solicitudes</span>
+
+                            <span class="texto">
+                                Mis solicitudes
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -48,13 +95,20 @@
                     <li>
                         <a href="{{ route('solicitudes.recibidas') }}">
                             <i class="fa-solid fa-inbox icono"></i>
-                            <span class="texto">Solicitudes recibidas</span>
+
+                            <span class="texto">
+                                Solicitudes recibidas
+                            </span>
                         </a>
                     </li>
                 @endif
 
                 <li class="notificaciones-container">
-                    <input type="hidden" id="csrf-notificaciones" value="{{ csrf_token() }}">
+                    <input
+                        type="hidden"
+                        id="csrf-notificaciones"
+                        value="{{ csrf_token() }}"
+                    >
 
                     <button
                         type="button"
@@ -75,7 +129,9 @@
                             @endif
                         </span>
 
-                        <span class="texto">Notificaciones</span>
+                        <span class="texto">
+                            Notificaciones
+                        </span>
                     </button>
 
                     <div
@@ -83,7 +139,9 @@
                         id="notificacionesDropdown"
                     >
                         <div class="notificaciones-header">
-                            <h3>Notificaciones</h3>
+                            <h3>
+                                Notificaciones
+                            </h3>
                         </div>
 
                         <div class="notificaciones-lista">
@@ -121,7 +179,11 @@
                 </li>
 
                 <li>
-                    <form action="{{ route('logout') }}" method="POST" class="logout-menu-form">
+                    <form
+                        action="{{ route('logout') }}"
+                        method="POST"
+                        class="logout-menu-form"
+                    >
                         @csrf
 
                         <button
@@ -130,7 +192,10 @@
                             aria-label="Cerrar sesión"
                         >
                             <i class="fa-solid fa-right-from-bracket icono"></i>
-                            <span class="texto">Cerrar sesión</span>
+
+                            <span class="texto">
+                                Cerrar sesión
+                            </span>
                         </button>
                     </form>
                 </li>
@@ -138,66 +203,43 @@
         </ul>
     </nav>
 
-@auth
+    @auth
+        <div class="acciones-usuario">
+            @if(auth()->user()->rol && auth()->user()->rol->nombre === 'administrador')
+                <a
+                    href="{{ route('admin.dashboard') }}"
+                    class="volver-admin-header"
+                    aria-label="Volver al panel de administración"
+                    title="Panel de administración"
+                >
+                    <span class="volver-admin-icono">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
 
-    <div class="acciones-usuario">
-
-        @if(
-            auth()->user()->rol &&
-            auth()->user()->rol->nombre === 'administrador'
-        )
-
-            <a
-                href="{{ route('admin.dashboard') }}"
-                class="volver-admin-header"
-                aria-label="Volver al panel de administración"
-                title="Panel de administración"
-            >
-
-                <span class="volver-admin-icono">
-
-                    <i class="fa-solid fa-user-shield"></i>
-
-                </span>
-
-                <span class="volver-admin-texto">
-                    Panel admin
-                </span>
-
-            </a>
-
-        @else
-
-            <a
-                href="{{ route('perfil') }}"
-                class="perfil-header"
-                aria-label="Mi perfil"
-            >
-
-                <span class="perfil-avatar-header">
-
-                    @if(auth()->user()->foto_perfil)
-
-                        <img
-                            src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
-                            alt="Foto de perfil"
-                        >
-
-                    @else
-
-                        <i class="fa-solid fa-user"></i>
-
-                    @endif
-
-                </span>
-
-            </a>
-
-        @endif
-
-    </div>
-
-@endauth
+                    <span class="volver-admin-texto">
+                        Panel admin
+                    </span>
+                </a>
+            @else
+                <a
+                    href="{{ route('perfil') }}"
+                    class="perfil-header"
+                    aria-label="Mi perfil"
+                >
+                    <span class="perfil-avatar-header">
+                        @if(auth()->user()->foto_perfil)
+                            <img
+                                src="{{ asset('storage/' . auth()->user()->foto_perfil) }}"
+                                alt="Foto de perfil"
+                            >
+                        @else
+                            <i class="fa-solid fa-user"></i>
+                        @endif
+                    </span>
+                </a>
+            @endif
+        </div>
+    @endauth
 </header>
 
 @php
@@ -297,7 +339,9 @@
 
     <section class="perfil-datos">
         <div class="dato">
-            <span>Ubicación</span>
+            <span>
+                Ubicación
+            </span>
 
             <strong>
                 {{ $usuario->ubicacion ?? 'No especificada' }}
@@ -305,7 +349,9 @@
         </div>
 
         <div class="dato">
-            <span>Tipo de cuenta</span>
+            <span>
+                Tipo de cuenta
+            </span>
 
             <strong>
                 {{ ucfirst($usuario->rol->nombre) }}
@@ -316,7 +362,9 @@
     @auth
         <section class="perfil-seccion contacto-seccion">
             <div class="seccion-titulo">
-                <h2>Datos de contacto</h2>
+                <h2>
+                    Datos de contacto
+                </h2>
 
                 <span class="contacto-disponible">
                     Disponible
@@ -334,7 +382,9 @@
                             {{ $usuario->correo }}
                         </a>
                     @else
-                        <strong>No especificado</strong>
+                        <strong>
+                            No especificado
+                        </strong>
                     @endif
                 </div>
 
@@ -348,7 +398,9 @@
                             {{ $usuario->telefono }}
                         </a>
                     @else
-                        <strong>No especificado</strong>
+                        <strong>
+                            No especificado
+                        </strong>
                     @endif
                 </div>
             </div>
@@ -523,13 +575,12 @@
         !empty($usuario->portafolio_fotos) &&
         count($usuario->portafolio_fotos) > 0
     )
-
         <section class="portafolio-seccion">
-
             <div class="portafolio-encabezado">
-
                 <div>
-                    <h2>Portafolio</h2>
+                    <h2>
+                        Portafolio
+                    </h2>
 
                     <p>
                         Trabajos realizados
@@ -543,7 +594,6 @@
                         {{ count($usuario->portafolio_fotos) }}
                     </span>
                 </span>
-
             </div>
 
             <div
@@ -551,9 +601,7 @@
                 id="portafolioCarrusel"
                 data-total="{{ count($usuario->portafolio_fotos) }}"
             >
-
                 @if(count($usuario->portafolio_fotos) > 1)
-
                     <button
                         type="button"
                         class="portafolio-flecha portafolio-anterior"
@@ -562,25 +610,20 @@
                     >
                         <i class="fa-solid fa-chevron-left"></i>
                     </button>
-
                 @endif
 
                 <div class="portafolio-ventana">
-
                     @foreach($usuario->portafolio_fotos as $indice => $foto)
-
                         <div
                             class="portafolio-slide {{ $loop->first ? 'activo' : '' }}"
                             data-indice="{{ $indice }}"
                         >
-
                             <button
                                 type="button"
                                 class="portafolio-imagen-boton"
                                 data-imagen="{{ asset('storage/' . $foto) }}"
                                 aria-label="Ampliar imagen {{ $indice + 1 }} del portafolio"
                             >
-
                                 <img
                                     src="{{ asset('storage/' . $foto) }}"
                                     alt="Trabajo del portafolio {{ $indice + 1 }}"
@@ -588,23 +631,16 @@
                                 >
 
                                 <span class="portafolio-overlay">
-
                                     <span class="portafolio-expandir">
                                         <i class="fa-solid fa-expand"></i>
                                     </span>
-
                                 </span>
-
                             </button>
-
                         </div>
-
                     @endforeach
-
                 </div>
 
                 @if(count($usuario->portafolio_fotos) > 1)
-
                     <button
                         type="button"
                         class="portafolio-flecha portafolio-siguiente"
@@ -613,15 +649,13 @@
                     >
                         <i class="fa-solid fa-chevron-right"></i>
                     </button>
-
                 @endif
-
             </div>
 
             <div class="portafolio-pie">
-
                 <span class="portafolio-etiqueta">
                     <i class="fa-solid fa-camera"></i>
+
                     Trabajo
                     <span id="portafolioTrabajoActual">1</span>
                 </span>
@@ -629,9 +663,7 @@
                 <span class="portafolio-ayuda">
                     Haz clic en la imagen para ampliarla
                 </span>
-
             </div>
-
         </section>
 
         <div
@@ -639,14 +671,12 @@
             id="portafolioModal"
             aria-hidden="true"
         >
-
             <div
                 class="portafolio-modal-fondo"
                 id="portafolioModalFondo"
             ></div>
 
             <div class="portafolio-modal-contenido">
-
                 <button
                     type="button"
                     class="portafolio-modal-cerrar"
@@ -661,11 +691,8 @@
                     id="imagenPortafolioGrande"
                     alt="Imagen ampliada del portafolio"
                 >
-
             </div>
-
         </div>
-
     @endif
 
     @if(in_array($usuario->rol->nombre, ['profesional', 'proveedor']))

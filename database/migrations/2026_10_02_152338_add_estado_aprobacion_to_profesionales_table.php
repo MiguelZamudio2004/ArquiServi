@@ -13,7 +13,7 @@ return new class extends Migration
                 'no_requerida',
                 'pendiente',
                 'aprobado',
-                'rechazado'
+                'rechazado',
             ])
                 ->default('no_requerida')
                 ->after('zona_trabajo');

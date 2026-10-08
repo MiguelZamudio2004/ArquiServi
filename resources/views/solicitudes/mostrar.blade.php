@@ -3,28 +3,62 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
 
     <title>Detalle de solicitud - ArquiServi</title>
 
-    <link rel="stylesheet" href="{{ asset('css/solicitudes.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/calificacion.css') }}">
-    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/solicitudes.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/calificacion.css') }}"
+    >
+
+    <link
+        rel="icon"
+        href="{{ asset('icono.png') }}"
+        type="image/png"
+    >
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     >
 
-    <script src="{{ asset('js/notification.js') }}" defer></script>
-    <script src="{{ asset('js/perfil.js') }}" defer></script>
-    <script src="{{ asset('js/reseña.js') }}" defer></script>
+    <script
+        src="{{ asset('js/notification.js') }}"
+        defer
+    ></script>
+
+    <script
+        src="{{ asset('js/perfil.js') }}"
+        defer
+    ></script>
+
+    <script
+        src="{{ asset('js/reseña.js') }}"
+        defer
+    ></script>
 </head>
 
 <body>
-
 <header class="encabezado">
-    <a href="{{ route('menu') }}" class="logo-link">
+    <a
+        href="{{ route('menu') }}"
+        class="logo-link"
+    >
         <img
             src="{{ asset('encabezado2.png') }}"
             class="logo"
@@ -37,14 +71,20 @@
             <li>
                 <a href="{{ route('menu') }}">
                     <i class="fa-solid fa-house icono"></i>
-                    <span class="texto">Inicio</span>
+
+                    <span class="texto">
+                        Inicio
+                    </span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('usuarios.buscar') }}">
                     <i class="fa-solid fa-folder-open icono"></i>
-                    <span class="texto">Catálogo</span>
+
+                    <span class="texto">
+                        Catálogo
+                    </span>
                 </a>
             </li>
 
@@ -53,7 +93,10 @@
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
                             <i class="fa-solid fa-envelope icono"></i>
-                            <span class="texto">Mis solicitudes</span>
+
+                            <span class="texto">
+                                Mis solicitudes
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -62,7 +105,10 @@
                     <li>
                         <a href="{{ route('solicitudes.recibidas') }}">
                             <i class="fa-solid fa-inbox icono"></i>
-                            <span class="texto">Solicitudes recibidas</span>
+
+                            <span class="texto">
+                                Solicitudes recibidas
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -110,14 +156,12 @@
 
                         <div class="notificaciones-lista">
                             @forelse(auth()->user()->notifications()->latest()->take(10)->get() as $notificacion)
-
                                 <button
                                     type="button"
                                     class="notificacion {{ $notificacion->read_at ? 'leida' : 'no-leida' }}"
                                     data-url="{{ route('notificaciones.leer', $notificacion->id) }}"
                                 >
                                     <div class="notificacion-contenido">
-
                                         <strong class="notificacion-titulo">
                                             {{ $notificacion->data['titulo'] ?? 'Notificación' }}
                                         </strong>
@@ -129,20 +173,16 @@
                                         <small class="notificacion-fecha">
                                             {{ $notificacion->created_at->diffForHumans() }}
                                         </small>
-
                                     </div>
 
                                     @if(!$notificacion->read_at)
                                         <span class="indicador-no-leida"></span>
                                     @endif
                                 </button>
-
                             @empty
-
                                 <div class="sin-notificaciones">
                                     No tienes notificaciones.
                                 </div>
-
                             @endforelse
                         </div>
                     </div>
@@ -162,6 +202,7 @@
                             aria-label="Cerrar sesión"
                         >
                             <i class="fa-solid fa-right-from-bracket icono"></i>
+
                             <span class="texto">
                                 Cerrar sesión
                             </span>
@@ -209,26 +250,17 @@
         );
 
     if ($esSolicitante) {
-        if (
-            $solicitud
-                ->destinatario
-                ->rol
-                ->nombre === 'proveedor'
-        ) {
-            $textoCalificar =
-                'Calificar proveedor';
+        if ($solicitud->destinatario->rol->nombre === 'proveedor') {
+            $textoCalificar = 'Calificar proveedor';
         } else {
-            $textoCalificar =
-                'Calificar profesional';
+            $textoCalificar = 'Calificar profesional';
         }
     } else {
-        $textoCalificar =
-            'Calificar cliente';
+        $textoCalificar = 'Calificar cliente';
     }
 @endphp
 
 <main class="solicitudes-contenedor">
-
     <h1>
         Detalle de solicitud
     </h1>
@@ -250,7 +282,6 @@
     @endif
 
     <section class="detalle-solicitud">
-
         <div class="detalle-item">
             <span>
                 Solicitante
@@ -284,7 +315,6 @@
         </div>
 
         @if($solicitud->servicio)
-
             <div class="detalle-item">
                 <span>
                     Servicio
@@ -294,11 +324,9 @@
                     {{ $solicitud->servicio->nombre }}
                 </strong>
             </div>
-
         @endif
 
         @if($solicitud->materiales->isNotEmpty())
-
             <div class="detalle-item detalle-materiales">
                 <span>
                     Materiales o productos
@@ -312,7 +340,6 @@
                     @endforeach
                 </div>
             </div>
-
         @endif
 
         <div class="detalle-item">
@@ -351,9 +378,7 @@
             $esDestinatario &&
             $solicitud->estado === 'pendiente'
         )
-
             <div class="acciones-trabajo">
-
                 <form
                     action="{{ route('solicitudes.rechazar', $solicitud) }}"
                     method="POST"
@@ -383,9 +408,7 @@
                         Aceptar
                     </button>
                 </form>
-
             </div>
-
         @endif
 
         @if(
@@ -395,9 +418,7 @@
             ) &&
             $telefonoWhatsapp
         )
-
             <div class="contacto-whatsapp">
-
                 <a
                     href="https://wa.me/{{ $telefonoWhatsapp }}"
                     target="_blank"
@@ -406,18 +427,14 @@
                 >
                     Contactar por WhatsApp
                 </a>
-
             </div>
-
         @endif
 
         @if(
             $esDestinatario &&
             $solicitud->estado === 'aceptada'
         )
-
             <div class="acciones-trabajo">
-
                 <form
                     action="{{ route('solicitudes.terminar', $solicitud) }}"
                     method="POST"
@@ -432,17 +449,12 @@
                         Terminar trabajo
                     </button>
                 </form>
-
             </div>
-
         @endif
 
         @if($solicitud->estado === 'terminada')
-
             <div class="acciones-calificacion">
-
                 @if(!$yaCalifico)
-
                     <button
                         type="button"
                         class="btn-calificar btn-abrir-calificacion"
@@ -450,9 +462,7 @@
                     >
                         {{ $textoCalificar }}
                     </button>
-
                 @else
-
                     <button
                         type="button"
                         class="btn-calificar"
@@ -460,33 +470,22 @@
                     >
                         Ya calificaste
                     </button>
-
                 @endif
-
             </div>
-
         @endif
-
     </section>
 
     <div class="volver">
-
         @if($esSolicitante)
-
             <a href="{{ route('solicitudes.mias') }}">
                 Volver a mis solicitudes
             </a>
-
         @else
-
             <a href="{{ route('solicitudes.recibidas') }}">
                 Volver a solicitudes recibidas
             </a>
-
         @endif
-
     </div>
-
 </main>
 
 <div id="modalCalificacionContenedor"></div>
@@ -498,4 +497,5 @@
 </footer>
 
 </body>
+
 </html>

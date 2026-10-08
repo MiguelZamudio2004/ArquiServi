@@ -10,37 +10,31 @@ class SolicitudRecibida extends Notification
 {
     use Queueable;
 
-    public function __construct(
-        public Solicitud $solicitud
-    ) {
+    public function __construct(public Solicitud $solicitud)
+    {
     }
 
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
-        return [
-            'database'
-        ];
+        return ['database'];
     }
 
-    public function toArray($notifiable): array
+    public function toDatabase(object $notifiable): array
     {
-        $concepto =
-            $this->solicitud->servicio?->nombre
+        $this->solicitud->loadMissing([
+            'solicitante',
+            'servicio',
+            'materiales',
+        ]);
+
+        $concepto = $this->solicitud->servicio?->nombre
             ?? $this->solicitud->material?->nombre
             ?? 'una solicitud';
 
         return [
-            'titulo' =>
-                'Nueva solicitud',
-
-            'mensaje' =>
-                $this->solicitud->solicitante->nombre
-                . ' te envió una solicitud por '
-                . $concepto
-                . '.',
-
-            'solicitud_id' =>
-                $this->solicitud->id
+            'titulo' => 'Nueva solicitud',
+            'mensaje' => "{$this->solicitud->solicitante->nombre} te envió una solicitud por {$concepto}.",
+            'solicitud_id' => $this->solicitud->id,
         ];
     }
 }

@@ -15,7 +15,6 @@
         aria-labelledby="arquiserviConfirmacionTitulo"
         aria-describedby="arquiserviConfirmacionMensaje"
     >
-
         <button
             type="button"
             class="arquiservi-confirmacion-cerrar"
@@ -45,7 +44,6 @@
         </p>
 
         <div class="arquiservi-confirmacion-acciones">
-
             <button
                 type="button"
                 class="arquiservi-confirmacion-boton cancelar"
@@ -68,8 +66,6 @@
                     Confirmar
                 </span>
             </button>
-
         </div>
-
     </div>
 </div>

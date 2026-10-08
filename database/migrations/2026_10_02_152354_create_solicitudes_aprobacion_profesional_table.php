@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('estado', [
                 'pendiente',
                 'aprobada',
-                'rechazada'
+                'rechazada',
             ])->default('pendiente');
 
             $table->foreignId('revisado_por')
@@ -29,9 +29,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->text('motivo_rechazo')->nullable();
-
             $table->timestamp('revisado_at')->nullable();
-
             $table->timestamps();
         });
     }

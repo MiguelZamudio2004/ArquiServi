@@ -1,30 +1,67 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Mis solicitudes - ArquiServi</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="{{ asset('css/solicitudes.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/calificacion.css') }}">
-    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+    <title>
+        Mis solicitudes - ArquiServi
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/solicitudes.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/calificacion.css') }}"
+    >
+
+    <link
+        rel="icon"
+        href="{{ asset('icono.png') }}"
+        type="image/png"
+    >
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     >
 
-    <script src="{{ asset('js/notification.js') }}" defer></script>
-    <script src="{{ asset('js/perfil.js') }}" defer></script>
-    <script src="{{ asset('js/reseña.js') }}" defer></script>
+    <script
+        src="{{ asset('js/notification.js') }}"
+        defer
+    ></script>
+
+    <script
+        src="{{ asset('js/perfil.js') }}"
+        defer
+    ></script>
+
+    <script
+        src="{{ asset('js/reseña.js') }}"
+        defer
+    ></script>
 </head>
 
 <body>
-
 <header class="encabezado">
-    <a href="{{ route('menu') }}" class="logo-link">
+    <a
+        href="{{ route('menu') }}"
+        class="logo-link"
+    >
         <img
             src="{{ asset('encabezado2.png') }}"
             class="logo"
@@ -37,14 +74,20 @@
             <li>
                 <a href="{{ route('menu') }}">
                     <i class="fa-solid fa-house icono"></i>
-                    <span class="texto">Inicio</span>
+
+                    <span class="texto">
+                        Inicio
+                    </span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('usuarios.buscar') }}">
                     <i class="fa-solid fa-folder-open icono"></i>
-                    <span class="texto">Catálogo</span>
+
+                    <span class="texto">
+                        Catálogo
+                    </span>
                 </a>
             </li>
 
@@ -53,7 +96,10 @@
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
                             <i class="fa-solid fa-envelope icono"></i>
-                            <span class="texto">Mis solicitudes</span>
+
+                            <span class="texto">
+                                Mis solicitudes
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -62,7 +108,10 @@
                     <li>
                         <a href="{{ route('solicitudes.recibidas') }}">
                             <i class="fa-solid fa-inbox icono"></i>
-                            <span class="texto">Solicitudes recibidas</span>
+
+                            <span class="texto">
+                                Solicitudes recibidas
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -103,7 +152,9 @@
                         id="notificacionesDropdown"
                     >
                         <div class="notificaciones-header">
-                            <h3>Notificaciones</h3>
+                            <h3>
+                                Notificaciones
+                            </h3>
                         </div>
 
                         <div class="notificaciones-lista">
@@ -154,6 +205,7 @@
                             aria-label="Cerrar sesión"
                         >
                             <i class="fa-solid fa-right-from-bracket icono"></i>
+
                             <span class="texto">
                                 Cerrar sesión
                             </span>
@@ -187,8 +239,9 @@
 </header>
 
 <main class="solicitudes-contenedor">
-
-    <h1>Mis solicitudes</h1>
+    <h1>
+        Mis solicitudes
+    </h1>
 
     @if(session('exito'))
         <div class="mensaje-exito">
@@ -199,31 +252,42 @@
     @if($errors->any())
         <div class="errores">
             @foreach($errors->all() as $error)
-                <p>{{ $error }}</p>
+                <p>
+                    {{ $error }}
+                </p>
             @endforeach
         </div>
     @endif
 
     @if($solicitudes->isNotEmpty())
-
         <div class="tabla-contenedor">
-
             <table class="tabla-solicitudes">
-
                 <thead>
                     <tr>
-                        <th>Destinatario</th>
-                        <th>Tipo</th>
-                        <th>Servicio / Materiales</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>
+                            Destinatario
+                        </th>
+
+                        <th>
+                            Tipo
+                        </th>
+
+                        <th>
+                            Servicio / Materiales
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Acciones
+                        </th>
                     </tr>
                 </thead>
 
                 <tbody>
-
                     @foreach($solicitudes as $solicitud)
-
                         @php
                             if ($solicitud->servicio) {
                                 $concepto = $solicitud->servicio->nombre;
@@ -238,7 +302,6 @@
                         @endphp
 
                         <tr>
-
                             <td data-label="Destinatario">
                                 {{ $solicitud->destinatario->nombre }}
                                 {{ $solicitud->destinatario->apellido_paterno }}
@@ -248,37 +311,26 @@
                                 {{ ucfirst($solicitud->destinatario->rol->nombre) }}
                             </td>
 
-<td data-label="Servicio / Materiales">
+                            <td data-label="Servicio / Materiales">
+                                @if($solicitud->servicio)
+                                    <div class="materiales-solicitud-lista">
+                                        <span class="material-solicitud-etiqueta">
+                                            {{ $solicitud->servicio->nombre }}
+                                        </span>
+                                    </div>
+                                @elseif($solicitud->materiales->isNotEmpty())
+                                    <div class="materiales-solicitud-lista">
+                                        @foreach($solicitud->materiales as $material)
+                                            <span class="material-solicitud-etiqueta">
+                                                {{ $material->nombre }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    Sin especificar
+                                @endif
+                            </td>
 
-    @if($solicitud->servicio)
-
-        <div class="materiales-solicitud-lista">
-            <span class="material-solicitud-etiqueta">
-                {{ $solicitud->servicio->nombre }}
-            </span>
-        </div>
-
-    @elseif($solicitud->materiales->isNotEmpty())
-
-        <div class="materiales-solicitud-lista">
-
-            @foreach($solicitud->materiales as $material)
-
-                <span class="material-solicitud-etiqueta">
-                    {{ $material->nombre }}
-                </span>
-
-            @endforeach
-
-        </div>
-
-    @else
-
-        Sin especificar
-
-    @endif
-
-</td>
                             <td data-label="Estado">
                                 <span class="estado estado-{{ $solicitud->estado }}">
                                     {{ ucfirst($solicitud->estado) }}
@@ -286,9 +338,7 @@
                             </td>
 
                             <td data-label="Acciones">
-
                                 <div class="acciones-tabla">
-
                                     <a
                                         href="{{ route('solicitudes.mostrar', $solicitud) }}"
                                         class="btn-ver"
@@ -303,7 +353,6 @@
                                         ) &&
                                         $solicitud->destinatario->telefono
                                     )
-
                                         @php
                                             $telefono = $solicitud
                                                 ->destinatario
@@ -329,7 +378,6 @@
                                         >
                                             WhatsApp
                                         </a>
-
                                     @endif
 
                                     @if(
@@ -339,7 +387,6 @@
                                             auth()->id()
                                         )
                                     )
-
                                         <button
                                             type="button"
                                             class="btn-calificar btn-abrir-calificacion"
@@ -348,25 +395,15 @@
                                             Calificar
                                             {{ $solicitud->destinatario->rol->nombre === 'proveedor' ? 'proveedor' : 'profesional' }}
                                         </button>
-
                                     @endif
-
                                 </div>
-
                             </td>
-
                         </tr>
-
                     @endforeach
-
                 </tbody>
-
             </table>
-
         </div>
-
     @else
-
         <div class="sin-solicitudes">
             <p>
                 Aún no has enviado solicitudes.
@@ -376,9 +413,7 @@
                 Buscar perfiles
             </a>
         </div>
-
     @endif
-
 </main>
 
 <footer class="pie">
@@ -390,4 +425,5 @@
 <div id="modalCalificacionContenedor"></div>
 
 </body>
+
 </html>

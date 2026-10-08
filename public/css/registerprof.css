@@ -4,8 +4,8 @@
 
 body {
     height: 100%;
-    margin: 0;
     min-height: 100vh;
+    margin: 0;
     display: flex;
     flex-direction: column;
 }
@@ -19,10 +19,10 @@ main {
 }
 
 .logo {
-    display: block;
-    margin: 0 auto;
     width: 200px;
     height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 #subtitulo {
@@ -35,36 +35,36 @@ main {
 .form-register {
     width: calc(100% - 40px);
     max-width: 650px;
-    background-color: #F9FAFB;
-    border: 1px solid #F47A20;
+    height: auto;
     margin: 50px auto;
-    padding: 0 5% 2% 5%;
+    padding: 0 5% 2%;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: auto;
+    background-color: #F9FAFB;
+    border: 1px solid #F47A20;
 }
 
 .etiqueta {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
     margin-bottom: 5px;
     color: #6B7280;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
 }
 
 .select {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
     width: 100%;
-    padding: 5px;
     margin-bottom: 10px;
+    padding: 5px;
     box-sizing: border-box;
-    color: #6B7280;
     background-color: #F9FAFB;
+    color: #6B7280;
     border: 1px solid #6B7280;
     border-radius: 10px;
     outline: none;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -75,15 +75,14 @@ main {
 }
 
 .form-control {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
+    width: 100%;
     margin-bottom: 10px;
     padding: 5px;
     background-color: #F9FAFB;
-    border-color: #6B7280;
     border: 1px solid #6B7280;
-    width: 100%;
     border-radius: 10px;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
 }
 
 .form-control:focus {
@@ -93,46 +92,46 @@ main {
 }
 
 .btn {
-    color: #F47A20;
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
-    border-color: #F47A20;
-    border-radius: 15px;
-    box-sizing: border-box;
-    cursor: pointer;
     width: 100%;
     height: 45px;
+    box-sizing: border-box;
+    color: #F47A20;
+    border-color: #F47A20;
+    border-radius: 15px;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
     transition: 0.3s;
 }
 
 .btn:hover {
-    color: #FFFFFF;
     background-color: #F47A20;
+    color: #FFFFFF;
     border-color: #F47A20;
 }
 
 .pie {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 0;
+    bottom: 0;
     background-color: #0C2D5A;
     color: #FFFFFF;
     text-align: center;
-    padding: 10px 0;
-    bottom: 0;
-    margin-top: auto;
-    width: 100%;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
 }
 
 .error {
-    font-family: Caudex, sans-serif;
-    color: red;
-    font-size: 16px;
     margin-top: 10px;
+    padding: 5px;
+    color: red;
     border: 1px solid red;
     text-align: center;
-    padding: 5px;
     justify-content: center;
     align-items: center;
+    font-family: Caudex, sans-serif;
+    font-size: 16px;
 }
 
 .error ul {
@@ -148,13 +147,10 @@ main {
 
 .especialidades-contenedor {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(180px, 1fr)
-    );
-    gap: 10px;
     margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
 }
 
 .especialidad-opcion {
@@ -199,9 +195,9 @@ main {
     justify-content: center;
     flex-shrink: 0;
     background-color: #FFFFFF;
+    color: transparent;
     border: 2px solid #CBD5E1;
     border-radius: 5px;
-    color: transparent;
     font-size: 12px;
     font-weight: 700;
     transition: 0.2s;
@@ -213,30 +209,20 @@ main {
     font-weight: 500;
 }
 
-.especialidad-opcion:hover
-.especialidad-contenido {
+.especialidad-opcion:hover .especialidad-contenido {
     border-color: #F47A20;
 }
 
-.especialidad-opcion
-input:checked
-+
-.especialidad-contenido {
+.especialidad-opcion input:checked + .especialidad-contenido {
     background-color: #FFF7ED;
     border-color: #F47A20;
-    box-shadow:
-        0 3px 10px
-        rgba(244, 122, 32, 0.12);
+    box-shadow: 0 3px 10px rgba(244, 122, 32, 0.12);
 }
 
-.especialidad-opcion
-input:checked
-+
-.especialidad-contenido
-.especialidad-check {
+.especialidad-opcion input:checked + .especialidad-contenido .especialidad-check {
     background-color: #F47A20;
-    border-color: #F47A20;
     color: #FFFFFF;
+    border-color: #F47A20;
 }
 
 .aviso-aprobacion {
@@ -252,9 +238,9 @@ input:checked
 
 @media (max-width: 600px) {
     .especialidades-contenedor {
+        margin-bottom: 16px;
         grid-template-columns: 1fr;
         gap: 8px;
-        margin-bottom: 16px;
     }
 
     .especialidad-opcion {
@@ -265,8 +251,8 @@ input:checked
         width: 100%;
         min-height: 48px;
         padding: 10px 12px;
-        gap: 9px;
         box-sizing: border-box;
+        gap: 9px;
         border-radius: 8px;
     }
 

@@ -10,17 +10,29 @@ return new class extends Migration
     {
         Schema::create('solicitudes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('usuarios')->cascadeOnDelete();
-            $table->foreignId('profesional_id')->constrained('profesionales')->cascadeOnDelete();
-            $table->foreignId('servicio_id')->constrained('servicios')->cascadeOnDelete();
+
+            $table->foreignId('usuario_id')
+                ->constrained('usuarios')
+                ->cascadeOnDelete();
+
+            $table->foreignId('profesional_id')
+                ->constrained('profesionales')
+                ->cascadeOnDelete();
+
+            $table->foreignId('servicio_id')
+                ->constrained('servicios')
+                ->cascadeOnDelete();
+
             $table->text('descripcion');
+
             $table->enum('estado', [
                 'pendiente',
                 'aceptada',
                 'rechazada',
                 'cancelada',
-                'terminada'
+                'terminada',
             ])->default('pendiente');
+
             $table->timestamps();
         });
     }

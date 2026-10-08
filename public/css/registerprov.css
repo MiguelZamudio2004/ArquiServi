@@ -4,8 +4,8 @@
 
 body {
     height: 100%;
-    margin: 0;
     min-height: 100vh;
+    margin: 0;
     display: flex;
     flex-direction: column;
 }
@@ -19,10 +19,10 @@ main {
 }
 
 .logo {
-    display: block;
-    margin: 0 auto;
     width: 200px;
     height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 #subtitulo {
@@ -35,33 +35,33 @@ main {
 .form-register {
     width: calc(100% - 40px);
     max-width: 650px;
-    background-color: #F9FAFB;
-    border: 1px solid #F47A20;
+    height: auto;
     margin: 50px auto;
     padding: 0 5% 2% 5%;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: auto;
+    background-color: #F9FAFB;
+    border: 1px solid #F47A20;
 }
 
 .etiqueta {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
     margin-bottom: 5px;
     color: #6B7280;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
 }
 
 .form-control {
-    font-family: Poppins, sans-serif;
-    font-size: 16px;
+    width: 100%;
     margin-bottom: 10px;
     padding: 5px;
     background-color: #F9FAFB;
     border: 1px solid #6B7280;
-    width: 100%;
     border-radius: 10px;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
 }
 
 .form-control:focus {
@@ -72,23 +72,20 @@ main {
 
 .materiales {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(150px, 1fr)
-    );
-    gap: 10px;
     margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
 }
 
 .material-opcion {
     width: 100%;
     min-width: 0;
     max-width: 100%;
+    padding: 7px 10px;
     display: flex;
     align-items: center;
     gap: 7px;
-    padding: 7px 10px;
     background-color: #F9FAFB;
     color: #333333;
     border: 1px solid #6B7280;
@@ -100,8 +97,8 @@ main {
 }
 
 .material-opcion:hover {
-    border-color: #F47A20;
     background-color: #FFF7F0;
+    border-color: #F47A20;
 }
 
 .material-opcion input[type="checkbox"] {
@@ -113,41 +110,39 @@ main {
     flex: 1;
     min-width: 0;
     max-width: 100%;
+    line-height: 1.3;
     white-space: normal;
     overflow-wrap: anywhere;
-    line-height: 1.3;
 }
 
 .material-opcion input[type="checkbox"]:checked + span {
-    font-weight: bold;
     color: #F47A20;
+    font-weight: bold;
 }
 
-.material-opcion:has(
-    input[type="checkbox"]:checked
-) {
-    border-color: #F47A20;
+.material-opcion:has(input[type="checkbox"]:checked) {
     background-color: #FFF7F0;
+    border-color: #F47A20;
 }
 
 .btn {
     width: 100%;
     height: 45px;
     margin-top: 20px;
-    color: #F47A20;
+    box-sizing: border-box;
     background-color: #FFFFFF;
+    color: #F47A20;
     border: 1px solid #F47A20;
     border-radius: 15px;
     font-family: Poppins, sans-serif;
     font-size: 16px;
-    box-sizing: border-box;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .btn:hover {
-    color: #FFFFFF;
     background-color: #F47A20;
+    color: #FFFFFF;
     border-color: #F47A20;
 }
 
@@ -167,9 +162,9 @@ main {
     padding: 5px;
     color: red;
     border: 1px solid red;
+    text-align: center;
     font-family: Caudex, sans-serif;
     font-size: 16px;
-    text-align: center;
 }
 
 .error ul {
@@ -198,15 +193,15 @@ main {
     }
 
     .form-control {
-        font-size: 14px;
-        padding: 9px 10px;
         margin-bottom: 8px;
+        padding: 9px 10px;
+        font-size: 14px;
     }
 
     .materiales {
+        margin-top: 8px;
         grid-template-columns: 1fr;
         gap: 8px;
-        margin-top: 8px;
     }
 
     .material-opcion {
@@ -232,13 +227,13 @@ main {
     }
 
     .btn {
-        margin-top: 16px;
         height: 43px;
+        margin-top: 16px;
         font-size: 14px;
     }
 
     .error {
-        font-size: 13px;
         padding: 8px;
+        font-size: 13px;
     }
 }

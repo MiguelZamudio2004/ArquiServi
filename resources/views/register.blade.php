@@ -3,18 +3,32 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Registro</title>
 
-    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
-    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/register.css') }}"
+    >
 
-    <script src="{{ asset('js/mostrar.js') }}" defer></script>
+    <link
+        rel="icon"
+        href="{{ asset('icono.png') }}"
+        type="image/png"
+    >
+
+    <script
+        src="{{ asset('js/mostrar.js') }}"
+        defer
+    ></script>
 </head>
 
 <body>
-
 <header class="encabezado">
     <img
         src="{{ asset('encabezado2.png') }}"
@@ -24,12 +38,10 @@
 </header>
 
 <section class="form-register">
-
     <form
         action="{{ route('register.store') }}"
         method="POST"
     >
-
         @csrf
 
         <h2 id="subtitulo">
@@ -110,7 +122,6 @@
             name="rol"
             required
         >
-
             <option
                 value=""
                 disabled
@@ -139,7 +150,6 @@
             >
                 Proveedor
             </option>
-
         </select>
 
         <label class="etiqueta">
@@ -147,7 +157,6 @@
         </label>
 
         <div class="campo-password">
-
             <input
                 class="form-control"
                 id="password"
@@ -161,9 +170,8 @@
                 class="eye"
                 id="eye"
             >
-                &#x1F441
+                &#x1F441;
             </span>
-
         </div>
 
         <div class="strength">
@@ -185,7 +193,6 @@
         </label>
 
         <div class="campo-password">
-
             <input
                 class="form-control"
                 id="confirmPassword"
@@ -199,9 +206,8 @@
                 class="eye"
                 id="eyeConfirm"
             >
-                &#x1F441
+                &#x1F441;
             </span>
-
         </div>
 
         <div
@@ -209,28 +215,21 @@
             id="confirmMessage"
         ></div>
 
-        @if ($errors->any())
-
+        @if($errors->any())
             <div class="error">
-
                 <ul>
-
-                    @foreach ($errors->all() as $error)
-
+                    @foreach($errors->all() as $error)
                         <li>
                             {{ $error }}
                         </li>
-
                     @endforeach
-
                 </ul>
-
             </div>
-
         @endif
 
         <p class="text-alter">
             ¿Ya tienes una cuenta?
+
             <a href="{{ route('login') }}">
                 Inicia sesión
             </a>
@@ -242,17 +241,13 @@
         >
             Siguiente
         </button>
-
     </form>
-
 </section>
 
 <footer class="pie">
-
     <p>
         © 2026 ArquiServi. Todos los derechos reservados.
     </p>
-
 </footer>
 
 <script>
@@ -272,5 +267,4 @@
 </script>
 
 </body>
-
 </html>

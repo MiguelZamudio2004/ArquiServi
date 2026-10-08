@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Proveedor extends Model
 {
@@ -11,18 +14,15 @@ class Proveedor extends Model
     protected $fillable = [
         'usuario_id',
         'descripcion',
-        'zona_trabajo'
+        'zona_trabajo',
     ];
 
-    public function usuario()
+    public function usuario(): BelongsTo
     {
-        return $this->belongsTo(
-            Usuario::class,
-            'usuario_id'
-        );
+        return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 
-    public function materiales()
+    public function materiales(): BelongsToMany
     {
         return $this->belongsToMany(
             Material::class,
@@ -30,11 +30,11 @@ class Proveedor extends Model
             'proveedor_id',
             'material_id'
         )
-        ->withPivot('disponible')
-        ->withTimestamps();
+            ->withPivot('disponible')
+            ->withTimestamps();
     }
 
-    public function solicitudesRecibidas()
+    public function solicitudesRecibidas(): HasMany
     {
         return $this->hasMany(
             Solicitud::class,

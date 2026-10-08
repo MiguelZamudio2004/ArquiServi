@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('codigo_recuperacion', function (Blueprint $table) {
@@ -16,16 +13,11 @@ return new class extends Migration
             $table->foreignId('usuario_id')->constrained('usuarios')->cascadeOnDelete();
             $table->string('codigo');
             $table->timestamp('expira_en');
-
             $table->timestamp('usado_en')->nullable();
-
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('codigo_recuperacion');

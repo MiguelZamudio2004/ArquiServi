@@ -9,10 +9,14 @@ if (profesion && especialidad) {
     function actualizarEspecialidades(cambio = false) {
         const profesionId = profesion.value;
 
-        if (cambio) especialidad.value = '';
+        if (cambio) {
+            especialidad.value = '';
+        }
 
-        opciones.forEach(opcion => {
-            opcion.hidden = profesionId && opcion.dataset.profesion !== profesionId;
+        opciones.forEach((opcion) => {
+            opcion.hidden =
+                profesionId &&
+                opcion.dataset.profesion !== profesionId;
         });
     }
 

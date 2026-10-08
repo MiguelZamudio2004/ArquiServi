@@ -6,9 +6,7 @@ const fotoInicial = document.getElementById('fotoInicial');
 if (inputFoto && nombreArchivo && previewFoto) {
     inputFoto.addEventListener('change', function () {
         if (this.files.length === 0) {
-            nombreArchivo.textContent =
-                'Ningún archivo seleccionado';
-
+            nombreArchivo.textContent = 'Ningún archivo seleccionado';
             return;
         }
 
@@ -36,24 +34,22 @@ if (inputFoto && nombreArchivo && previewFoto) {
 }
 
 const descripcion = document.getElementById('descripcion');
-const contadorDescripcion =
-    document.getElementById('contadorDescripcion');
+const contadorDescripcion = document.getElementById(
+    'contadorDescripcion'
+);
 
 if (descripcion && contadorDescripcion) {
-    contadorDescripcion.textContent =
-        descripcion.value.length;
+    contadorDescripcion.textContent = descripcion.value.length;
 
     descripcion.addEventListener('input', function () {
-        contadorDescripcion.textContent =
-            this.value.length;
+        contadorDescripcion.textContent = this.value.length;
     });
 }
 
-const inputPortafolio =
-    document.getElementById('portafolio_fotos');
-
-const previewPortafolio =
-    document.getElementById('previewPortafolio');
+const inputPortafolio = document.getElementById('portafolio_fotos');
+const previewPortafolio = document.getElementById(
+    'previewPortafolio'
+);
 
 if (inputPortafolio && previewPortafolio) {
     inputPortafolio.addEventListener('change', function () {
@@ -64,30 +60,23 @@ if (inputPortafolio && previewPortafolio) {
         }
 
         if (archivos.length > 3) {
-            alert(
-                'Solo puedes seleccionar un máximo de 3 fotos.'
-            );
-
+            alert('Solo puedes seleccionar un máximo de 3 fotos.');
             this.value = '';
-
             return;
         }
 
         previewPortafolio.innerHTML = '';
 
-        archivos.forEach(archivo => {
+        archivos.forEach((archivo) => {
             if (!archivo.type.startsWith('image/')) {
                 return;
             }
 
             const url = URL.createObjectURL(archivo);
-
-            const imagen =
-                document.createElement('img');
+            const imagen = document.createElement('img');
 
             imagen.src = url;
-            imagen.alt =
-                'Vista previa de foto del portafolio';
+            imagen.alt = 'Vista previa de foto del portafolio';
 
             previewPortafolio.appendChild(imagen);
 

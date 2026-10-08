@@ -23,6 +23,7 @@ main {
 }
 
 /* CATÁLOGO */
+
 .catalogo {
     width: 92%;
     max-width: 1200px;
@@ -50,6 +51,7 @@ main {
 }
 
 /* BUSCADOR */
+
 .buscador {
     padding: 22px;
     background-color: #FFFFFF;
@@ -107,6 +109,7 @@ main {
 }
 
 /* FILTROS */
+
 .filtros {
     margin-top: 15px;
     display: flex;
@@ -153,6 +156,7 @@ main {
 }
 
 /* RESULTADOS */
+
 .resultados {
     margin-top: 35px;
 }
@@ -178,6 +182,7 @@ main {
 }
 
 /* GRID */
+
 .usuarios-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -210,6 +215,7 @@ main {
 }
 
 /* FOTO */
+
 .usuario-foto {
     width: 92px;
     height: 92px;
@@ -274,6 +280,7 @@ main {
 }
 
 /* CALIFICACIÓN */
+
 .calificacion-tarjeta {
     min-height: 36px;
     margin: 0 0 14px;
@@ -332,6 +339,7 @@ main {
 }
 
 /* INFORMACIÓN DEL USUARIO */
+
 .usuario-profesion-principal {
     margin: 0 0 3px;
     color: #111827;
@@ -413,6 +421,7 @@ main {
 }
 
 /* SIN RESULTADOS */
+
 .sin-resultados {
     padding: 45px 20px;
     background-color: #FFFFFF;
@@ -435,6 +444,7 @@ main {
 }
 
 /* PAGINACIÓN */
+
 .paginacion {
     margin-top: 30px;
     display: flex;
@@ -479,6 +489,7 @@ main {
 }
 
 /* FOOTER */
+
 .pie {
     width: 100%;
     margin-top: auto;
@@ -495,6 +506,7 @@ main {
 }
 
 /* RESPONSIVE DEL CATÁLOGO */
+
 @media (max-width: 768px) {
     .catalogo {
         width: 94%;
@@ -591,6 +603,7 @@ main {
 }
 
 /* MENU NUEVO */
+
 .encabezado {
     width: 100%;
     min-height: 80px;
@@ -628,6 +641,7 @@ main {
 }
 
 /* FOTO DE PERFIL */
+
 .perfil-header {
     display: flex;
     align-items: center;
@@ -668,6 +682,7 @@ main {
 }
 
 /* MENÚ SUPERIOR */
+
 .menu-superior {
     grid-column: 2;
     grid-row: 1;
@@ -740,6 +755,7 @@ main {
 }
 
 /* CERRAR SESIÓN */
+
 .logout-menu-form {
     margin: 0;
     padding: 0;
@@ -753,6 +769,7 @@ main {
 }
 
 /* NOTIFICACIONES */
+
 .notificaciones-container {
     position: relative;
     z-index: 1100;
@@ -903,6 +920,7 @@ main {
 }
 
 /* RESPONSIVE DEL MENÚ */
+
 @media (max-width: 768px) {
     .encabezado {
         min-height: auto;
@@ -1082,21 +1100,81 @@ main {
     }
 
     .volver-admin-header {
+        min-height: 42px;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: #0C2D5A;
+        color: #FFFFFF;
+        border: 1px solid #0C2D5A;
+        border-radius: 10px;
+        text-decoration: none;
+        font-family: Poppins, sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        transition:
+            background-color 0.25s ease,
+            border-color 0.25s ease,
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    .volver-admin-header:hover {
+        background-color: #F47A20;
+        border-color: #F47A20;
+        color: #FFFFFF;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 14px rgba(12, 45, 90, 0.15);
+    }
+
+    .volver-admin-icono {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+    }
+
+    .volver-admin-texto {
+        display: inline-block;
+    }
+
+    @media (max-width: 768px) {
+        .volver-admin-header {
+            width: 42px;
+            height: 42px;
+            min-height: 42px;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        .volver-admin-texto {
+            display: none;
+        }
+
+        .volver-admin-icono {
+            font-size: 16px;
+        }
+    }
+}
+
+.volver-admin-header {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
     min-height: 42px;
-    padding: 0 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    flex-shrink: 0;
+    padding: 0;
     background-color: #0C2D5A;
     color: #FFFFFF;
     border: 1px solid #0C2D5A;
-    border-radius: 10px;
+    border-radius: 50%;
     text-decoration: none;
-    font-family: Poppins, sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
     transition:
         background-color 0.25s ease,
         border-color 0.25s ease,
@@ -1116,28 +1194,10 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px;
+    font-size: 17px;
+    line-height: 1;
 }
 
-.volver-admin-texto {
-    display: inline-block;
-}
-
-@media (max-width: 768px) {
-    .volver-admin-header {
-        width: 42px;
-        height: 42px;
-        min-height: 42px;
-        padding: 0;
-        border-radius: 50%;
-    }
-
-    .volver-admin-texto {
-        display: none;
-    }
-
-    .volver-admin-icono {
-        font-size: 16px;
-    }
-}
+.volver-admin-header .volver-admin-texto {
+    display: none;
 }

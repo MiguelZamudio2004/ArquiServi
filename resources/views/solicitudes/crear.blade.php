@@ -1,28 +1,57 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Nueva solicitud - ArquiServi</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="{{ asset('css/solicitudes.css') }}">
-    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+    <title>
+        Nueva solicitud - ArquiServi
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ asset('css/solicitudes.css') }}"
+    >
+
+    <link
+        rel="icon"
+        href="{{ asset('icono.png') }}"
+        type="image/png"
+    >
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     >
 
-    <script src="{{ asset('js/notification.js') }}" defer></script>
-    <script src="{{ asset('js/perfil.js') }}" defer></script>
+    <script
+        src="{{ asset('js/notification.js') }}"
+        defer
+    ></script>
+
+    <script
+        src="{{ asset('js/perfil.js') }}"
+        defer
+    ></script>
 </head>
 
 <body>
-
 <header class="encabezado">
-    <a href="{{ route('menu') }}" class="logo-link">
+    <a
+        href="{{ route('menu') }}"
+        class="logo-link"
+    >
         <img
             src="{{ asset('encabezado2.png') }}"
             class="logo"
@@ -35,14 +64,20 @@
             <li>
                 <a href="{{ route('menu') }}">
                     <i class="fa-solid fa-house icono"></i>
-                    <span class="texto">Inicio</span>
+
+                    <span class="texto">
+                        Inicio
+                    </span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('usuarios.buscar') }}">
                     <i class="fa-solid fa-folder-open icono"></i>
-                    <span class="texto">Catálogo</span>
+
+                    <span class="texto">
+                        Catálogo
+                    </span>
                 </a>
             </li>
 
@@ -51,7 +86,10 @@
                     <li>
                         <a href="{{ route('solicitudes.mias') }}">
                             <i class="fa-solid fa-envelope icono"></i>
-                            <span class="texto">Mis solicitudes</span>
+
+                            <span class="texto">
+                                Mis solicitudes
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -60,7 +98,10 @@
                     <li>
                         <a href="{{ route('solicitudes.recibidas') }}">
                             <i class="fa-solid fa-inbox icono"></i>
-                            <span class="texto">Solicitudes recibidas</span>
+
+                            <span class="texto">
+                                Solicitudes recibidas
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -91,7 +132,9 @@
                             @endif
                         </span>
 
-                        <span class="texto">Notificaciones</span>
+                        <span class="texto">
+                            Notificaciones
+                        </span>
                     </button>
 
                     <div
@@ -99,7 +142,9 @@
                         id="notificacionesDropdown"
                     >
                         <div class="notificaciones-header">
-                            <h3>Notificaciones</h3>
+                            <h3>
+                                Notificaciones
+                            </h3>
                         </div>
 
                         <div class="notificaciones-lista">
@@ -150,7 +195,10 @@
                             aria-label="Cerrar sesión"
                         >
                             <i class="fa-solid fa-right-from-bracket icono"></i>
-                            <span class="texto">Cerrar sesión</span>
+
+                            <span class="texto">
+                                Cerrar sesión
+                            </span>
                         </button>
                     </form>
                 </li>
@@ -181,19 +229,21 @@
 </header>
 
 <main class="solicitudes-contenedor">
-
-    <h1>Nueva solicitud</h1>
+    <h1>
+        Nueva solicitud
+    </h1>
 
     @if($errors->any())
         <div class="errores">
             @foreach($errors->all() as $error)
-                <p>{{ $error }}</p>
+                <p>
+                    {{ $error }}
+                </p>
             @endforeach
         </div>
     @endif
 
     <section class="solicitud-form">
-
         <div class="solicitud-destinatario">
             <span>
                 {{ $destinatario->rol->nombre === 'proveedor' ? 'Proveedor' : 'Profesional' }}
@@ -218,7 +268,6 @@
             >
 
             @if($destinatario->rol->nombre === 'profesional')
-
                 <div class="campo">
                     <label for="servicio_id">
                         Servicio
@@ -243,11 +292,9 @@
                         @endforeach
                     </select>
                 </div>
-
             @endif
 
             @if($destinatario->rol->nombre === 'proveedor')
-
                 @php
                     $materialesSeleccionados = array_map(
                         'intval',
@@ -265,11 +312,8 @@
                     </p>
 
                     <div class="materiales-solicitud">
-
                         @forelse($destinatario->proveedor->materiales as $material)
-
                             @if($material->activo && $material->pivot->disponible)
-
                                 <label
                                     class="material-solicitud-opcion"
                                     for="material_{{ $material->id }}"
@@ -300,20 +344,14 @@
                                         </span>
                                     </span>
                                 </label>
-
                             @endif
-
                         @empty
-
                             <p class="sin-materiales">
                                 Este proveedor no tiene materiales disponibles.
                             </p>
-
                         @endforelse
-
                     </div>
                 </div>
-
             @endif
 
             <div class="campo">
@@ -345,11 +383,8 @@
                     Enviar solicitud
                 </button>
             </div>
-
         </form>
-
     </section>
-
 </main>
 
 <footer class="pie">
@@ -359,4 +394,5 @@
 </footer>
 
 </body>
+
 </html>

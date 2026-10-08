@@ -5,129 +5,110 @@ namespace App\Http\Controllers;
 use App\Models\CodigoRecuperacion;
 use App\Models\Usuario;
 use App\Notifications\PasswordActualizada;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class RecuperacionController extends Controller
 {
-    public function mostrarCorreo()
+    private const CODIGO_MINIMO = 100000;
+    private const CODIGO_MAXIMO = 999999;
+    private const EXPIRACION_MINUTOS = 10;
+
+    private const SESION_USUARIO = 'recuperacion_usuario_id';
+    private const SESION_CODIGO = 'recuperacion_codigo_id';
+    private const SESION_VERIFICADA = 'recuperacion_verificada';
+
+    public function mostrarCorreo(): View
     {
         return view('recuperation');
     }
 
-    public function enviarCodigo(Request $request)
+    public function enviarCodigo(Request $request): RedirectResponse
     {
-        $datos = $request->validate([
-            'correo' => 'required|email|max:150',
-        ], [
-            'correo.required' => 'El correo electrónico es obligatorio.',
-            'correo.email' => 'Ingresa un correo electrónico válido.',
-            'correo.max' => 'El correo electrónico es demasiado largo.',
-        ]);
-
-        $correo = strtolower(trim($datos['correo']));
-
-        $usuario = Usuario::where('correo', $correo)->first();
-
-        if (!$usuario) {
-            return back()->withErrors([
-                'correo' => '⚠ El correo ingresado no está registrado. ⚠',
-            ])->onlyInput('correo');
-        }
-
-        CodigoRecuperacion::where('usuario_id', $usuario->id)->delete();
-
-        $codigo = (string) random_int(100000, 999999);
-
-        $codigoRecuperacion = CodigoRecuperacion::create([
-            'usuario_id' => $usuario->id,
-            'codigo' => Hash::make($codigo),
-            'expira_en' => now()->addMinutes(10),
-        ]);
-
-        Mail::raw(
-            "Tu código de recuperación de ArquiServi es: {$codigo}. Este código expirará en 10 minutos.",
-            function ($mensaje) use ($usuario) {
-                $mensaje
-                    ->to($usuario->correo)
-                    ->subject('Recuperación de contraseña - ArquiServi');
-            }
+        $datos = $request->validate(
+            ['correo' => ['required', 'email', 'max:150']],
+            [
+                'correo.required' => 'El correo electrónico es obligatorio.',
+                'correo.email' => 'Ingresa un correo electrónico válido.',
+                'correo.max' => 'El correo electrónico es demasiado largo.',
+            ]
         );
 
-        session([
-            'recuperacion_usuario_id' => $usuario->id,
-            'recuperacion_codigo_id' => $codigoRecuperacion->id,
-        ]);
+        $correo = strtolower(trim($datos['correo']));
+        $usuario = Usuario::query()->where('correo', $correo)->first();
+
+        if (!$usuario) {
+            return back()
+                ->withErrors(['correo' => '⚠ El correo ingresado no está registrado. ⚠'])
+                ->onlyInput('correo');
+        }
+
+        [$recuperacion, $codigo] = $this->generarCodigoRecuperacion($usuario);
+
+        $this->enviarCorreoRecuperacion($usuario, $codigo);
+
+        $this->guardarSesionRecuperacion($usuario->id, $recuperacion->id);
 
         return redirect()
             ->route('recuperacion.codigo')
-            ->with(
-                'success',
-                'Se envió un código de recuperación a tu correo.'
-            );
+            ->with('success', 'Se envió un código de recuperación a tu correo.');
     }
 
-    public function mostrarCodigo()
+    public function mostrarCodigo(): View|RedirectResponse
     {
-        if (!session()->has('recuperacion_usuario_id')) {
+        if (!session()->has(self::SESION_USUARIO)) {
             return redirect()->route('recuperacion');
         }
 
         return view('validar');
     }
 
-    public function validarCodigo(Request $request)
+    public function validarCodigo(Request $request): RedirectResponse
     {
-        $request->validate([
-            'codigo' => 'required|array|size:6',
-            'codigo.*' => 'required|digits:1',
-        ], [
-            'codigo.required' => 'Ingresa el código de recuperación.',
-            'codigo.size' => 'El código debe contener 6 dígitos.',
-            'codigo.*.required' => 'Debes completar todos los dígitos.',
-            'codigo.*.digits' => 'El código solo puede contener números.',
-        ]);
+        $datos = $request->validate(
+            [
+                'codigo' => ['required', 'array', 'size:6'],
+                'codigo.*' => ['required', 'digits:1'],
+            ],
+            [
+                'codigo.required' => 'Ingresa el código de recuperación.',
+                'codigo.size' => 'El código debe contener 6 dígitos.',
+                'codigo.*.required' => 'Debes completar todos los dígitos.',
+                'codigo.*.digits' => 'El código solo puede contener números.',
+            ]
+        );
 
-        $codigoIngresado = implode('', $request->codigo);
+        $codigoIngresado = implode('', $datos['codigo']);
 
-        $usuarioId = session('recuperacion_usuario_id');
-        $codigoId = session('recuperacion_codigo_id');
-
-        if (!$usuarioId || !$codigoId) {
+        if (!$this->tieneSesionRecuperacion()) {
             return redirect()
                 ->route('recuperacion')
-                ->withErrors([
-                    'correo' => 'La sesión de recuperación ha expirado.',
-                ]);
+                ->withErrors(['correo' => 'La sesión de recuperación ha expirado.']);
         }
 
-        $recuperacion = CodigoRecuperacion::where('id', $codigoId)
-            ->where('usuario_id', $usuarioId)
-            ->whereNull('usado_en')
-            ->first();
+        $recuperacion = $this->obtenerRecuperacionSesion();
 
         if (!$recuperacion) {
             return redirect()
                 ->route('recuperacion')
-                ->withErrors([
-                    'correo' => 'No existe una recuperación válida.',
-                ]);
+                ->withErrors(['correo' => 'No existe una recuperación válida.']);
         }
 
         if ($recuperacion->expira_en->isPast()) {
             $recuperacion->delete();
 
             session()->forget([
-                'recuperacion_codigo_id',
-                'recuperacion_verificada',
+                self::SESION_CODIGO,
+                self::SESION_VERIFICADA,
             ]);
 
             return redirect()
                 ->route('recuperacion.codigo')
-                ->withErrors([
-                    'codigo' => '⚠ El código ha expirado. Solicita uno nuevo. ⚠',
-                ]);
+                ->withErrors(['codigo' => '⚠ El código ha expirado. Solicita uno nuevo. ⚠']);
         }
 
         if (!Hash::check($codigoIngresado, $recuperacion->codigo)) {
@@ -136,37 +117,21 @@ class RecuperacionController extends Controller
             ]);
         }
 
-        session([
-            'recuperacion_verificada' => true,
-        ]);
+        session([self::SESION_VERIFICADA => true]);
 
         return redirect()->route('recuperacion.password');
     }
 
-    public function mostrarNuevaPassword()
+    public function mostrarNuevaPassword(): View|RedirectResponse
     {
-        if (
-            !session('recuperacion_verificada') ||
-            !session('recuperacion_usuario_id') ||
-            !session('recuperacion_codigo_id')
-        ) {
+        if (!$this->sesionRecuperacionVerificada()) {
             return redirect()->route('recuperacion');
         }
 
-        $recuperacion = CodigoRecuperacion::find(
-            session('recuperacion_codigo_id')
-        );
+        $recuperacion = $this->obtenerRecuperacionSesion();
 
-        if (
-            !$recuperacion ||
-            $recuperacion->expira_en->isPast() ||
-            $recuperacion->usado_en
-        ) {
-            session()->forget([
-                'recuperacion_usuario_id',
-                'recuperacion_codigo_id',
-                'recuperacion_verificada',
-            ]);
+        if (!$this->recuperacionEsValida($recuperacion)) {
+            $this->limpiarSesionRecuperacion();
 
             return redirect()
                 ->route('recuperacion')
@@ -178,30 +143,16 @@ class RecuperacionController extends Controller
         return view('newpassword');
     }
 
-    public function cambiarPassword(Request $request)
+    public function cambiarPassword(Request $request): RedirectResponse
     {
-        if (
-            !session('recuperacion_verificada') ||
-            !session('recuperacion_usuario_id') ||
-            !session('recuperacion_codigo_id')
-        ) {
+        if (!$this->sesionRecuperacionVerificada()) {
             return redirect()->route('recuperacion');
         }
 
-        $recuperacion = CodigoRecuperacion::find(
-            session('recuperacion_codigo_id')
-        );
+        $recuperacion = $this->obtenerRecuperacionSesion();
 
-        if (
-            !$recuperacion ||
-            $recuperacion->expira_en->isPast() ||
-            $recuperacion->usado_en
-        ) {
-            session()->forget([
-                'recuperacion_usuario_id',
-                'recuperacion_codigo_id',
-                'recuperacion_verificada',
-            ]);
+        if (!$this->recuperacionEsValida($recuperacion)) {
+            $this->limpiarSesionRecuperacion();
 
             return redirect()
                 ->route('recuperacion')
@@ -210,97 +161,159 @@ class RecuperacionController extends Controller
                 ]);
         }
 
-        $datos = $request->validate([
-            'password' => 'required|string|min:8|confirmed',
-        ], [
-            'password.required' => 'La nueva contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
-        ]);
-
-        $usuario = Usuario::findOrFail(
-            session('recuperacion_usuario_id')
+        $datos = $request->validate(
+            ['password' => ['required', 'string', 'min:8', 'confirmed']],
+            [
+                'password.required' => 'La nueva contraseña es obligatoria.',
+                'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+                'password.confirmed' => 'Las contraseñas no coinciden.',
+            ]
         );
 
-        $usuario->password = Hash::make($datos['password']);
-        $usuario->save();
+        $usuario = Usuario::findOrFail(session(self::SESION_USUARIO));
 
-        $usuario->notify(
-            new PasswordActualizada()
-        );
+        DB::transaction(function () use ($usuario, $recuperacion, $datos) {
+            $usuario->update([
+                'password' => Hash::make($datos['password']),
+            ]);
 
-        $recuperacion->update([
-            'usado_en' => now(),
-        ]);
+            $recuperacion->update([
+                'usado_en' => now(),
+            ]);
+        });
 
-        session()->forget([
-            'recuperacion_usuario_id',
-            'recuperacion_codigo_id',
-            'recuperacion_verificada',
-        ]);
+        $this->limpiarSesionRecuperacion();
+
+        $usuario->notify(new PasswordActualizada());
 
         return redirect()
             ->route('login')
-            ->with(
-                'success',
-                'Tu contraseña se actualizó correctamente.'
-            );
+            ->with('success', 'Tu contraseña se actualizó correctamente.');
     }
 
-    public function reenviarCodigo()
+    public function reenviarCodigo(): RedirectResponse
     {
-        $usuarioId = session('recuperacion_usuario_id');
+        $usuarioId = session(self::SESION_USUARIO);
 
         if (!$usuarioId) {
             return redirect()
                 ->route('recuperacion')
-                ->withErrors([
-                    'correo' => 'La sesión de recuperación ha expirado.',
-                ]);
+                ->withErrors(['correo' => 'La sesión de recuperación ha expirado.']);
         }
 
         $usuario = Usuario::find($usuarioId);
 
         if (!$usuario) {
+            $this->limpiarSesionRecuperacion();
+
             return redirect()
                 ->route('recuperacion')
-                ->withErrors([
-                    'correo' => 'No se pudo encontrar el usuario.',
-                ]);
+                ->withErrors(['correo' => 'No se pudo encontrar el usuario.']);
         }
 
-        CodigoRecuperacion::where(
-            'usuario_id',
-            $usuario->id
-        )->delete();
+        [$recuperacion, $codigo] = $this->generarCodigoRecuperacion($usuario);
 
-        $codigo = (string) random_int(100000, 999999);
+        $this->enviarCorreoRecuperacion($usuario, $codigo, true);
 
-        $codigoRecuperacion = CodigoRecuperacion::create([
-            'usuario_id' => $usuario->id,
-            'codigo' => Hash::make($codigo),
-            'expira_en' => now()->addMinutes(10),
-        ]);
-
-        Mail::raw(
-            "Tu nuevo código de recuperación de ArquiServi es: {$codigo}. Este código expirará en 10 minutos.",
-            function ($mensaje) use ($usuario) {
-                $mensaje
-                    ->to($usuario->correo)
-                    ->subject('Nuevo código de recuperación - ArquiServi');
-            }
-        );
-
-        session([
-            'recuperacion_codigo_id' => $codigoRecuperacion->id,
-            'recuperacion_verificada' => false,
-        ]);
+        $this->guardarSesionRecuperacion($usuario->id, $recuperacion->id);
 
         return redirect()
             ->route('recuperacion.codigo')
-            ->with(
-                'success',
-                'Se ha enviado un nuevo código a tu correo.'
+            ->with('success', 'Se ha enviado un nuevo código a tu correo.');
+    }
+
+    private function generarCodigoRecuperacion(Usuario $usuario): array
+    {
+        return DB::transaction(function () use ($usuario) {
+            CodigoRecuperacion::query()
+                ->where('usuario_id', $usuario->id)
+                ->delete();
+
+            $codigo = (string) random_int(
+                self::CODIGO_MINIMO,
+                self::CODIGO_MAXIMO
             );
+
+            $recuperacion = CodigoRecuperacion::create([
+                'usuario_id' => $usuario->id,
+                'codigo' => Hash::make($codigo),
+                'expira_en' => now()->addMinutes(self::EXPIRACION_MINUTOS),
+            ]);
+
+            return [$recuperacion, $codigo];
+        });
+    }
+
+    private function enviarCorreoRecuperacion(
+        Usuario $usuario,
+        string $codigo,
+        bool $reenvio = false
+    ): void {
+        $texto = $reenvio
+            ? "Tu nuevo código de recuperación de ArquiServi es: {$codigo}. Este código expirará en 10 minutos."
+            : "Tu código de recuperación de ArquiServi es: {$codigo}. Este código expirará en 10 minutos.";
+
+        $asunto = $reenvio
+            ? 'Nuevo código de recuperación - ArquiServi'
+            : 'Recuperación de contraseña - ArquiServi';
+
+        Mail::raw($texto, function ($mensaje) use ($usuario, $asunto) {
+            $mensaje
+                ->to($usuario->correo)
+                ->subject($asunto);
+        });
+    }
+
+    private function obtenerRecuperacionSesion(): ?CodigoRecuperacion
+    {
+        $usuarioId = session(self::SESION_USUARIO);
+        $codigoId = session(self::SESION_CODIGO);
+
+        if (!$usuarioId || !$codigoId) {
+            return null;
+        }
+
+        return CodigoRecuperacion::query()
+            ->whereKey($codigoId)
+            ->where('usuario_id', $usuarioId)
+            ->whereNull('usado_en')
+            ->first();
+    }
+
+    private function recuperacionEsValida(?CodigoRecuperacion $recuperacion): bool
+    {
+        return $recuperacion !== null
+            && !$recuperacion->expira_en->isPast()
+            && !$recuperacion->usado_en;
+    }
+
+    private function tieneSesionRecuperacion(): bool
+    {
+        return session()->has(self::SESION_USUARIO)
+            && session()->has(self::SESION_CODIGO);
+    }
+
+    private function sesionRecuperacionVerificada(): bool
+    {
+        return $this->tieneSesionRecuperacion()
+            && session(self::SESION_VERIFICADA) === true;
+    }
+
+    private function guardarSesionRecuperacion(int $usuarioId, int $codigoId): void
+    {
+        session([
+            self::SESION_USUARIO => $usuarioId,
+            self::SESION_CODIGO => $codigoId,
+            self::SESION_VERIFICADA => false,
+        ]);
+    }
+
+    private function limpiarSesionRecuperacion(): void
+    {
+        session()->forget([
+            self::SESION_USUARIO,
+            self::SESION_CODIGO,
+            self::SESION_VERIFICADA,
+        ]);
     }
 }

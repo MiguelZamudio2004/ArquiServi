@@ -3,9 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class Profesional extends Model
 {
+    private const ESTADO_APROBADO = 'aprobado';
+
     protected $table = 'profesionales';
 
     protected $fillable = [
@@ -14,18 +20,15 @@ class Profesional extends Model
         'descripcion',
         'portafolio_url',
         'zona_trabajo',
-        'estado_aprobacion'
+        'estado_aprobacion',
     ];
 
-    public function usuario()
+    public function usuario(): BelongsTo
     {
-        return $this->belongsTo(
-            Usuario::class,
-            'usuario_id'
-        );
+        return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 
-    public function profesiones()
+    public function profesiones(): BelongsToMany
     {
         return $this->belongsToMany(
             Profesion::class,
@@ -35,7 +38,7 @@ class Profesional extends Model
         )->withTimestamps();
     }
 
-    public function especialidades()
+    public function especialidades(): BelongsToMany
     {
         return $this->belongsToMany(
             Especialidad::class,
@@ -45,7 +48,7 @@ class Profesional extends Model
         )->withTimestamps();
     }
 
-    public function servicios()
+    public function servicios(): BelongsToMany
     {
         return $this->belongsToMany(
             Servicio::class,
@@ -55,7 +58,7 @@ class Profesional extends Model
         )->withTimestamps();
     }
 
-    public function solicitudesRecibidas()
+    public function solicitudesRecibidas(): HasMany
     {
         return $this->hasMany(
             Solicitud::class,
@@ -64,7 +67,7 @@ class Profesional extends Model
         );
     }
 
-    public function solicitudesAprobacion()
+    public function solicitudesAprobacion(): HasMany
     {
         return $this->hasMany(
             SolicitudAprobacionProfesional::class,
@@ -74,13 +77,16 @@ class Profesional extends Model
 
     public function estaDisponiblePublicamente(): bool
     {
-        return in_array(
-            $this->estado_aprobacion,
-            [
-                'no_requerida',
-                'aprobado'
-            ],
-            true
-        );
+        return $this->usuario?->estado === 'activo';
+    }
+
+    public function especialidadesVisibles(): Collection
+    {
+        return $this->especialidades
+            ->filter(function (Especialidad $especialidad) {
+                return !$especialidad->requiere_aprobacion
+                    || $this->estado_aprobacion === self::ESTADO_APROBADO;
+            })
+            ->values();
     }
 }

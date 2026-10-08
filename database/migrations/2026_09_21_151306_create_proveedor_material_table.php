@@ -9,8 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('proveedor_material', function (Blueprint $table) {
-            $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
-            $table->foreignId('material_id')->constrained('materiales')->onDelete('cascade');
+            $table->foreignId('proveedor_id')
+                ->constrained('proveedores')
+                ->cascadeOnDelete();
+
+            $table->foreignId('material_id')
+                ->constrained('materiales')
+                ->cascadeOnDelete();
+
             $table->boolean('disponible')->default(true);
             $table->timestamps();
 

@@ -116,9 +116,7 @@
     background-color: #FFFFFF;
     border: 1px solid #E5E7EB;
     border-radius: 12px;
-    transition:
-        border-color 0.2s ease,
-        transform 0.2s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .admin-estadistica:hover {
@@ -424,12 +422,7 @@
 .admin-filtros {
     padding: 18px;
     display: grid;
-    grid-template-columns:
-        minmax(270px, 1fr)
-        170px
-        170px
-        auto
-        auto;
+    grid-template-columns: minmax(270px, 1fr) 170px 170px auto auto;
     gap: 10px;
     align-items: center;
     border-bottom: 1px solid #E5E7EB;
@@ -502,10 +495,7 @@
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 button.admin-boton {
@@ -555,9 +545,7 @@ button.admin-boton {
     border-radius: 7px;
     text-decoration: none;
     font-size: 9px;
-    transition:
-        color 0.2s ease,
-        border-color 0.2s ease;
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 a.admin-pagina-boton:hover {
@@ -656,9 +644,7 @@ a.admin-pagina-boton:hover {
 
 .detalle-grid {
     display: grid;
-    grid-template-columns:
-        minmax(0, 1.2fr)
-        minmax(310px, 0.8fr);
+    grid-template-columns: minmax(0, 1.2fr) minmax(310px, 0.8fr);
     gap: 20px;
     align-items: start;
 }
@@ -748,10 +734,7 @@ a.admin-pagina-boton:hover {
     border: 1px solid #E5E7EB;
     border-radius: 8px;
     text-align: left;
-    transition:
-        border-color 0.2s ease,
-        background-color 0.2s ease,
-        transform 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }
 
 .estado-opcion:not(:disabled) {
@@ -829,10 +812,7 @@ a.admin-pagina-boton:hover {
     }
 
     .admin-filtros {
-        grid-template-columns:
-            minmax(230px, 1fr)
-            150px
-            150px;
+        grid-template-columns: minmax(230px, 1fr) 150px 150px;
     }
 
     .admin-filtros .admin-boton {
@@ -1012,8 +992,9 @@ a.admin-pagina-boton:hover {
     .estado-opcion {
         min-height: 55px;
     }
+}
 
-    .estado-aprobacion-no_requerida {
+.estado-aprobacion-no_requerida {
     background-color: #EFF6FF;
     color: #1D4ED8;
 }
@@ -1040,13 +1021,7 @@ a.admin-pagina-boton:hover {
 }
 
 .profesionales-filtros {
-    grid-template-columns:
-        minmax(230px, 1fr)
-        165px
-        190px
-        155px
-        auto
-        auto;
+    grid-template-columns: minmax(230px, 1fr) 165px 190px 155px auto auto;
 }
 
 .detalle-acciones-profesional {
@@ -1151,10 +1126,7 @@ a.admin-pagina-boton:hover {
 
 @media (max-width: 1250px) {
     .profesionales-filtros {
-        grid-template-columns:
-            minmax(220px, 1fr)
-            150px
-            170px;
+        grid-template-columns: minmax(220px, 1fr) 150px 170px;
     }
 }
 
@@ -1324,12 +1296,7 @@ a.admin-pagina-boton:hover {
 }
 
 .proveedores-filtros {
-    grid-template-columns:
-        minmax(260px, 1fr)
-        200px
-        170px
-        auto
-        auto;
+    grid-template-columns: minmax(260px, 1fr) 200px 170px auto auto;
 }
 
 .tabla-materiales {
@@ -1446,10 +1413,7 @@ a.admin-pagina-boton:hover {
 
 @media (max-width: 1250px) {
     .proveedores-filtros {
-        grid-template-columns:
-            minmax(230px, 1fr)
-            180px
-            160px;
+        grid-template-columns: minmax(230px, 1fr) 180px 160px;
     }
 }
 
@@ -1488,11 +1452,7 @@ a.admin-pagina-boton:hover {
 }
 
 .aprobaciones-filtros {
-    grid-template-columns:
-        minmax(280px, 1fr)
-        190px
-        auto
-        auto;
+    grid-template-columns: minmax(280px, 1fr) 190px auto auto;
 }
 
 .aprobacion-especialidades-tabla {
@@ -1632,9 +1592,7 @@ a.admin-pagina-boton:hover {
     font-family: 'Poppins', sans-serif;
     font-size: 10px;
     line-height: 1.6;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .aprobacion-form-rechazar textarea:focus {
@@ -1655,9 +1613,7 @@ a.admin-pagina-boton:hover {
     font-family: 'Poppins', sans-serif;
     font-size: 10px;
     font-weight: 600;
-    transition:
-        transform 0.2s ease,
-        opacity 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .aprobacion-boton:hover {
@@ -1702,14 +1658,12 @@ a.admin-pagina-boton:hover {
     font-size: 18px;
 }
 
-.aprobacion-resultado.aprobada
-.aprobacion-resultado-icono {
+.aprobacion-resultado.aprobada .aprobacion-resultado-icono {
     background-color: #ECFDF5;
     color: #047857;
 }
 
-.aprobacion-resultado.rechazo
-.aprobacion-resultado-icono {
+.aprobacion-resultado.rechazo .aprobacion-resultado-icono {
     background-color: #FEF2F2;
     color: #B91C1C;
 }
@@ -1738,9 +1692,7 @@ a.admin-pagina-boton:hover {
 
 @media (max-width: 1000px) {
     .aprobaciones-filtros {
-        grid-template-columns:
-            minmax(220px, 1fr)
-            180px;
+        grid-template-columns: minmax(220px, 1fr) 180px;
     }
 
     .aprobacion-acciones {
@@ -1799,9 +1751,7 @@ body.modal-abierto {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
-    transition:
-        opacity 0.2s ease,
-        visibility 0.2s ease;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .arquiservi-modal.activo {
@@ -1827,15 +1777,13 @@ body.modal-abierto {
     overflow: hidden;
     background-color: #FFFFFF;
     border-radius: 18px;
-    box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.22);
     text-align: center;
     transform: translateY(15px) scale(0.97);
     transition: transform 0.25s ease;
 }
 
-.arquiservi-modal.activo
-.arquiservi-modal-contenido {
+.arquiservi-modal.activo .arquiservi-modal-contenido {
     transform: translateY(0) scale(1);
 }
 
@@ -1865,9 +1813,7 @@ body.modal-abierto {
     color: #9CA3AF;
     cursor: pointer;
     font-size: 15px;
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .arquiservi-modal-cerrar:hover {
@@ -1933,10 +1879,7 @@ body.modal-abierto {
     font-size: 10px;
     font-weight: 600;
     cursor: pointer;
-    transition:
-        transform 0.2s ease,
-        background-color 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .arquiservi-modal-boton:hover {
@@ -1955,54 +1898,45 @@ body.modal-abierto {
 .arquiservi-modal-boton.confirmar {
     background-color: #0C2D5A;
     color: #FFFFFF;
-    box-shadow:
-        0 6px 15px rgba(12, 45, 90, 0.16);
+    box-shadow: 0 6px 15px rgba(12, 45, 90, 0.16);
 }
 
 .arquiservi-modal-boton.confirmar:hover {
     background-color: #092449;
 }
 
-.arquiservi-modal.tipo-aprobar
-.arquiservi-modal-icono {
+.arquiservi-modal.tipo-aprobar .arquiservi-modal-icono {
     background-color: #ECFDF5;
     color: #047857;
 }
 
-.arquiservi-modal.tipo-aprobar
-.arquiservi-modal-boton.confirmar {
+.arquiservi-modal.tipo-aprobar .arquiservi-modal-boton.confirmar {
     background-color: #047857;
 }
 
-.arquiservi-modal.tipo-aprobar
-.arquiservi-modal-boton.confirmar:hover {
+.arquiservi-modal.tipo-aprobar .arquiservi-modal-boton.confirmar:hover {
     background-color: #036B4D;
 }
 
-.arquiservi-modal.tipo-rechazar
-.arquiservi-modal-icono {
+.arquiservi-modal.tipo-rechazar .arquiservi-modal-icono {
     background-color: #FEF2F2;
     color: #B91C1C;
 }
 
-.arquiservi-modal.tipo-rechazar
-.arquiservi-modal-boton.confirmar {
+.arquiservi-modal.tipo-rechazar .arquiservi-modal-boton.confirmar {
     background-color: #B91C1C;
 }
 
-.arquiservi-modal.tipo-rechazar
-.arquiservi-modal-boton.confirmar:hover {
+.arquiservi-modal.tipo-rechazar .arquiservi-modal-boton.confirmar:hover {
     background-color: #991B1B;
 }
 
-.arquiservi-modal.tipo-advertencia
-.arquiservi-modal-icono {
+.arquiservi-modal.tipo-advertencia .arquiservi-modal-icono {
     background-color: #FFF7ED;
     color: #F47A20;
 }
 
-.arquiservi-modal.tipo-advertencia
-.arquiservi-modal-boton.confirmar {
+.arquiservi-modal.tipo-advertencia .arquiservi-modal-boton.confirmar {
     background-color: #F47A20;
 }
 
@@ -2040,12 +1974,7 @@ body.modal-abierto {
 }
 
 .solicitudes-admin-filtros {
-    grid-template-columns:
-        minmax(280px, 1fr)
-        170px
-        170px
-        auto
-        auto;
+    grid-template-columns: minmax(280px, 1fr) 170px 170px auto auto;
 }
 
 .solicitud-admin-id {
@@ -2151,8 +2080,7 @@ body.modal-abierto {
 .solicitud-participantes {
     margin-top: 20px;
     display: grid;
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
 }
 
@@ -2237,8 +2165,7 @@ body.modal-abierto {
 .solicitud-servicio-material {
     padding: 25px;
     display: grid;
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
 }
 
@@ -2311,10 +2238,7 @@ body.modal-abierto {
 
 @media (max-width: 1100px) {
     .solicitudes-admin-filtros {
-        grid-template-columns:
-            minmax(230px, 1fr)
-            160px
-            160px;
+        grid-template-columns: minmax(230px, 1fr) 160px 160px;
     }
 }
 
@@ -2361,12 +2285,7 @@ body.modal-abierto {
 }
 
 .calificaciones-filtros {
-    grid-template-columns:
-        minmax(280px, 1fr)
-        170px
-        175px
-        auto
-        auto;
+    grid-template-columns: minmax(280px, 1fr) 170px 175px auto auto;
 }
 
 .calificacion-tabla-puntuacion {
@@ -2438,8 +2357,7 @@ body.modal-abierto {
 .calificacion-personas {
     margin-top: 20px;
     display: grid;
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
 }
 
@@ -2566,8 +2484,7 @@ body.modal-abierto {
 .calificacion-criterios {
     padding: 25px;
     display: grid;
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 15px;
 }
 
@@ -2701,10 +2618,7 @@ body.modal-abierto {
 
 @media (max-width: 1100px) {
     .calificaciones-filtros {
-        grid-template-columns:
-            minmax(220px, 1fr)
-            160px
-            165px;
+        grid-template-columns: minmax(220px, 1fr) 160px 165px;
     }
 }
 
@@ -2757,8 +2671,9 @@ body.modal-abierto {
     .calificacion-comentario-contenido p {
         padding-left: 18px;
     }
+}
 
-    .usuario-estado-actual {
+.usuario-estado-actual {
     padding: 20px 22px 0;
 }
 
@@ -2808,10 +2723,7 @@ body.modal-abierto {
     font-family: 'Poppins', sans-serif;
     font-size: 9px;
     font-weight: 600;
-    transition:
-        transform 0.2s ease,
-        background-color 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .usuario-estado-boton:hover {
@@ -2986,25 +2898,18 @@ body.modal-abierto {
     color: #FFFFFF;
     border: none;
     border-radius: 8px;
-    box-shadow:
-        0 6px 15px
-        rgba(185, 28, 28, 0.14);
+    box-shadow: 0 6px 15px rgba(185, 28, 28, 0.14);
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
     font-size: 9px;
     font-weight: 600;
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .usuario-eliminar-boton:hover {
     background-color: #991B1B;
     transform: translateY(-1px);
-    box-shadow:
-        0 8px 18px
-        rgba(185, 28, 28, 0.18);
+    box-shadow: 0 8px 18px rgba(185, 28, 28, 0.18);
 }
 
 @media (max-width: 768px) {
@@ -3067,6 +2972,4 @@ body.modal-abierto {
     .usuario-zona-riesgo-accion {
         padding: 18px;
     }
-}
-}
 }

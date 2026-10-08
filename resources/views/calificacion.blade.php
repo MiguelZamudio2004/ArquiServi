@@ -17,19 +17,20 @@
     id="modalCalificacion"
     data-tipo="{{ $tipo }}"
     data-submit-url="{{ route('solicitudes.calificar.guardar', $solicitud) }}"
-    data-csrf="{{ csrf_token() }}">
-
+    data-csrf="{{ csrf_token() }}"
+>
     <div class="modal-calificacion-contenido">
-
         <section class="persona-evaluada">
-
             <div class="persona-foto">
                 @if($fotoEvaluado)
                     <img
                         src="{{ asset('storage/' . $fotoEvaluado) }}"
-                        alt="Foto de {{ $nombreEvaluado }}">
+                        alt="Foto de {{ $nombreEvaluado }}"
+                    >
                 @else
-                    <span>{{ $inicialEvaluado }}</span>
+                    <span>
+                        {{ $inicialEvaluado }}
+                    </span>
                 @endif
             </div>
 
@@ -38,15 +39,17 @@
                     Estás calificando a
                 </span>
 
-                <h3>{{ $nombreEvaluado }}</h3>
+                <h3>
+                    {{ $nombreEvaluado }}
+                </h3>
 
                 <span
                     class="tipo-persona"
-                    id="tipoPersona">
+                    id="tipoPersona"
+                >
                     {{ ucfirst($tipo) }}
                 </span>
             </div>
-
         </section>
 
         <div class="separador-calificacion"></div>
@@ -64,17 +67,16 @@
         <div class="separador-calificacion"></div>
 
         <section class="criterios-seccion">
-
-            <h3>Aspectos a evaluar</h3>
+            <h3>
+                Aspectos a evaluar
+            </h3>
 
             <div id="criteriosContainer"></div>
-
         </section>
 
         <div class="separador-calificacion"></div>
 
         <section class="comentario-seccion">
-
             <label for="comentario">
                 Cuéntanos tu experiencia
             </label>
@@ -88,30 +90,27 @@
             <div class="contador-comentario">
                 <span id="contadorCaracteres">0</span>/500
             </div>
-
         </section>
 
         <div
             id="mensajeError"
-            class="mensaje-error">
-        </div>
+            class="mensaje-error"
+        ></div>
 
         <div class="acciones-modal">
-
             <button
                 type="button"
-                id="cancelarCalificacion">
+                id="cancelarCalificacion"
+            >
                 Cancelar
             </button>
 
             <button
                 type="button"
-                id="publicarCalificacion">
+                id="publicarCalificacion"
+            >
                 Publicar
             </button>
-
         </div>
-
     </div>
-
 </div>

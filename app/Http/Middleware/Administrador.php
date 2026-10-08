@@ -8,25 +8,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Administrador
 {
-    public function handle(
-        Request $request,
-        Closure $next
-    ): Response {
+    private const ROL_ADMINISTRADOR = 'administrador';
+
+    public function handle(Request $request, Closure $next): Response
+    {
         $usuario = $request->user();
 
         if (!$usuario) {
-            return redirect()
-                ->route('login');
+            return redirect()->route('login');
         }
 
         $usuario->loadMissing('rol');
 
-        if (
-            !$usuario->rol ||
-            $usuario->rol->nombre !== 'administrador'
-        ) {
-            abort(403);
-        }
+        abort_unless(
+            $usuario->rol?->nombre === self::ROL_ADMINISTRADOR,
+            403
+        );
 
         return $next($request);
     }

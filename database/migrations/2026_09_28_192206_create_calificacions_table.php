@@ -26,21 +26,15 @@ return new class extends Migration
             $table->enum('tipo_evaluado', [
                 'profesional',
                 'cliente',
-                'proveedor'
+                'proveedor',
             ]);
 
             $table->json('criterios');
-
             $table->decimal('promedio', 2, 1);
-
             $table->text('comentario')->nullable();
-
             $table->timestamps();
 
-            $table->unique([
-                'solicitud_id',
-                'evaluador_id'
-            ]);
+            $table->unique(['solicitud_id', 'evaluador_id']);
         });
     }
 
