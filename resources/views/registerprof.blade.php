@@ -3,313 +3,469 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Registro Profesional - ArquiServi</title>
 
-    <title>Registro Profesional</title>
+    <link rel="stylesheet" href="{{ asset('css/registerprof.css') }}">
+    <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
 
     <link
         rel="stylesheet"
-        href="{{ asset('css/registerprof.css') }}"
-    >
-
-    <link
-        rel="icon"
-        href="{{ asset('icono.png') }}"
-        type="image/png"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     >
 </head>
 
 <body>
-<header class="encabezado">
-    <img
-        src="{{ asset('encabezado2.png') }}"
-        class="logo"
-        alt="ArquiServi"
-    >
-</header>
-
-<section class="form-register">
-    <h2 id="subtitulo">
-        Registro Profesional
-    </h2>
-
-    <form
-        action="{{ route('registro.profesional.guardar') }}"
-        method="POST"
-    >
-        @csrf
-
-        <label
-            class="etiqueta"
-            for="profesion_id"
+    <header class="encabezado">
+        <img
+            src="{{ asset('encabezado2.png') }}"
+            class="logo"
+            alt="ArquiServi"
         >
-            Profesión:
-        </label>
+    </header>
 
-        <select
-            class="select"
-            name="profesion_id"
-            id="profesion_id"
-            required
-            autocomplete="off"
-        >
-            <option
-                value=""
-                disabled
-                {{ old('profesion_id') ? '' : 'selected' }}
-            >
-                Seleccione una profesión
-            </option>
+    <main class="registerprof-main">
+        <section class="form-register">
+            <h2 id="subtitulo">Registro Profesional</h2>
 
-            @foreach($profesiones as $profesion)
-                <option
-                    value="{{ $profesion->id }}"
-                    {{ old('profesion_id') == $profesion->id ? 'selected' : '' }}
+            <form action="{{ route('registro.profesional.guardar') }}" method="POST">
+                @csrf
+
+                <label class="etiqueta" for="profesion_id">
+                    Profesión:
+                </label>
+
+                <select
+                    class="select"
+                    name="profesion_id"
+                    id="profesion_id"
+                    required
+                    autocomplete="off"
                 >
-                    {{ $profesion->nombre }}
-                </option>
-            @endforeach
-        </select>
-
-        <label class="etiqueta">
-            Especialidades:
-        </label>
-
-        <p class="texto-ayuda">
-            Puedes seleccionar una o varias especialidades.
-        </p>
-
-        @php
-            $especialidadesSeleccionadas = array_map(
-                'intval',
-                old('especialidades', [])
-            );
-        @endphp
-
-        <div
-            class="especialidades-contenedor"
-            id="especialidadesContenedor"
-        >
-            @foreach($profesiones as $profesion)
-                @foreach($profesion->especialidades as $especialidad)
-                    <label
-                        class="especialidad-opcion"
-                        data-profesion="{{ $profesion->id }}"
-                        data-requiere-aprobacion="{{ $especialidad->requiere_aprobacion ? '1' : '0' }}"
-                        for="especialidad_{{ $especialidad->id }}"
+                    <option
+                        value=""
+                        disabled
+                        {{ old('profesion_id') ? '' : 'selected' }}
                     >
-                        <input
-                            type="checkbox"
-                            name="especialidades[]"
-                            id="especialidad_{{ $especialidad->id }}"
-                            value="{{ $especialidad->id }}"
-                            {{ in_array(
-                                (int) $especialidad->id,
-                                $especialidadesSeleccionadas,
-                                true
-                            ) ? 'checked' : '' }}
+                        Seleccione una profesión
+                    </option>
+
+                    @foreach($profesiones as $profesion)
+                        <option
+                            value="{{ $profesion->id }}"
+                            {{ old('profesion_id') == $profesion->id ? 'selected' : '' }}
+                        >
+                            {{ $profesion->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <label class="etiqueta">
+                    Especialidades:
+                </label>
+
+                <p class="texto-ayuda">
+                    Puedes seleccionar una o varias especialidades.
+                </p>
+
+                @php
+                    $especialidadesSeleccionadas = array_map(
+                        'intval',
+                        old('especialidades', [])
+                    );
+                @endphp
+
+                <div
+                    class="especialidades-contenedor"
+                    id="especialidadesContenedor"
+                >
+                    @foreach($profesiones as $profesion)
+                        @foreach($profesion->especialidades as $especialidad)
+                            <label
+                                class="especialidad-opcion"
+                                data-profesion="{{ $profesion->id }}"
+                                data-requiere-aprobacion="{{ $especialidad->requiere_aprobacion ? '1' : '0' }}"
+                                for="especialidad_{{ $especialidad->id }}"
+                            >
+                                <input
+                                    type="checkbox"
+                                    name="especialidades[]"
+                                    id="especialidad_{{ $especialidad->id }}"
+                                    value="{{ $especialidad->id }}"
+                                    {{ in_array(
+                                        (int) $especialidad->id,
+                                        $especialidadesSeleccionadas,
+                                        true
+                                    ) ? 'checked' : '' }}
+                                >
+
+                                <span class="especialidad-contenido">
+                                    <span class="especialidad-check">
+                                        ✓
+                                    </span>
+
+                                    <span class="especialidad-nombre">
+                                        {{ $especialidad->nombre }}
+                                    </span>
+                                </span>
+                            </label>
+                        @endforeach
+                    @endforeach
+                </div>
+
+                <div
+                    class="aviso-aprobacion"
+                    id="avisoAprobacion"
+                    hidden
+                >
+                    La especialidad Supervisor de obra requiere aprobación
+                    de un administrador. Tu perfil profesional seguirá
+                    visible en el catálogo mientras se revisa la solicitud.
+                    Únicamente esta especialidad permanecerá pendiente
+                    de autorización.
+                </div>
+
+                <label class="etiqueta" for="anios_experiencia">
+                    Años de experiencia:
+                </label>
+
+                <input
+                    class="form-control"
+                    type="number"
+                    name="anios_experiencia"
+                    id="anios_experiencia"
+                    min="0"
+                    max="80"
+                    value="{{ old('anios_experiencia') }}"
+                    placeholder="Ingrese el tiempo que tiene de experiencia"
+                    required
+                >
+
+                <label class="etiqueta" for="descripcion">
+                    Descripción:
+                </label>
+
+                <textarea
+                    class="form-control"
+                    name="descripcion"
+                    id="descripcion"
+                    maxlength="500"
+                    placeholder="Describa su trabajo"
+                    required
+                >{{ old('descripcion') }}</textarea>
+
+                <label class="etiqueta" for="portafolio_url">
+                    Link de su portafolio:
+                </label>
+
+                <input
+                    class="form-control"
+                    type="url"
+                    name="portafolio_url"
+                    id="portafolio_url"
+                    value="{{ old('portafolio_url') }}"
+                    placeholder="Ingrese el enlace de su portafolio"
+                >
+
+                <label class="etiqueta" for="zona_trabajo">
+                    Zona o ciudad donde trabaja:
+                </label>
+
+                <input
+                    class="form-control"
+                    type="text"
+                    name="zona_trabajo"
+                    id="zona_trabajo"
+                    value="{{ old('zona_trabajo') }}"
+                    placeholder="Ingrese su zona o ciudad"
+                    required
+                >
+
+                @if($errors->any())
+                    <div class="error">
+                        @foreach($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                        @endforeach
+                    </div>
+                @endif
+
+                <input
+                    type="submit"
+                    value="Registrarse"
+                    class="btn"
+                >
+            </form>
+        </section>
+    </main>
+
+    <footer class="pie">
+        <div class="pie-contenido">
+
+            <!-- MARCA ARQUISERVI -->
+            <div class="pie-marca">
+                <a
+                    href="{{ route('menu') }}"
+                    class="pie-logo-enlace"
+                    aria-label="ArquiServi"
+                >
+                    <img
+                        src="{{ asset('encabezado2.png') }}"
+                        alt="ArquiServi"
+                        class="pie-logo-arquiservi"
+                    >
+                </a>
+
+                <p class="pie-eslogan">
+                    Conectando personas, construyendo espacios.
+                </p>
+
+                <p class="pie-descripcion">
+                    Encuentra profesionales y proveedores para llevar tus
+                    proyectos a la realidad de forma sencilla, segura y confiable.
+                </p>
+            </div>
+
+            <!-- COLUMNAS CENTRALES -->
+            <div class="pie-columnas">
+
+                <!-- ARQUISERVI -->
+                <div class="pie-columna">
+                    <h3>ArquiServi</h3>
+
+                    <nav class="pie-enlaces">
+                        <a href="{{ route('acerca') }}" class="pie-enlace">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span>Acerca de</span>
+                        </a>
+
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <span>Servicios</span>
+                        </a>
+
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Profesionales</span>
+                        </a>
+
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-store"></i>
+                            <span>Proveedores</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- AYUDA -->
+                <div class="pie-columna">
+                    <h3>Ayuda</h3>
+
+                    <nav class="pie-enlaces">
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-circle-question"></i>
+                            <span>Centro de ayuda</span>
+                        </a>
+
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>Contacto</span>
+                        </a>
+
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Seguridad</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- LEGAL -->
+                <div class="pie-columna">
+                    <h3>Legal</h3>
+
+                    <nav class="pie-enlaces">
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-file-contract"></i>
+                            <span>Términos y condiciones</span>
+                        </a>
+
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-lock"></i>
+                            <span>Privacidad</span>
+                        </a>
+
+                        <a href="#" class="pie-enlace">
+                            <i class="fa-solid fa-cookie-bite"></i>
+                            <span>Cookies</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- REDES SOCIALES -->
+                <div class="pie-redes">
+                    <span class="pie-subtitulo">Síguenos</span>
+
+                    <div class="pie-redes-lista">
+                        <a
+                            href="#"
+                            class="pie-red-social"
+                            aria-label="Facebook"
+                        >
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+
+                        <a
+                            href="#"
+                            class="pie-red-social"
+                            aria-label="Instagram"
+                        >
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+
+                        <a
+                            href="#"
+                            class="pie-red-social"
+                            aria-label="LinkedIn"
+                        >
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+
+                        <a
+                            href="#"
+                            class="pie-red-social"
+                            aria-label="GitHub"
+                        >
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLABORADORES -->
+            <div class="pie-derecha">
+                <div class="pie-colaboradores">
+                    <span class="pie-subtitulo">
+                        Colaboradores
+                    </span>
+
+                    <div class="pie-logos">
+                        <img
+                            src="{{ asset('footer/Logo_Labsol.png') }}"
+                            alt="LABSOL Network"
+                            class="logo-footer logo-labsol"
                         >
 
-                        <span class="especialidad-contenido">
-                            <span class="especialidad-check">
-                                ✓
-                            </span>
-
-                            <span class="especialidad-nombre">
-                                {{ $especialidad->nombre }}
-                            </span>
-                        </span>
-                    </label>
-                @endforeach
-            @endforeach
-        </div>
-
-        <div
-            class="aviso-aprobacion"
-            id="avisoAprobacion"
-            hidden
-        >
-            La especialidad Supervisor de obra requiere aprobación de un administrador. Tu perfil permanecerá pendiente hasta que la solicitud sea revisada.
-        </div>
-
-        <label
-            class="etiqueta"
-            for="anios_experiencia"
-        >
-            Años de experiencia:
-        </label>
-
-        <input
-            class="form-control"
-            type="number"
-            name="anios_experiencia"
-            id="anios_experiencia"
-            min="0"
-            max="80"
-            value="{{ old('anios_experiencia') }}"
-            placeholder="Ingrese el tiempo que tiene de experiencia"
-            required
-        >
-
-        <label
-            class="etiqueta"
-            for="descripcion"
-        >
-            Descripción:
-        </label>
-
-        <textarea
-            class="form-control"
-            name="descripcion"
-            id="descripcion"
-            maxlength="500"
-            placeholder="Describa su trabajo"
-            required
-        >{{ old('descripcion') }}</textarea>
-
-        <label
-            class="etiqueta"
-            for="portafolio_url"
-        >
-            Link de su portafolio:
-        </label>
-
-        <input
-            class="form-control"
-            type="url"
-            name="portafolio_url"
-            id="portafolio_url"
-            value="{{ old('portafolio_url') }}"
-            placeholder="Ingrese el enlace de su portafolio"
-        >
-
-        <label
-            class="etiqueta"
-            for="zona_trabajo"
-        >
-            Zona o ciudad donde trabaja:
-        </label>
-
-        <input
-            class="form-control"
-            type="text"
-            name="zona_trabajo"
-            id="zona_trabajo"
-            value="{{ old('zona_trabajo') }}"
-            placeholder="Ingrese su zona o ciudad"
-            required
-        >
-
-        @if($errors->any())
-            <div class="error">
-                @foreach($errors->all() as $error)
-                    <p>
-                        {{ $error }}
-                    </p>
-                @endforeach
+                        <img
+                            src="{{ asset('footer/Logo_GPLv3.png') }}"
+                            alt="GPLv3 Free Software"
+                            class="logo-footer logo-gpl"
+                        >
+                    </div>
+                </div>
             </div>
-        @endif
+        </div>
 
-        <input
-            type="submit"
-            value="Registrarse"
-            class="btn"
-        >
-    </form>
-</section>
+        <!-- SEPARADOR -->
+        <div class="pie-separador"></div>
 
-<footer class="pie">
-    <p>
-        © 2026 ArquiServi. Todos los derechos reservados.
-    </p>
-</footer>
+        <!-- PARTE INFERIOR -->
+        <div class="pie-inferior">
+            <div class="pie-copyright">
+                <p>
+                    © 2026 ArquiServi. Todos los derechos reservados.
+                </p>
+            </div>
 
-<script>
-    const profesion = document.getElementById('profesion_id');
+            <div class="pie-inferior-enlaces">
+                <a href="#">Aviso de privacidad</a>
+                <span class="pie-punto"></span>
+                <a href="#">Términos</a>
+                <span class="pie-punto"></span>
+                <a href="#">Contacto</a>
+            </div>
+        </div>
+    </footer>
 
-    const opcionesEspecialidad = Array.from(
-        document.querySelectorAll('.especialidad-opcion')
-    );
+    <script>
+        const profesion = document.getElementById('profesion_id');
 
-    const avisoAprobacion = document.getElementById('avisoAprobacion');
-
-    function cargarEspecialidades(limpiar = false) {
-        const profesionId = profesion.value;
-
-        opcionesEspecialidad.forEach(opcion => {
-            const corresponde = opcion.dataset.profesion === profesionId;
-
-            opcion.hidden = !corresponde;
-
-            const checkbox = opcion.querySelector(
-                'input[type="checkbox"]'
-            );
-
-            if (!corresponde && limpiar) {
-                checkbox.checked = false;
-            }
-        });
-
-        actualizarAvisoAprobacion();
-    }
-
-    function actualizarAvisoAprobacion() {
-        const requiereAprobacion = opcionesEspecialidad.some(opcion => {
-            if (opcion.hidden) {
-                return false;
-            }
-
-            const checkbox = opcion.querySelector(
-                'input[type="checkbox"]'
-            );
-
-            return (
-                checkbox.checked &&
-                opcion.dataset.requiereAprobacion === '1'
-            );
-        });
-
-        avisoAprobacion.hidden = !requiereAprobacion;
-    }
-
-    profesion.addEventListener('change', function () {
-        cargarEspecialidades(true);
-    });
-
-    opcionesEspecialidad.forEach(opcion => {
-        const checkbox = opcion.querySelector(
-            'input[type="checkbox"]'
+        const opcionesEspecialidad = Array.from(
+            document.querySelectorAll('.especialidad-opcion')
         );
 
-        checkbox.addEventListener(
-            'change',
-            actualizarAvisoAprobacion
-        );
-    });
+        const avisoAprobacion = document.getElementById('avisoAprobacion');
 
-    cargarEspecialidades(false);
+        function cargarEspecialidades(limpiar = false) {
+            const profesionId = profesion.value;
 
-    document.querySelectorAll('.select').forEach(select => {
-        function actualizarEstado() {
-            if (select.value !== '') {
-                select.classList.add('seleccionado');
-            } else {
-                select.classList.remove('seleccionado');
-            }
+            opcionesEspecialidad.forEach(opcion => {
+                const corresponde = opcion.dataset.profesion === profesionId;
+
+                opcion.hidden = !corresponde;
+
+                const checkbox = opcion.querySelector(
+                    'input[type="checkbox"]'
+                );
+
+                if (!corresponde && limpiar) {
+                    checkbox.checked = false;
+                }
+            });
+
+            actualizarAvisoAprobacion();
         }
 
-        select.addEventListener(
-            'change',
-            actualizarEstado
-        );
+        function actualizarAvisoAprobacion() {
+            const requiereAprobacion = opcionesEspecialidad.some(opcion => {
+                if (opcion.hidden) {
+                    return false;
+                }
 
-        actualizarEstado();
-    });
-</script>
+                const checkbox = opcion.querySelector(
+                    'input[type="checkbox"]'
+                );
 
+                return (
+                    checkbox.checked &&
+                    opcion.dataset.requiereAprobacion === '1'
+                );
+            });
+
+            avisoAprobacion.hidden = !requiereAprobacion;
+        }
+
+        profesion.addEventListener('change', function () {
+            cargarEspecialidades(true);
+        });
+
+        opcionesEspecialidad.forEach(opcion => {
+            const checkbox = opcion.querySelector(
+                'input[type="checkbox"]'
+            );
+
+            checkbox.addEventListener(
+                'change',
+                actualizarAvisoAprobacion
+            );
+        });
+
+        cargarEspecialidades(false);
+
+        document.querySelectorAll('.select').forEach(select => {
+            function actualizarEstado() {
+                if (select.value !== '') {
+                    select.classList.add('seleccionado');
+                } else {
+                    select.classList.remove('seleccionado');
+                }
+            }
+
+            select.addEventListener(
+                'change',
+                actualizarEstado
+            );
+
+            actualizarEstado();
+        });
+    </script>
 </body>
 </html>

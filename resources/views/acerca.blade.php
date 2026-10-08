@@ -589,12 +589,11 @@
             </p>
 
             <p class="pie-descripcion">
-                Encuentra profesionales y proveedores para llevar tus
-                proyectos a la realidad de forma sencilla, segura y
-                confiable.
+                Encuentra profesionales y proveedores para llevar tus proyectos a la realidad de forma sencilla, segura y confiable.
             </p>
         </div>
 
+        <!-- COLUMNAS CENTRALES -->
         <div class="pie-columnas">
             <div class="pie-columna">
                 <h3>
@@ -729,9 +728,7 @@
                     </a>
                 </nav>
             </div>
-        </div>
 
-        <div class="pie-derecha">
             <div class="pie-redes">
                 <span class="pie-subtitulo">
                     Síguenos
@@ -771,7 +768,9 @@
                     </a>
                 </div>
             </div>
+        </div>
 
+        <div class="pie-derecha">
             <div class="pie-colaboradores">
                 <span class="pie-subtitulo">
                     Colaboradores
